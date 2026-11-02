@@ -40,8 +40,45 @@ $('#searchJump').addEventListener('click',()=>{$('#shop').scrollIntoView({behavi
 $('#cartOpen').addEventListener('click',openCart);$('#cartClose').addEventListener('click',closeCart);$('#overlay').addEventListener('click',closeCart);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCart();});
 $('#demoCheckout').addEventListener('click',()=>{if(!Object.keys(cart).length)return showToast('Your bag is empty');showToast('Demo preview only — checkout is not connected');});
-$('#menuToggle').addEventListener('click',()=>$('#mainNav').classList.toggle('open'));
-document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()=>$('#mainNav').classList.remove('open')));
-$('#enquiryForm').addEventListener('submit',e=>{e.preventDefault();$('#formMessage').textContent='Thanks! This demo form is not connected yet. Contact us by phone or WhatsApp.';showToast('Demo enquiry validated — not sent');});
+$('#menuToggle').addEventListener('click',()=>{
+ const open=$('#mainNav').classList.toggle('open');
+ $('#menuToggle').setAttribute('aria-expanded',String(open));
+ $('#menuToggle').setAttribute('aria-label',open?'Close menu':'Open menu');
+});
+function closeMobileMenu(){ $('#mainNav').classList.remove('open'); $('#menuToggle').setAttribute('aria-expanded','false'); $('#menuToggle').setAttribute('aria-label','Open menu'); }
+document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',closeMobileMenu));
+window.addEventListener('resize',()=>{if(window.innerWidth>760)closeMobileMenu();});
+$('#enquiryForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const form=e.currentTarget;
+ if(!form.reportValidity())return;
+ const data=new FormData(form);
+ const name=String(data.get('name')||'').trim();
+ const phone=String(data.get('phone')||'').trim();
+ const digits=phone.replace(/\D/g,'');
+ if(digits.length<10||digits.length>13){$('#formMessage').textContent='Please enter a valid phone number (10–13 digits).';return;}
+ const requirement=String(data.get('requirement')||'Product enquiry');
+ const message=String(data.get('message')||'').trim();
+ const text=`Hello Hexa Computronics, I would like to make an enquiry.\n\nName: ${name}\nPhone: ${phone}\nRequirement: ${requirement}\nDetails: ${message||'Not provided'}\n\nPlease contact me.`;
+ const url='https://wa.me/918400702268?text='+encodeURIComponent(text);
+ $('#formMessage').textContent='Opening WhatsApp with your enquiry. Review the message and press Send to submit it.';
+ const opened=window.open(url,'_blank','noopener,noreferrer');
+ if(!opened)window.location.href=url;
+});
+$('#emailEnquiry').addEventListener('click',()=>{
+ const form=$('#enquiryForm');
+ if(!form.reportValidity())return;
+ const data=new FormData(form);
+ const phone=String(data.get('phone')||'').trim();
+ const digits=phone.replace(/\D/g,'');
+ if(digits.length<10||digits.length>13){$('#formMessage').textContent='Please enter a valid phone number (10–13 digits).';return;}
+ const name=String(data.get('name')||'').trim();
+ const requirement=String(data.get('requirement')||'Product enquiry');
+ const message=String(data.get('message')||'').trim();
+ const subject=`Website enquiry: ${requirement}`;
+ const body=`Hello Hexa Computronics,\n\nI would like to make an enquiry.\n\nName: ${name}\nPhone: ${phone}\nRequirement: ${requirement}\nDetails: ${message||'Not provided'}\n\nPlease contact me.`;
+ $('#formMessage').textContent='Opening your email app with the enquiry addressed to hexaknp@gmail.com. Review and press Send there.';
+ window.location.href=`mailto:hexaknp@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+});
 $('#year').textContent=new Date().getFullYear();
 renderProducts();renderCart();
