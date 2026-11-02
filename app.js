@@ -65,20 +65,45 @@ $('#enquiryForm').addEventListener('submit',e=>{
  const opened=window.open(url,'_blank','noopener,noreferrer');
  if(!opened)window.location.href=url;
 });
-$('#emailEnquiry').addEventListener('click',()=>{
- const form=$('#enquiryForm');
+async function sendEmailEnquiry(event){
+ if(event){event.preventDefault();event.stopPropagation();}
+ const form=document.getElementById('enquiryForm');
+ const button=document.getElementById('emailEnquiry');
+ const status=document.getElementById('formMessage');
+ if(!form||!button||!status){alert('Enquiry form is unavailable. Please refresh the page.');return;}
  if(!form.reportValidity())return;
  const data=new FormData(form);
  const phone=String(data.get('phone')||'').trim();
  const digits=phone.replace(/\D/g,'');
- if(digits.length<10||digits.length>13){$('#formMessage').textContent='Please enter a valid phone number (10–13 digits).';return;}
- const name=String(data.get('name')||'').trim();
- const requirement=String(data.get('requirement')||'Product enquiry');
- const message=String(data.get('message')||'').trim();
- const subject=`Website enquiry: ${requirement}`;
- const body=`Hello Hexa Computronics,\n\nI would like to make an enquiry.\n\nName: ${name}\nPhone: ${phone}\nRequirement: ${requirement}\nDetails: ${message||'Not provided'}\n\nPlease contact me.`;
- $('#formMessage').textContent='Opening your email app with the enquiry addressed to hexaknp@gmail.com. Review and press Send there.';
- window.location.href=`mailto:hexaknp@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-});
+ if(digits.length<10||digits.length>13){status.textContent='Please enter a valid phone number (10–13 digits).';return;}
+ const payload=new FormData();
+ payload.append('name',String(data.get('name')||'').trim());
+ payload.append('phone',phone);
+ payload.append('requirement',String(data.get('requirement')||'Product enquiry'));
+ payload.append('message',String(data.get('message')||'').trim()||'Not provided');
+ payload.append('_subject',`Website enquiry: ${String(data.get('requirement')||'Product enquiry')}`);
+ payload.append('_template','table');
+ payload.append('_captcha','false');
+ button.disabled=true;
+ button.textContent='Sending…';
+ status.textContent='Connecting to the email service…';
+ try{
+  const response=await fetch('https://formsubmit.co/ajax/hexaknp@gmail.com',{
+   method:'POST',body:payload,headers:{'Accept':'application/json'}
+  });
+  const result=await response.json().catch(()=>({}));
+  if(!response.ok||result.success===false)throw new Error(result.message||`HTTP ${response.status}`);
+  status.textContent='Enquiry submitted. Please check your inbox; our team will contact you soon.';
+  form.reset();
+ }catch(err){
+  console.error('Hexa email enquiry failed:',err);
+  status.textContent='Email submission could not be completed. Please send your enquiry on WhatsApp or call 84007 02268. If this is the first FormSubmit request, check hexaknp@gmail.com for an activation email.';
+ }finally{
+  button.disabled=false;
+  button.textContent='Send enquiry by Email ↗';
+ }
+}
+window.sendEmailEnquiry=sendEmailEnquiry;
+document.getElementById('emailEnquiry')?.addEventListener('click',sendEmailEnquiry);
 $('#year').textContent=new Date().getFullYear();
 renderProducts();renderCart();
