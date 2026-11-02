@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+<title id="title">CCTV and security camera</title><desc id="desc">Premium illustration of a modern outdoor CCTV security camera against a clean blue technology background.</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eaf4fc"/><stop offset=".55" stop-color="#b9d8f0"/><stop offset="1" stop-color="#6f9fc7"/></linearGradient>
+ <linearGradient id="body" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffffff"/><stop offset=".45" stop-color="#dce7f0"/><stop offset="1" stop-color="#8ea8bf"/></linearGradient>
+ <linearGradient id="dark" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#244f78"/><stop offset="1" stop-color="#0b2744"/></linearGradient>
+ <radialGradient id="lens"><stop stop-color="#6fd0ff"/><stop offset=".25" stop-color="#146da8"/><stop offset=".7" stop-color="#0b2846"/><stop offset="1" stop-color="#06182c"/></radialGradient>
+ <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%"><feGaussianBlur stdDeviation="24"/></filter>
+ <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="1"/></pattern>
+</defs>
+<rect width="1200" height="800" fill="url(#bg)"/><rect width="1200" height="800" fill="url(#grid)"/>
+<circle cx="930" cy="180" r="220" fill="#fff" opacity=".2"/><circle cx="190" cy="650" r="260" fill="#fff" opacity=".22"/>
+<path d="M0 650 Q300 540 600 670T1200 630V800H0Z" fill="#6b95b8" opacity=".16"/>
+<ellipse cx="590" cy="650" rx="330" ry="48" fill="#163e62" opacity=".22" filter="url(#shadow)"/>
+<!-- mounting bracket -->
+<path d="M350 280h78v210h-78z" rx="22" fill="url(#dark)"/><path d="M390 450h145q32 0 32 32v28H390z" fill="#173f65"/><circle cx="389" cy="305" r="16" fill="#9db4c8"/><circle cx="389" cy="305" r="7" fill="#315c80"/>
+<path d="M470 485c0-42 34-76 76-76h86v62h-86c-8 0-14 6-14 14v95h-62z" fill="url(#dark)"/>
+<!-- camera housing -->
+<path d="M520 290q0-58 58-58h330q68 0 68 68v170q0 70-70 70H580q-60 0-60-60z" fill="url(#body)" stroke="#7896b1" stroke-width="8"/>
+<path d="M560 278q0-22 24-22h316q42 0 42 42v122H560z" fill="#f8fbfe" opacity=".5"/>
+<path d="M520 360h456v108q0 58-58 58H578q-58 0-58-58z" fill="url(#dark)"/>
+<path d="M520 360h456v30H520z" fill="#6f8fa9" opacity=".45"/>
+<!-- lens module -->
+<circle cx="855" cy="414" r="82" fill="#d7e2ec" stroke="#7895ad" stroke-width="8"/><circle cx="855" cy="414" r="64" fill="url(#lens)"/><circle cx="835" cy="392" r="18" fill="#a7e7ff" opacity=".72"/><circle cx="855" cy="414" r="37" fill="none" stroke="#83cfff" stroke-opacity=".5" stroke-width="3"/>
+<!-- IR LEDs -->
+<g fill="#b5d5e9"><circle cx="770" cy="365" r="6"/><circle cx="800" cy="350" r="6"/><circle cx="910" cy="350" r="6"/><circle cx="940" cy="365" r="6"/><circle cx="770" cy="462" r="6"/><circle cx="800" cy="478" r="6"/><circle cx="910" cy="478" r="6"/><circle cx="940" cy="462" r="6"/></g>
+<!-- subtle status details -->
+<rect x="592" y="422" width="110" height="10" rx="5" fill="#9db5c9" opacity=".5"/><circle cx="624" cy="456" r="7" fill="#6bc8fa"/>
+<g font-family="Arial,sans-serif" fill="#17466f"><text x="90" y="115" font-size="22" font-weight="700" letter-spacing="7">HEXA SECURITY</text><text x="90" y="155" font-size="16" letter-spacing="3" opacity=".7">SMART PROTECTION · CONNECTED CONFIDENCE</text></g>
+<g fill="none" stroke="#fff" stroke-width="3" opacity=".7"><path d="M1000 150h70v70M130 520v70h70"/><circle cx="1040" cy="600" r="36"/><path d="M1024 600l11 11 22-25"/></g>
+</svg>

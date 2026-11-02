@@ -1,25 +1,28 @@
 HEXA COMPUTRONICS — WHITE PREMIUM E-COMMERCE HOMEPAGE
 
-PREVIEW
-1. Extract the ZIP.
-2. Open index.html in Chrome or Edge.
-3. Internet is recommended for Google Fonts and product photography.
+GITHUB PAGES PREVIEW
+Upload all files in this folder to the root of your repository:
+- index.html
+- styles.css
+- app.js
+- README.txt
+- cctv-security.svg
+- technology-placeholder.svg
+
+The CCTV category and CCTV demo product now use a bundled local SVG image,
+so that visual no longer depends on a third-party image host. Product photos
+remain illustrative remote images and need an internet connection.
 
 DESIGN
 - White, silver and blue premium commerce direction
 - Responsive desktop, tablet and mobile layout
-- Hero product feature and floating detail card
-- Six category tiles
-- Product catalogue with search, category filters and sorting
+- Category tiles, product search, filters and sorting
 - Demo shopping bag with quantity controls and subtotal
-- Refurbished feature, business IT solutions and enquiry section
+- Refurbished feature and business IT solutions sections
 - Contact details and WhatsApp shortcut
 
-DEMO LIMITATIONS
-Product names, prices and images are sample content. The cart is browser-side demo behavior only.
-No real checkout, payment gateway, database, inventory, order management, secure admin panel or
-enquiry delivery is connected. Do not accept real customer orders through this preview.
-Before launch, replace sample catalogue/prices, connect secure backend and payment, configure
-enquiry delivery, test mobile performance/accessibility, and review privacy/security.
-
-The existing hexacomputer.in live website and DNS have not been changed.
+IMPORTANT
+This is a front-end preview only. Prices and availability are illustrative.
+Checkout, online payments, inventory, database, secure admin panel and enquiry
+submission are not connected. Do not use as a production store until those
+services are implemented and tested.

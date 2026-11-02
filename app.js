@@ -4,7 +4,7 @@ const products=[
 {id:3,name:'Custom Gaming Desktop',cat:'Desktops & Gaming',price:74999,spec:'Ryzen 5 · 16GB RAM · Gaming build',tag:'Performance',img:'https://images.unsplash.com/photo-1587831990711-23ca6441447b?auto=format&fit=crop&w=700&q=82'},
 {id:4,name:'24-inch Full HD Monitor',cat:'Monitors',price:8999,spec:'IPS · 100Hz · HDMI',tag:'Everyday essential',img:'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=700&q=82'},
 {id:5,name:'Dual Band Wi-Fi Router',cat:'Networking',price:2499,spec:'Dual band · Gigabit ports',tag:'Connectivity',img:'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=700&q=82'},
-{id:6,name:'4-Channel CCTV Kit',cat:'CCTV & Security',price:12499,spec:'4 cameras · DVR bundle',tag:'Security',img:'https://images.unsplash.com/photo-1557597774-9d2736050a9e?auto=format&fit=crop&w=700&q=82'},
+{id:6,name:'4-Channel CCTV Kit',cat:'CCTV & Security',price:12499,spec:'4 cameras · DVR bundle',tag:'Security',img:'cctv-security.svg'},
 {id:7,name:'Refurbished Business Laptop',cat:'Refurbished',price:18999,spec:'Core i5 · 8GB RAM · SSD',tag:'Value choice',img:'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=700&q=82'},
 {id:8,name:'Wireless Keyboard & Mouse',cat:'Accessories',price:1299,spec:'Wireless combo · USB receiver',tag:'Essential',img:'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=700&q=82'},
 {id:9,name:'Office Desktop Computer',cat:'Desktops & Gaming',price:28999,spec:'Core i3 · 8GB RAM · 512GB SSD',tag:'Office ready',img:'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=700&q=82'},
@@ -20,7 +20,7 @@ function renderProducts(){
  const sort=$('#sortProducts').value;
  if(sort==='low')list.sort((a,b)=>a.price-b.price);
  if(sort==='high')list.sort((a,b)=>b.price-a.price);
- $('#productGrid').innerHTML=list.map(p=>`<article class="product-card"><div class="product-image"><img loading="lazy" src="${p.img}" alt="${p.name}"><span class="product-tag">${p.tag}</span></div><div class="product-info"><span class="product-category">${p.cat}</span><h3>${p.name}</h3><p class="product-spec">${p.spec}</p><div class="product-bottom"><b class="product-price">${money(p.price)}</b><button class="add-button" aria-label="Add ${p.name} to bag" onclick="addToCart(${p.id})">+</button></div></div></article>`).join('')||'<p class="no-results">No matching products. Try another search or category.</p>';
+ $('#productGrid').innerHTML=list.map(p=>`<article class="product-card"><div class="product-image"><img loading="lazy" src="${p.img}" alt="${p.name}" onerror="this.onerror=null;this.src='technology-placeholder.svg';this.alt='Technology product placeholder'"><span class="product-tag">${p.tag}</span></div><div class="product-info"><span class="product-category">${p.cat}</span><h3>${p.name}</h3><p class="product-spec">${p.spec}</p><div class="product-bottom"><b class="product-price">${money(p.price)}</b><button class="add-button" aria-label="Add ${p.name} to bag" onclick="addToCart(${p.id})">+</button></div></div></article>`).join('')||'<p class="no-results">No matching products. Try another search or category.</p>';
 }
 function setCategory(cat){activeCategory=cat;document.querySelectorAll('.filter').forEach(b=>b.classList.toggle('active',b.dataset.filter===cat));renderProducts();}
 function addToCart(id){cart[id]=(cart[id]||0)+1;renderCart();showToast('Added to your demo bag');}
