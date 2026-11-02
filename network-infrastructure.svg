@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+<title id="title">Business network infrastructure</title>
+<desc id="desc">Illustration of professional network racks, switches and connected devices in a modern blue technology environment.</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#dceefa"/><stop offset=".55" stop-color="#8db9d8"/><stop offset="1" stop-color="#315f86"/></linearGradient>
+ <linearGradient id="rack" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#173b5c"/><stop offset="1" stop-color="#071d32"/></linearGradient>
+ <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#315c7c"/><stop offset="1" stop-color="#122f4a"/></linearGradient>
+ <pattern id="dots" width="34" height="34" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.5" fill="#fff" opacity=".22"/></pattern>
+ <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%"><feGaussianBlur stdDeviation="18"/></filter>
+</defs>
+<rect width="1200" height="760" fill="url(#bg)"/><rect width="1200" height="760" fill="url(#dots)"/>
+<circle cx="970" cy="130" r="190" fill="#fff" opacity=".13"/><path d="M0 590 Q260 490 510 590 T1200 560 V760 H0Z" fill="#173e60" opacity=".22"/>
+<ellipse cx="610" cy="680" rx="440" ry="42" fill="#08233b" opacity=".28" filter="url(#shadow)"/>
+<!-- network rack left -->
+<g transform="translate(150 105)"><rect x="0" y="0" width="300" height="570" rx="18" fill="#0b2943" opacity=".18"/><rect x="12" y="12" width="276" height="546" rx="13" fill="url(#rack)" stroke="#d5e9f8" stroke-opacity=".6" stroke-width="5"/>
+<g fill="url(#panel)" stroke="#5f8eae" stroke-opacity=".55" stroke-width="2">
+<rect x="32" y="42" width="236" height="82" rx="7"/><rect x="32" y="145" width="236" height="82" rx="7"/><rect x="32" y="248" width="236" height="82" rx="7"/><rect x="32" y="351" width="236" height="82" rx="7"/><rect x="32" y="454" width="236" height="72" rx="7"/></g>
+<g fill="#77d6ff"><circle cx="55" cy="82" r="5"/><circle cx="75" cy="82" r="5"/><circle cx="95" cy="82" r="5"/><circle cx="115" cy="82" r="5"/><circle cx="135" cy="82" r="5"/><circle cx="155" cy="82" r="5"/><circle cx="175" cy="82" r="5"/><circle cx="195" cy="82" r="5"/><circle cx="215" cy="82" r="5"/><circle cx="235" cy="82" r="5"/></g>
+<g fill="#9bd9f5" opacity=".9"><rect x="53" y="171" width="194" height="5" rx="2"/><rect x="53" y="190" width="194" height="5" rx="2"/><rect x="53" y="274" width="194" height="5" rx="2"/><rect x="53" y="293" width="194" height="5" rx="2"/><rect x="53" y="377" width="194" height="5" rx="2"/><rect x="53" y="396" width="194" height="5" rx="2"/></g>
+<g fill="#63e0bb"><circle cx="58" cy="484" r="5"/><circle cx="78" cy="484" r="5"/><circle cx="98" cy="484" r="5"/><circle cx="118" cy="484" r="5"/><circle cx="138" cy="484" r="5"/></g></g>
+<!-- second rack -->
+<g transform="translate(500 165)"><rect x="0" y="0" width="250" height="510" rx="16" fill="#0b2943" opacity=".16"/><rect x="12" y="12" width="226" height="486" rx="12" fill="url(#rack)" stroke="#d5e9f8" stroke-opacity=".58" stroke-width="5"/>
+<g fill="url(#panel)" stroke="#5f8eae" stroke-opacity=".5" stroke-width="2"><rect x="30" y="40" width="190" height="72" rx="7"/><rect x="30" y="132" width="190" height="72" rx="7"/><rect x="30" y="224" width="190" height="72" rx="7"/><rect x="30" y="316" width="190" height="72" rx="7"/><rect x="30" y="408" width="190" height="62" rx="7"/></g>
+<g fill="#7ce0ff"><circle cx="55" cy="76" r="5"/><circle cx="75" cy="76" r="5"/><circle cx="95" cy="76" r="5"/><circle cx="115" cy="76" r="5"/><circle cx="135" cy="76" r="5"/><circle cx="155" cy="76" r="5"/><circle cx="175" cy="76" r="5"/><circle cx="195" cy="76" r="5"/></g>
+<g stroke="#9bd9f5" stroke-width="5" stroke-linecap="round" opacity=".8"><path d="M50 163h150M50 255h150M50 347h150M50 438h150"/></g></g>
+<!-- connection arcs and nodes -->
+<g fill="none" stroke="#e7f7ff" stroke-width="5" stroke-linecap="round" opacity=".8"><path d="M750 255 C840 170 900 190 960 260 S1080 350 1120 280"/><path d="M750 440 C850 530 920 505 1000 430"/><path d="M430 250 C470 180 500 180 535 220"/></g>
+<g fill="#e8f8ff" stroke="#4d9bc9" stroke-width="6"><circle cx="960" cy="260" r="17"/><circle cx="1120" cy="280" r="17"/><circle cx="1000" cy="430" r="17"/><circle cx="750" cy="255" r="13"/><circle cx="750" cy="440" r="13"/></g>
+<g transform="translate(850 525)"><rect width="245" height="94" rx="15" fill="#f5fbff" opacity=".95"/><circle cx="39" cy="47" r="20" fill="#d9efff"/><path d="M29 47h20M39 37v20" stroke="#1678b8" stroke-width="4" stroke-linecap="round"/><text x="73" y="42" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#163c5c">Connected business</text><text x="73" y="65" font-family="Arial,sans-serif" font-size="13" fill="#63809a">Network • Wi-Fi • Security</text></g>
+</svg>
