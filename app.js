@@ -76,33 +76,43 @@ async function sendEmailEnquiry(event){
  const phone=String(data.get('phone')||'').trim();
  const digits=phone.replace(/\D/g,'');
  if(digits.length<10||digits.length>13){status.textContent='Please enter a valid phone number (10–13 digits).';return;}
- const payload=new FormData();
- payload.append('name',String(data.get('name')||'').trim());
- payload.append('phone',phone);
- payload.append('requirement',String(data.get('requirement')||'Product enquiry'));
- payload.append('message',String(data.get('message')||'').trim()||'Not provided');
- payload.append('_subject',`Website enquiry: ${String(data.get('requirement')||'Product enquiry')}`);
- payload.append('_template','table');
- payload.append('_captcha','false');
+ // FormSubmit's documented AJAX endpoint expects a JSON request body.
+ const requirement=String(data.get('requirement')||'Product enquiry');
+ const payload={
+  name:String(data.get('name')||'').trim(),
+  phone,
+  requirement,
+  message:String(data.get('message')||'').trim()||'Not provided',
+  _subject:`Website enquiry: ${requirement}`,
+  _template:'table',
+  _url:window.location.href
+ };
  button.disabled=true;
  button.textContent='Sending…';
- status.textContent='Connecting to the email service…';
+ status.textContent='Connecting securely to the email service…';
  try{
   const controller=new AbortController();
-  const timeoutId=setTimeout(()=>controller.abort(),20000);
+  const timeoutId=setTimeout(()=>controller.abort(),15000);
   let response;
   try{
    response=await fetch('https://formsubmit.co/ajax/hexaknp@gmail.com',{
-    method:'POST',body:payload,headers:{'Accept':'application/json'},signal:controller.signal
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify(payload),
+    signal:controller.signal
    });
   }finally{clearTimeout(timeoutId);}
-  const result=await response.json().catch(()=>({}));
-  if(!response.ok||result.success===false)throw new Error(result.message||`HTTP ${response.status}`);
-  status.textContent='Enquiry submitted. Please check your inbox; our team will contact you soon.';
+  const result=await response.json().catch(()=>null);
+  if(!response.ok||!result||result.success!==true){
+   throw new Error(result?.message||`Email service returned HTTP ${response.status}`);
+  }
+  status.textContent='Thank you! Your enquiry was submitted. Our team will contact you soon.';
   form.reset();
  }catch(err){
   console.error('Hexa email enquiry failed:',err);
-  status.textContent=err.name==='AbortError'?'The email service did not respond within 20 seconds. Please try again later or use WhatsApp/call 84007 02268.':'Email submission failed. Please use WhatsApp/call 84007 02268. Check your internet connection and try again.';
+  status.textContent=err.name==='AbortError'
+   ?'The email service timed out. Your enquiry was not confirmed. Please use WhatsApp or call 84007 02268.'
+   :`Email submission failed: ${err.message||'Please try WhatsApp or call 84007 02268.'}`;
  }finally{
   button.disabled=false;
   button.textContent='Send enquiry by Email ↗';
