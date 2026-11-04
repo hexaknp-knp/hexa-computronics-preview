@@ -88,16 +88,21 @@ async function sendEmailEnquiry(event){
  button.textContent='Sending…';
  status.textContent='Connecting to the email service…';
  try{
-  const response=await fetch('https://formsubmit.co/ajax/hexaknp@gmail.com',{
-   method:'POST',body:payload,headers:{'Accept':'application/json'}
-  });
+  const controller=new AbortController();
+  const timeoutId=setTimeout(()=>controller.abort(),20000);
+  let response;
+  try{
+   response=await fetch('https://formsubmit.co/ajax/hexaknp@gmail.com',{
+    method:'POST',body:payload,headers:{'Accept':'application/json'},signal:controller.signal
+   });
+  }finally{clearTimeout(timeoutId);}
   const result=await response.json().catch(()=>({}));
   if(!response.ok||result.success===false)throw new Error(result.message||`HTTP ${response.status}`);
   status.textContent='Enquiry submitted. Please check your inbox; our team will contact you soon.';
   form.reset();
  }catch(err){
   console.error('Hexa email enquiry failed:',err);
-  status.textContent='Email submission could not be completed. Please send your enquiry on WhatsApp or call 84007 02268. If this is the first FormSubmit request, check hexaknp@gmail.com for an activation email.';
+  status.textContent=err.name==='AbortError'?'The email service did not respond within 20 seconds. Please try again later or use WhatsApp/call 84007 02268.':'Email submission failed. Please use WhatsApp/call 84007 02268. Check your internet connection and try again.';
  }finally{
   button.disabled=false;
   button.textContent='Send enquiry by Email ↗';
