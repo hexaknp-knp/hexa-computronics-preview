@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hexa Admin | Product Manager</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="admin.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script><script src="admin.js" defer></script></head>
+<body class="admin-body"><main class="admin-shell">
+<header class="admin-top"><a class="brand" href="index.html"><span class="brand-mark">H<span>×</span></span><span class="brand-name">HEXA<small>COMPUTRONICS</small></span></a><span class="admin-label">SECURE ADMIN</span></header>
+<section id="loginPanel" class="admin-panel login-panel"><span class="eyebrow">ADMIN ACCESS</span><h1>Welcome back.</h1><p>Sign in with your authorized Hexa administrator account.</p>
+<form id="loginForm"><label>Email<input id="loginEmail" type="email" value="hexaknp@gmail.com" required autocomplete="username"></label><label>Password<input id="loginPassword" type="password" required autocomplete="current-password"></label><button class="button primary" type="submit">Sign in ↗</button><p id="loginMessage" class="admin-message" role="status"></p></form></section>
+<section id="dashboard" hidden>
+<div class="admin-heading"><div><span class="eyebrow">PRODUCT CONTROL CENTER</span><h1>Manage products<span>.</span></h1><p>Add products, update prices, upload media and control what appears in your shop.</p></div><button id="logoutBtn" class="button secondary">Sign out</button></div>
+<div class="admin-stats"><article><small>TOTAL PRODUCTS</small><b id="totalProducts">0</b></article><article><small>PUBLISHED</small><b id="publishedProducts">0</b></article><article><small>DRAFTS</small><b id="draftProducts">0</b></article></div>
+<div class="admin-layout"><section class="admin-panel product-editor"><div class="editor-head"><h2 id="editorTitle">Add a product</h2><button id="resetForm" type="button" class="text-link">Clear form</button></div>
+<form id="productForm">
+<input type="hidden" id="productId">
+<label>Product name *<input id="name" required maxlength="150" placeholder="e.g. HP ProBook 440 G10"></label>
+<div class="form-two"><label>Category<select id="category"><option>Laptops</option><option>Desktops & Gaming</option><option>Monitors</option><option>Networking</option><option>CCTV & Security</option><option>Accessories</option><option>Refurbished</option><option>Printers</option><option>Other</option></select></label><label>Brand<input id="brand" placeholder="HP, Dell, Lenovo..."></label></div>
+<div class="form-two"><label>Model<input id="model" placeholder="Model number"></label><label>Stock quantity<input id="stock" type="number" min="0" step="1" value="1"></label></div>
+<label>Short features (one per line)<textarea id="features" rows="4" placeholder="Core i5 12th Gen&#10;16GB RAM&#10;512GB SSD"></textarea></label>
+<label>Full description<textarea id="description" rows="4" placeholder="Detailed product description"></textarea></label>
+<label>Specifications (optional JSON)<textarea id="specifications" rows="3" placeholder='{"Processor":"Core i5","RAM":"16GB"}'></textarea></label>
+<div class="form-two"><label>MRP / Regular price (₹)<input id="regularPrice" type="number" min="0" step="0.01" value="0"></label><label>Selling price (₹) *<input id="sellingPrice" type="number" min="0.01" step="0.01" required></label></div>
+<label>Product images (multiple allowed)<input id="images" type="file" accept="image/*" multiple><small>JPG, PNG, WebP. Public product images are displayed on the website.</small></label><div id="imagePreview" class="media-preview"></div>
+<label>Product video (optional)<input id="videoFile" type="file" accept="video/mp4,video/webm,video/quicktime"><small>Or use a YouTube/Vimeo URL below. Keep videos compressed to fit your storage quota.</small></label>
+<label>Video URL<input id="videoUrl" type="url" placeholder="https://www.youtube.com/watch?v=..."></label>
+<label>Publish status<select id="status"><option value="draft">Draft (hidden from shop)</option><option value="published">Published (visible in shop)</option><option value="archived">Archived</option></select></label>
+<button class="button primary" id="saveProduct" type="submit">Save product ↗</button><p id="productMessage" class="admin-message" role="status"></p>
+</form></section>
+<section class="admin-panel product-list-panel"><div class="editor-head"><h2>Your catalogue</h2><button id="refreshProducts" class="text-link" type="button">Refresh ↻</button></div><div id="productList" class="admin-product-list"><p>Loading products…</p></div></section></div>
+</section><footer class="admin-footer">Hexa Computronics · Kanpur · Admin access only</footer></main></body></html>

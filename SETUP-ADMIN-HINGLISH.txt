@@ -1,0 +1,52 @@
+HEXA COMPUTRONICS - ADMIN PANEL SETUP
+=====================================
+
+Files:
+- admin.html / admin.js / admin.css: secure admin UI
+- supabase-config.js: public Supabase project URL + publishable/anon key
+- app.js + index.html: public catalogue reads published products from Supabase
+- Existing design assets and styles are retained.
+
+IMPORTANT:
+1. Never put Supabase service_role key or Razorpay Key Secret in browser files.
+2. Supabase anon/publishable key is intended for browser use; database RLS policies protect data.
+3. Upload admin files and updated website files to the GitHub Pages PREVIEW repository only.
+4. Do not replace production hexacomputer.in until approved.
+5. Admin URL after deployment: https://YOUR-PREVIEW-URL/admin.html
+
+STEP A - Add Supabase browser key
+1. Supabase Dashboard > Project Settings > API (or Connect).
+2. Copy Project URL and the publishable key (or legacy anon public key).
+3. Edit supabase-config.js:
+   window.HEXA_SUPABASE_URL = 'https://YOUR_PROJECT_REF.supabase.co';
+   window.HEXA_SUPABASE_ANON_KEY = 'YOUR_PUBLISHABLE_OR_ANON_KEY';
+4. The project URL is prefilled from the project setup screenshot. Confirm it in dashboard.
+5. NEVER copy secret/service_role key here.
+
+STEP B - Create Storage bucket
+The bucket must be named product-media and set to PUBLIC for public image/video delivery.
+Public means visitors can read files; uploads/updates/deletes remain restricted by RLS policies.
+Current bucket setting should be checked in Storage > product-media > Edit bucket.
+
+STEP C - Admin account
+Admin user and public.admin_users row were already created for hexaknp@gmail.com.
+The admin page checks this row before allowing product management.
+Sign in using the password set in Supabase Authentication > Users.
+
+STEP D - Upload
+Upload all files from this ZIP to the root of the GitHub Pages PREVIEW repository, replacing index.html and app.js and adding admin.html, admin.js, admin.css, supabase-config.js.
+Keep styles.css and SVG assets. Do not upload the nested ZIP file.
+Then open /admin.html and sign in.
+
+PRODUCT FIELDS
+Name, category, brand, model, features, description, specifications JSON,
+MRP, selling price, multiple images, video file or URL, stock, draft/published/archived.
+
+RAZORPAY
+The current website checkout remains demo-only in this build. Do not expose Razorpay secrets
+in HTML/JS. Next phase is a Supabase Edge Function that:
+- reads the product selling_price from the database (never trusts browser amount),
+- creates a Razorpay order using server-side Razorpay Key ID/Secret,
+- verifies the Razorpay payment signature server-side,
+- records the order.
+Do not turn on live payments until the Edge Function and test-mode checkout have been tested.

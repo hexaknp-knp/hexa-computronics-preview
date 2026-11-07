@@ -1,4 +1,4 @@
-const products=[
+let products=[
 {id:1,name:'Lenovo IdeaPad Slim 3',cat:'Laptops',price:42999,spec:'Core i5 · 16GB RAM · 512GB SSD',tag:'Popular',img:'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=700&q=82'},
 {id:2,name:'HP ProBook Business Laptop',cat:'Laptops',price:58999,spec:'Core i5 · 16GB RAM · 512GB SSD',tag:'Business pick',img:'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=700&q=82'},
 {id:3,name:'Custom Gaming Desktop',cat:'Desktops & Gaming',price:74999,spec:'Ryzen 5 · 16GB RAM · Gaming build',tag:'Performance',img:'https://images.unsplash.com/photo-1587831990711-23ca6441447b?auto=format&fit=crop&w=700&q=82'},
@@ -20,15 +20,15 @@ function renderProducts(){
  const sort=$('#sortProducts').value;
  if(sort==='low')list.sort((a,b)=>a.price-b.price);
  if(sort==='high')list.sort((a,b)=>b.price-a.price);
- $('#productGrid').innerHTML=list.map(p=>`<article class="product-card"><div class="product-image"><img loading="lazy" src="${p.img}" alt="${p.name}" onerror="this.onerror=null;this.src='technology-placeholder.svg';this.alt='Technology product placeholder'"><span class="product-tag">${p.tag}</span></div><div class="product-info"><span class="product-category">${p.cat}</span><h3>${p.name}</h3><p class="product-spec">${p.spec}</p><div class="product-bottom"><b class="product-price">${money(p.price)}</b><button class="add-button" aria-label="Add ${p.name} to bag" onclick="addToCart(${p.id})">+</button></div></div></article>`).join('')||'<p class="no-results">No matching products. Try another search or category.</p>';
+ $('#productGrid').innerHTML=list.map(p=>`<article class="product-card"><div class="product-image"><img loading="lazy" src="${p.img}" alt="${p.name}" onerror="this.onerror=null;this.src='technology-placeholder.svg';this.alt='Technology product placeholder'"><span class="product-tag">${p.tag}</span></div><div class="product-info"><span class="product-category">${p.cat}</span><h3>${p.name}</h3><p class="product-spec">${p.spec}</p><div class="product-bottom"><b class="product-price">${money(p.price)}</b><button class="add-button" aria-label="Add ${p.name} to bag" onclick="addToCart('${p.id}')">+</button></div></div></article>`).join('')||'<p class="no-results">No matching products. Try another search or category.</p>';
 }
 function setCategory(cat){activeCategory=cat;document.querySelectorAll('.filter').forEach(b=>b.classList.toggle('active',b.dataset.filter===cat));renderProducts();}
 function addToCart(id){cart[id]=(cart[id]||0)+1;renderCart();showToast('Added to your demo bag');}
 function changeQty(id,delta){cart[id]=(cart[id]||0)+delta;if(cart[id]<=0)delete cart[id];renderCart();}
 function renderCart(){
- const rows=Object.entries(cart),count=rows.reduce((s,[,q])=>s+q,0),total=rows.reduce((s,[id,q])=>s+products.find(p=>p.id===Number(id)).price*q,0);
+ const rows=Object.entries(cart),count=rows.reduce((s,[,q])=>s+q,0),total=rows.reduce((s,[id,q])=>s+products.find(p=>String(p.id)===String(id)).price*q,0);
  $('#cartCount').textContent=count;$('#drawerCount').textContent=`(${count})`;$('#cartSubtotal').textContent=money(total);
- $('#cartItems').innerHTML=rows.length?rows.map(([id,q])=>{const p=products.find(x=>x.id===Number(id));return `<div class="cart-line"><div><b>${p.name}</b><small>${money(p.price)} each</small><div class="qty-controls"><button onclick="changeQty(${id},-1)">−</button><span>${q}</span><button onclick="changeQty(${id},1)">+</button></div></div><b>${money(p.price*q)}</b></div>`}).join(''):'<p class="empty-cart">Your bag is waiting for something great.</p>';
+ $('#cartItems').innerHTML=rows.length?rows.map(([id,q])=>{const p=products.find(x=>String(x.id)===String(id));return `<div class="cart-line"><div><b>${p.name}</b><small>${money(p.price)} each</small><div class="qty-controls"><button onclick="changeQty(${id},-1)">−</button><span>${q}</span><button onclick="changeQty(${id},1)">+</button></div></div><b>${money(p.price*q)}</b></div>`}).join(''):'<p class="empty-cart">Your bag is waiting for something great.</p>';
 }
 function openCart(){$('#cartDrawer').classList.add('open');$('#overlay').classList.add('show');document.body.style.overflow='hidden';}
 function closeCart(){$('#cartDrawer').classList.remove('open');$('#overlay').classList.remove('show');document.body.style.overflow='';}
@@ -139,4 +139,21 @@ async function sendEmailEnquiry(event){
 window.sendEmailEnquiry=sendEmailEnquiry;
 document.getElementById('emailEnquiry')?.addEventListener('click',sendEmailEnquiry);
 $('#year').textContent=new Date().getFullYear();
+async function loadSupabaseProducts(){
+ try{
+  const key=window.HEXA_SUPABASE_ANON_KEY;
+  if(!window.supabase||!key||key.includes('PASTE_'))return;
+  const sb=window.supabase.createClient(window.HEXA_SUPABASE_URL,key);
+  const {data,error}=await sb.from('products').select('*').eq('status','published').order('created_at',{ascending:false});
+  if(error)throw error;
+  if(data&&data.length){
+   products=data.map(p=>({id:p.id,name:p.name,cat:p.category||'Other',price:Number(p.selling_price||0),
+    spec:(p.features||[]).join(' · ')||p.model||p.brand||'',tag:p.brand||'Available',img:(p.images||[])[0]||'technology-placeholder.svg'}));
+   renderProducts();renderCart();
+  }else{
+   products=[];renderProducts();renderCart();
+  }
+ }catch(err){console.warn('Live catalogue could not load; showing preview catalogue.',err);}
+}
+loadSupabaseProducts();
 renderProducts();renderCart();
