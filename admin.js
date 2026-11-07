@@ -21,6 +21,45 @@
    if(error)throw error; await showDashboard();
   }catch(err){say('loginMessage',err.message);}
  });
+ $('forgotPasswordBtn').addEventListener('click',()=>{
+  $('loginForm').hidden=true;$('forgotForm').hidden=false;say('recoveryMessage','');
+  $('recoveryEmail').value=$('loginEmail').value.trim()||'hexaknp@gmail.com';
+ });
+ $('backToLogin').addEventListener('click',()=>{
+  $('forgotForm').hidden=true;$('loginForm').hidden=false;say('recoveryMessage','');
+ });
+ $('forgotForm').addEventListener('submit',async e=>{
+  e.preventDefault();say('recoveryMessage','Sending recovery email…');
+  try{
+   if(!configOK())throw Error('Supabase configuration is missing.');
+   const redirectTo=window.location.origin+window.location.pathname;
+   const {error}=await client().auth.resetPasswordForEmail($('recoveryEmail').value.trim(),{redirectTo});
+   if(error)throw error;
+   say('recoveryMessage','If the email is registered, a password reset link has been sent. Check Inbox and Spam.');
+  }catch(err){say('recoveryMessage',err.message);}
+ });
+ $('newPasswordForm').addEventListener('submit',async e=>{
+  e.preventDefault();say('newPasswordMessage','Updating password…');
+  const password=$('newPassword').value,confirm=$('confirmPassword').value;
+  if(password.length<8){say('newPasswordMessage','Use at least 8 characters.');return;}
+  if(password!==confirm){say('newPasswordMessage','Passwords do not match.');return;}
+  try{
+   const {error}=await client().auth.updateUser({password});
+   if(error)throw error;
+   say('newPasswordMessage','Password updated successfully. Opening admin dashboard…');
+   $('newPasswordForm').hidden=true;
+   await showDashboard();
+  }catch(err){say('newPasswordMessage',err.message);}
+ });
+ client().auth.onAuthStateChange((event,session)=>{
+  if(event==='PASSWORD_RECOVERY'){
+   $('loginForm').hidden=true;$('forgotForm').hidden=true;$('newPasswordForm').hidden=false;
+   $('loginPanel').hidden=false;$('dashboard').hidden=true;
+   say('newPasswordMessage','Enter and confirm your new password.');
+  }else if(event==='SIGNED_IN'&&session){
+   showDashboard();
+  }
+ });
  async function showDashboard(){
   try{await requireAdmin();$('loginPanel').hidden=true;$('dashboard').hidden=false;await loadProducts();}
   catch(err){$('loginPanel').hidden=false;$('dashboard').hidden=true;say('loginMessage',err.message);}
