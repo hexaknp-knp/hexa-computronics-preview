@@ -1,4 +1,3 @@
-
 (() => {
  const $=id=>document.getElementById(id);
  const url=window.HEXA_SUPABASE_URL, key=window.HEXA_SUPABASE_ANON_KEY;
@@ -126,4 +125,23 @@
   finally{btn.disabled=false;btn.textContent='Save product ↗';}
  });
  if(configOK()){client().auth.getSession().then(({data})=>{if(data.session)showDashboard();});}
+
+ // Password Show/Hide Toggle Logic
+ function setupPasswordToggle(toggleId, inputId) {
+  const toggle = document.getElementById(toggleId);
+  const input = document.getElementById(inputId);
+  if (toggle && input) {
+   toggle.addEventListener('click', function() {
+    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+    input.setAttribute('type', type);
+    this.textContent = type === 'password' ? '👁️' : '🙈';
+   });
+  }
+ }
+ document.addEventListener("DOMContentLoaded", function() {
+  setupPasswordToggle('toggleLoginPassword', 'loginPassword');
+  setupPasswordToggle('toggleNewPassword', 'newPassword');
+  setupPasswordToggle('toggleConfirmPassword', 'confirmPassword');
+ });
+
 })();
