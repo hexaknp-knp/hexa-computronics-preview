@@ -39,7 +39,72 @@ $('#productSearch').addEventListener('input',renderProducts);$('#sortProducts').
 $('#searchJump').addEventListener('click',()=>{$('#shop').scrollIntoView({behavior:'smooth'});setTimeout(()=>$('#productSearch').focus(),450);});
 $('#cartOpen').addEventListener('click',openCart);$('#cartClose').addEventListener('click',closeCart);$('#overlay').addEventListener('click',closeCart);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCart();});
-$('#demoCheckout').addEventListener('click',()=>{if(!Object.keys(cart).length)return showToast('Your bag is empty');showToast('Demo preview only — checkout is not connected');});
+$('#demoCheckout').addEventListener('click', async () => {
+  if (!Object.keys(cart).length) return showToast('Your bag is empty');
+  
+  const btn = $('#demoCheckout');
+  const originalText = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = 'Processing...';
+  
+  try {
+    // Cart ka total amount nikalein
+    const rows = Object.entries(cart);
+    const totalAmount = rows.reduce((s, [id, q]) => s + products.find(p => String(p.id) === String(id)).price * q, 0);
+    
+    // 1. Edge Function se Secure Order ID mangwayein
+    const key = window.HEXA_SUPABASE_ANON_KEY;
+    const url = window.HEXA_SUPABASE_URL;
+    
+    const response = await fetch(`${url}/functions/v1/razorpay-order`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${key}`
+      },
+      body: JSON.stringify({ amount: totalAmount })
+    });
+    
+    const orderData = await response.json();
+    if (!response.ok) throw new Error(orderData.error || 'Failed to create order');
+    
+    // 2. Razorpay ka Payment Popup kholein
+    const options = {
+      key: window.RAZORPAY_KEY_ID, // config file se
+      amount: orderData.amount,
+      currency: orderData.currency,
+      name: 'Hexa Computronics',
+      description: 'IT Hardware & Solutions',
+      order_id: orderData.id,
+      handler: function (res) {
+        showToast('Payment successful! ID: ' + res.razorpay_payment_id);
+        // Payment ke baad cart khali karein
+        cart = {};
+        renderCart();
+        closeCart();
+      },
+      prefill: {
+        name: 'Customer Name',
+        email: 'info@hexacomputer.in',
+        contact: '9999999999'
+      },
+      theme: { color: '#2456a6' }
+    };
+    
+    const rzp = new window.Razorpay(options);
+    rzp.on('payment.failed', function (res) {
+      showToast('Payment failed: ' + res.error.description);
+    });
+    rzp.open();
+    
+  } catch (err) {
+    console.error(err);
+    showToast('Checkout error: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+  }
+});
 $('#menuToggle').addEventListener('click',()=>{
  const open=$('#mainNav').classList.toggle('open');
  $('#menuToggle').setAttribute('aria-expanded',String(open));
