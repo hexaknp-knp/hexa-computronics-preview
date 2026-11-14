@@ -20,7 +20,7 @@ function renderProducts(){
  const sort=$('#sortProducts').value;
  if(sort==='low')list.sort((a,b)=>a.price-b.price);
  if(sort==='high')list.sort((a,b)=>b.price-a.price);
- $('#productGrid').innerHTML=list.map(p=>`<article class="product-card"><div class="product-image"><img loading="lazy" src="${p.img}" alt="${p.name}" onerror="this.onerror=null;this.src='technology-placeholder.svg';this.alt='Technology product placeholder'"><span class="product-tag">${p.tag}</span></div><div class="product-info"><span class="product-category">${p.cat}</span><h3>${p.name}</h3><p class="product-spec">${p.spec}</p><div class="product-bottom"><b class="product-price">${money(p.price)}</b><button class="add-button" aria-label="Add ${p.name} to bag" onclick="addToCart('${p.id}')">+</button></div></div></article>`).join('')||'<p class="no-results">No matching products. Try another search or category.</p>';
+ $('#productGrid').innerHTML=list.map(p=>`<article class="product-card" onclick="if(!event.target.closest('.add-button')) openProductModal('${p.id}')" style="cursor:pointer;"><div class="product-image"><img loading="lazy" src="${p.img}" alt="${p.name}" onerror="this.onerror=null;this.src='technology-placeholder.svg';this.alt='Technology product placeholder'"><span class="product-tag">${p.tag}</span></div><div class="product-info"><span class="product-category">${p.cat}</span><h3>${p.name}</h3><p class="product-spec">${p.spec}</p><div class="product-bottom"><b class="product-price">${money(p.price)}</b><button class="add-button" aria-label="Add ${p.name} to bag" onclick="addToCart('${p.id}')">+</button></div></div></article>`).join('')||'<p class="no-results">No matching products. Try another search or category.</p>';
 }
 function setCategory(cat){activeCategory=cat;document.querySelectorAll('.filter').forEach(b=>b.classList.toggle('active',b.dataset.filter===cat));renderProducts();}
 function addToCart(id){cart[id]=(cart[id]||0)+1;renderCart();showToast('Added to your demo bag');}
@@ -157,3 +157,139 @@ async function loadSupabaseProducts(){
 }
 loadSupabaseProducts();
 renderProducts();renderCart();
+
+// Carousel & Modal State
+let currentProductFull = null;
+let currentImageIndex = 0;
+let productImages = [];
+
+// Extracted from YouTube/Vimeo urls
+function getEmbedUrl(url) {
+  if (!url) return null;
+  const ytMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&\n?\#]+)/);
+  if (ytMatch && ytMatch[1]) return `https://www.youtube.com/embed/${ytMatch[1]}`;
+  const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?([0-9]+)/);
+  if (vimeoMatch && vimeoMatch[1]) return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+  return url; // fallback
+}
+
+window.openProductModal = async function(id) {
+  // Find basic info first
+  const basic = products.find(p => String(p.id) === String(id));
+  if(!basic) return;
+  
+  // Reset modal state
+  currentImageIndex = 0;
+  productImages = [basic.img]; // fallback
+  let videoUrl = null;
+  let fullDesc = '';
+  let features = [];
+  let regPrice = null;
+  
+  // Try to fetch full details from Supabase if connected
+  try {
+    const key = window.HEXA_SUPABASE_ANON_KEY;
+    if(window.supabase && key && !key.includes('PASTE_')) {
+      const sb = window.supabase.createClient(window.HEXA_SUPABASE_URL, key);
+      const {data, error} = await sb.from('products').select('*').eq('id', id).maybeSingle();
+      if(!error && data) {
+         if(data.images && data.images.length > 0) productImages = data.images;
+         videoUrl = data.video_url;
+         fullDesc = data.description || '';
+         features = data.features || [];
+         regPrice = data.regular_price > data.selling_price ? data.regular_price : null;
+      }
+    }
+  } catch(e) { console.warn('Could not load full details', e); }
+
+  // Populate Modal Info
+  $('#modalCat').textContent = basic.cat;
+  $('#modalTitle').textContent = basic.name;
+  
+  // Price formatting
+  let priceHtml = money(basic.price);
+  if(regPrice) priceHtml += `<del>${money(regPrice)}</del>`;
+  $('#modalPrice').innerHTML = priceHtml;
+  
+  $('#modalDesc').textContent = fullDesc || basic.spec;
+  $('#modalFeatures').innerHTML = features.length ? features.map(f => `<li>${f}</li>`).join('') : '';
+  
+  $('#modalAddToCart').onclick = () => {
+    addToCart(basic.id);
+    closeProductModal();
+  };
+
+  // Build Carousel Thumbnails
+  const thumbsContainer = $('#modalThumbnails');
+  let thumbsHtml = '';
+  productImages.forEach((img, idx) => {
+    thumbsHtml += `<img src="${img}" class="thumb-img ${idx === 0 ? 'active' : ''}" onclick="setCarouselIndex(${idx})">`;
+  });
+  
+  // If video exists, add a video thumbnail button
+  if(videoUrl) {
+    const embedUrl = getEmbedUrl(videoUrl);
+    $('#modalVideoPlayer').src = embedUrl; // Set iframe src
+    thumbsHtml += `<div class="video-btn-thumb" onclick="showVideo()" title="Play Video">▶</div>`;
+  } else {
+    $('#modalVideoPlayer').src = ''; // Clear iframe
+  }
+  
+  thumbsContainer.innerHTML = thumbsHtml;
+  
+  // Show first image
+  setCarouselIndex(0);
+  
+  // Display Modal
+  $('#productModal').hidden = false;
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeProductModal = function() {
+  $('#productModal').hidden = true;
+  document.body.style.overflow = '';
+  $('#modalVideoPlayer').src = ''; // Stop video playing in background
+};
+
+window.setCarouselIndex = function(index) {
+  if(index < 0) index = productImages.length - 1;
+  if(index >= productImages.length) index = 0;
+  currentImageIndex = index;
+  
+  // Hide video if showing
+  $('#modalVideoWrap').hidden = true;
+  $('.carousel-main').style.display = 'flex';
+  
+  // Update main image
+  $('#modalMainImage').src = productImages[currentImageIndex];
+  
+  // Update active thumbnail
+  document.querySelectorAll('.thumb-img').forEach((el, idx) => {
+    el.classList.toggle('active', idx === currentImageIndex);
+  });
+  const vidThumb = $('.video-btn-thumb');
+  if(vidThumb) vidThumb.classList.remove('active');
+};
+
+window.showVideo = function() {
+  $('.carousel-main').style.display = 'none';
+  $('#modalVideoWrap').hidden = false;
+  
+  document.querySelectorAll('.thumb-img').forEach(el => el.classList.remove('active'));
+  $('.video-btn-thumb').classList.add('active');
+};
+
+// Event Listeners for Modal
+document.addEventListener('DOMContentLoaded', () => {
+  if($('#closeModal')) $('#closeModal').addEventListener('click', closeProductModal);
+  if($('#carouselPrev')) $('#carouselPrev').addEventListener('click', () => setCarouselIndex(currentImageIndex - 1));
+  if($('#carouselNext')) $('#carouselNext').addEventListener('click', () => setCarouselIndex(currentImageIndex + 1));
+  
+  // Close on outside click
+  const modal = document.getElementById('productModal');
+  if(modal) {
+    modal.addEventListener('click', e => {
+      if(e.target === modal) closeProductModal();
+    });
+  }
+});
