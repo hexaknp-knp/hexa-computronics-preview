@@ -10,6 +10,73 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<style>
+/* Modal & Carousel CSS */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.75); z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+}
+.modal-overlay:not([hidden]) { opacity: 1; pointer-events: auto; }
+.modal-content {
+  background: #fff; width: 100%; max-width: 960px; max-height: 90vh;
+  border-radius: 16px; position: relative; overflow-y: auto;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+}
+.modal-close {
+  position: absolute; top: 15px; right: 15px; background: #f1f5f9;
+  border: none; width: 36px; height: 36px; border-radius: 50%;
+  font-size: 24px; cursor: pointer; color: #334155; display: flex;
+  align-items: center; justify-content: center; z-index: 10; transition: background 0.2s;
+}
+.modal-close:hover { background: #e2e8f0; }
+.modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding: 40px; }
+.modal-media { display: flex; flex-direction: column; gap: 15px; }
+.carousel-main {
+  position: relative; width: 100%; background: #f8fafc; border-radius: 12px;
+  aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.carousel-main img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.carousel-btn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,0.9); border: none; width: 40px; height: 40px;
+  border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); font-size: 16px; transition: transform 0.2s;
+}
+.carousel-btn:hover { transform: translateY(-50%) scale(1.1); }
+.carousel-btn.prev { left: 15px; }
+.carousel-btn.next { right: 15px; }
+.carousel-thumbnails { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; }
+.thumb-img {
+  width: 60px; height: 60px; object-fit: cover; border-radius: 8px; cursor: pointer;
+  border: 2px solid transparent; opacity: 0.6; transition: all 0.2s;
+}
+.thumb-img.active { border-color: #2563eb; opacity: 1; }
+.modal-video-wrap { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden; margin-top: 15px;}
+.modal-video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+.modal-info { display: flex; flex-direction: column; gap: 15px; }
+.modal-cat { font-size: 12px; font-weight: 700; letter-spacing: 1px; color: #64748b; text-transform: uppercase; }
+.modal-info h2 { font-size: 32px; margin: 0; line-height: 1.2; color: #0f172a; }
+.modal-price { font-size: 28px; font-weight: 700; color: #0f172a; }
+.modal-price del { font-size: 18px; color: #94a3b8; font-weight: 400; margin-left: 10px; }
+.modal-desc { color: #475569; font-size: 15px; line-height: 1.6; }
+.modal-features { padding-left: 20px; color: #475569; font-size: 14px; margin: 0; }
+.modal-features li { margin-bottom: 8px; }
+.modal-actions { margin-top: auto; padding-top: 20px; }
+.modal-actions button { width: 100%; justify-content: center; font-size: 16px; padding: 16px; }
+.video-btn-thumb {
+  width: 60px; height: 60px; border-radius: 8px; cursor: pointer; background: #0f172a; color: white;
+  display: flex; align-items: center; justify-content: center; font-size: 24px; border: 2px solid transparent; opacity: 0.8;
+}
+.video-btn-thumb.active { border-color: #2563eb; opacity: 1; }
+
+@media(max-width: 768px) {
+  .modal-grid { grid-template-columns: 1fr; padding: 25px; gap: 25px; }
+  .modal-content { max-height: 95vh; }
+}
+</style>
 </head>
 <body>
 <div class="announcement"><span>HEXA COMPUTRONICS</span><i></i> Smart technology. Expert support. <a href="#contact">Visit our Kanpur store ↗</a></div>
@@ -96,5 +163,39 @@
 <div class="overlay" id="overlay"></div>
 <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart"><div class="drawer-head"><div><small>YOUR SELECTION</small><h3>Your bag <span id="drawerCount">(0)</span></h3></div><button id="cartClose" aria-label="Close cart">×</button></div><div class="cart-items" id="cartItems"><p class="empty-cart">Your bag is waiting for something great.</p></div><div class="drawer-foot"><div><span>Estimated subtotal</span><b id="cartSubtotal">₹0</b></div><small>Demo only. No payment or order will be created.</small><button id="demoCheckout" class="button primary">Continue <span>↗</span></button></div></aside>
 <div class="toast" id="toast" role="status"></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>\n<script src="supabase-config.js"></script>\n<script src="app.js?v=10" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="app.js?v=10" defer></script>
+
+<div id="productModal" class="modal-overlay" aria-hidden="true" hidden>
+  <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" id="closeModal" aria-label="Close details">&times;</button>
+    <div class="modal-grid">
+      <!-- Media Section -->
+      <div class="modal-media">
+        <div class="carousel-main">
+          <button class="carousel-btn prev" id="carouselPrev" aria-label="Previous image">&#10094;</button>
+          <img id="modalMainImage" src="" alt="Product view">
+          <button class="carousel-btn next" id="carouselNext" aria-label="Next image">&#10095;</button>
+        </div>
+        <div class="carousel-thumbnails" id="modalThumbnails"></div>
+        <div class="modal-video-wrap" id="modalVideoWrap" hidden>
+          <iframe id="modalVideoPlayer" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+      <!-- Info Section -->
+      <div class="modal-info">
+        <span class="modal-cat" id="modalCat"></span>
+        <h2 id="modalTitle"></h2>
+        <div class="modal-price" id="modalPrice"></div>
+        <div class="modal-badges" id="modalBadges"></div>
+        <div class="modal-desc" id="modalDesc"></div>
+        <ul class="modal-features" id="modalFeatures"></ul>
+        <div class="modal-actions">
+          <button class="button primary" id="modalAddToCart">Add to Bag <span>+</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </body></html>
