@@ -20,7 +20,22 @@ function renderProducts(){
  const sort=$('#sortProducts').value;
  if(sort==='low')list.sort((a,b)=>a.price-b.price);
  if(sort==='high')list.sort((a,b)=>b.price-a.price);
- $('#productGrid').innerHTML=list.map(p=>`<article class="product-card" onclick="if(!event.target.closest('.add-button')) openProductModal('${p.id}')" style="cursor:pointer;"><div class="product-image"><img loading="lazy" src="${p.img}" alt="${p.name}" onerror="this.onerror=null;this.src='technology-placeholder.svg';this.alt='Technology product placeholder'"><span class="product-tag">${p.tag}</span></div><div class="product-info"><span class="product-category">${p.cat}</span><h3>${p.name}</h3><p class="product-spec">${p.spec}</p><div class="product-bottom"><b class="product-price">${money(p.price)}</b><button class="add-button" aria-label="Add ${p.name} to bag" onclick="addToCart('${p.id}')">+</button></div></div></article>`).join('')||'<p class="no-results">No matching products. Try another search or category.</p>';
+ 
+ $('#productGrid').innerHTML=list.map(p=>`<article class="product-card" onclick="if(!event.target.closest('.add-button')) openProductModal('${p.id}')" style="cursor:pointer;">
+    <div class="product-image">
+      <img loading="lazy" src="${p.img}" alt="${p.name}" onerror="this.onerror=null;this.src='technology-placeholder.svg';this.alt='Technology product placeholder'">
+      <span class="product-tag">${p.tag}</span>
+    </div>
+    <div class="product-info">
+      <span class="product-category">${p.cat}</span>
+      <h3>${p.name}</h3>
+      <p class="product-spec">${p.spec}</p>
+      <div class="product-bottom">
+        <b class="product-price">${money(p.price)}</b>
+        <button class="add-button text-btn" aria-label="Add ${p.name} to cart" onclick="addToCart('${p.id}')">Add to Cart</button>
+      </div>
+    </div>
+  </article>`).join('')||'<p class="no-results">No matching products. Try another search or category.</p>';
 }
 function setCategory(cat){activeCategory=cat;document.querySelectorAll('.filter').forEach(b=>b.classList.toggle('active',b.dataset.filter===cat));renderProducts();}
 function addToCart(id){cart[id]=(cart[id]||0)+1;renderCart();showToast('Added to your demo bag');}
@@ -91,7 +106,7 @@ $('#demoCheckout').addEventListener('click', async () => {
       order_id: orderData.id,
       prefill: { name: cName, email: cEmail, contact: cPhone },
       handler: async function (res) {
-        showToast('Payment successful! Saving order...');
+        showToast('Processing your order...');
         try {
           const sb = window.supabase.createClient(window.HEXA_SUPABASE_URL, window.HEXA_SUPABASE_ANON_KEY);
           
@@ -145,7 +160,14 @@ $('#demoCheckout').addEventListener('click', async () => {
             console.error('Receipt send error:', resendErr);
           }
 
-          showToast('Order saved & emails sent!');
+          // 4. BIG SUCCESS SCREEN SHOW KAREIN
+          let successImages = Object.keys(cart).map(id => {
+            let p = products.find(x => String(x.id) === String(id));
+            return `<img src="${p.img}" alt="${p.name}" title="${p.name}">`;
+          }).join('');
+          $('#successItems').innerHTML = successImages;
+          $('#successOverlay').classList.add('show');
+          
         } catch (e) {
           console.error('Order save error:', e);
         }
@@ -169,6 +191,12 @@ $('#demoCheckout').addEventListener('click', async () => {
     btn.disabled = false; btn.innerHTML = originalText;
   }
 });
+
+// Success popup close function
+window.closeSuccess = function() {
+  $('#successOverlay').classList.remove('show');
+};
+
 $('#menuToggle').addEventListener('click',()=>{
  const open=$('#mainNav').classList.toggle('open');
  $('#menuToggle').setAttribute('aria-expanded',String(open));
