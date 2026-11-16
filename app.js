@@ -21,7 +21,7 @@ function renderProducts(){
  if(sort==='low')list.sort((a,b)=>a.price-b.price);
  if(sort==='high')list.sort((a,b)=>b.price-a.price);
  
- $('#productGrid').innerHTML=list.map(p=>`<article class="product-card" onclick="if(!event.target.closest('.add-button')) openProductModal('${p.id}')" style="cursor:pointer;">
+ $('#productGrid').innerHTML=list.map(p=>`<article class="product-card" onclick="openProductModal('${p.id}')" style="cursor:pointer;">
     <div class="product-image">
       <img loading="lazy" src="${p.img}" alt="${p.name}" onerror="this.onerror=null;this.src='technology-placeholder.svg';this.alt='Technology product placeholder'">
       <span class="product-tag">${p.tag}</span>
@@ -32,7 +32,7 @@ function renderProducts(){
       <p class="product-spec">${p.spec}</p>
       <div class="product-bottom">
         <b class="product-price">${money(p.price)}</b>
-        <button class="add-button text-btn" aria-label="Add ${p.name} to cart" onclick="addToCart('${p.id}')">Add to Cart</button>
+        <button class="add-button text-btn" aria-label="View details">View Details</button>
       </div>
     </div>
   </article>`).join('')||'<p class="no-results">No matching products. Try another search or category.</p>';
