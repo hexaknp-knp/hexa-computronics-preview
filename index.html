@@ -161,7 +161,22 @@
 <footer><div class="footer-main"><a class="brand footer-brand" href="#home"><span class="brand-mark">H<span>×</span></span><span class="brand-name">HEXA<small>COMPUTRONICS</small></span></a><p>Technology, made simple.<br>IT products and solutions for home and business.</p><div class="footer-links"><a href="#shop">Shop</a><a href="#categories">Categories</a><a href="#business">Business solutions</a><a href="#contact">Contact</a></div></div><div class="footer-bottom"><span>© <span id="year"></span> Hexa Computronics.</span><span>Kanpur, Uttar Pradesh, India</span></div></footer>
 
 <div class="overlay" id="overlay"></div>
-<aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart"><div class="drawer-head"><div><small>YOUR SELECTION</small><h3>Your bag <span id="drawerCount">(0)</span></h3></div><button id="cartClose" aria-label="Close cart">×</button></div><div class="cart-items" id="cartItems"><p class="empty-cart">Your bag is waiting for something great.</p></div><div class="drawer-foot"><div><span>Estimated subtotal</span><b id="cartSubtotal">₹0</b></div><small>Demo only. No payment or order will be created.</small><button id="demoCheckout" class="button primary">Continue <span>↗</span></button></div></aside>
+<aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart">
+      <div class="drawer-head"><div><small>YOUR SELECTION</small><h3>Your bag <span id="drawerCount">(0)</span></h3></div><button id="cartClose" aria-label="Close cart">×</button></div>
+      <div class="cart-items" id="cartItems"><p class="empty-cart">Your bag is waiting for something great.</p></div>
+      
+      <!-- Naya Checkout Form -->
+      <div id="checkoutForm" style="display:none; padding: 15px 20px; background:#f8fafc; border-top:1px solid #e2e8f0; flex-direction:column; gap:10px;">
+        <h4 style="margin:0; font-size:12px; color:#64748b; letter-spacing:1px;">DELIVERY DETAILS</h4>
+        <input type="text" id="cName" placeholder="Full Name" required style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
+        <input type="tel" id="cPhone" placeholder="Phone Number" required style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
+        <input type="email" id="cEmail" placeholder="Email Address" required style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
+        <textarea id="cAddress" placeholder="Full Delivery Address" rows="2" required style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit; resize:none;"></textarea>
+        <input type="text" id="cPin" placeholder="PIN Code" required style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
+      </div>
+      
+      <div class="drawer-foot"><div><span>Estimated subtotal</span><b id="cartSubtotal">₹0</b></div><small>Secure checkout powered by Razorpay.</small><button id="demoCheckout" class="button primary">Continue <span>↗</span></button></div>
+    </aside>
 <div class="toast" id="toast" role="status"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
