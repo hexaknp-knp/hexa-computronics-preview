@@ -109,12 +109,12 @@ $('#demoCheckout').addEventListener('click', async () => {
             items: cart
           }]);
 
-          // 2. Email Alert Send Karein
           let itemsText = Object.entries(cart).map(([id, q]) => {
             let p = products.find(x => String(x.id) === String(id));
             return `${p.name} (Qty: ${q}) = ₹${p.price * q}`;
           }).join('\n');
 
+          // 2. Admin Alert Send Karein (Web3Forms)
           await fetch('https://api.web3forms.com/submit', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -127,7 +127,25 @@ $('#demoCheckout').addEventListener('click', async () => {
             })
           });
 
-          showToast('Order saved & email alert sent!');
+          // 3. Customer ko Resend se Receipt Bhejein
+          try {
+            await fetch(`${window.HEXA_SUPABASE_URL}/functions/v1/send-receipt`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${window.HEXA_SUPABASE_ANON_KEY}` },
+              body: JSON.stringify({
+                email: cEmail,
+                name: cName,
+                amount: totalAmount,
+                orderId: res.razorpay_payment_id,
+                items: itemsText
+              })
+            });
+            console.log("Customer receipt sent!");
+          } catch (resendErr) {
+            console.error('Receipt send error:', resendErr);
+          }
+
+          showToast('Order saved & emails sent!');
         } catch (e) {
           console.error('Order save error:', e);
         }
