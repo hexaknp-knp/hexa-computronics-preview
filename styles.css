@@ -40,3 +40,16 @@ footer{background:#091e33;color:#a6b8c9;padding:35px 8% 18px}.footer-main{displa
 }
 
 .enquiry-actions{display:grid;grid-template-columns:1fr;gap:8px}.enquiry-actions .submit-button{margin-top:12px}.button.secondary{background:#fff;color:#1766a5;border:1px solid #cfe0ee}.button.secondary:hover{background:#f1f7fc}
+/* SEO & Readability Font Updates */
+html { font-size: 16px !important; }
+body { font-size: 1rem; line-height: 1.6; }
+.product-info h3 { font-size: 1.15rem; margin-bottom: 6px; }
+.product-spec { font-size: 0.95rem; }
+.product-price { font-size: 1.3rem; }
+p, .modal-desc, .modal-features, .category-card div b { font-size: 1rem; }
+.section-heading h2 { font-size: 2.5rem; }
+
+@media(max-width: 768px) {
+  html { font-size: 15px !important; }
+  .section-heading h2 { font-size: 2rem; }
+}
