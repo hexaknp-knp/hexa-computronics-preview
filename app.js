@@ -76,9 +76,26 @@ $('#demoCheckout').addEventListener('click', async () => {
       name: 'Hexa Computronics',
       description: 'IT Hardware & Solutions',
       order_id: orderData.id,
-      handler: function (res) {
-        showToast('Payment successful! ID: ' + res.razorpay_payment_id);
-        // Payment ke baad cart khali karein
+     handler: async function (res) {
+        showToast('Payment successful! Saving order...');
+        
+        // Supabase me order record insert karna
+        try {
+          const sb = window.supabase.createClient(window.HEXA_SUPABASE_URL, window.HEXA_SUPABASE_ANON_KEY);
+          await sb.from('orders').insert([{
+            razorpay_order_id: res.razorpay_order_id,
+            razorpay_payment_id: res.razorpay_payment_id,
+            customer_name: 'Online Customer',
+            customer_phone: 'Not provided',
+            amount: orderData.amount / 100, // Paise ko wapas Rupees me convert kiya
+            status: 'paid',
+            items: cart
+          }]);
+          showToast('Order saved successfully!');
+        } catch (e) {
+          console.error('Order save error:', e);
+        }
+
         cart = {};
         renderCart();
         closeCart();
