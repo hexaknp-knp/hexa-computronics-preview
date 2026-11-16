@@ -41,53 +41,68 @@ $('#cartOpen').addEventListener('click',openCart);$('#cartClose').addEventListen
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCart();});
 $('#demoCheckout').addEventListener('click', async () => {
   if (!Object.keys(cart).length) return showToast('Your bag is empty');
-  
+
+  // Form display check
+  const checkoutForm = $('#checkoutForm');
+  if (checkoutForm.style.display === 'none') {
+    checkoutForm.style.display = 'flex';
+    $('#demoCheckout').innerHTML = 'Proceed to Pay <span>↗</span>';
+    return; 
+  }
+
+  // Values nikalna
+  const cName = $('#cName').value.trim();
+  const cPhone = $('#cPhone').value.trim();
+  const cEmail = $('#cEmail').value.trim();
+  const cAddress = $('#cAddress').value.trim();
+  const cPin = $('#cPin').value.trim();
+
+  if(!cName || !cPhone || !cEmail || !cAddress || !cPin) {
+    return showToast('Please fill all delivery details');
+  }
+
   const btn = $('#demoCheckout');
   const originalText = btn.innerHTML;
   btn.disabled = true;
   btn.innerHTML = 'Processing...';
-  
+
   try {
-    // Cart ka total amount nikalein
     const rows = Object.entries(cart);
     const totalAmount = rows.reduce((s, [id, q]) => s + products.find(p => String(p.id) === String(id)).price * q, 0);
-    
-    // 1. Edge Function se Secure Order ID mangwayein
+
     const key = window.HEXA_SUPABASE_ANON_KEY;
     const url = window.HEXA_SUPABASE_URL;
-    
+
     const response = await fetch(`${url}/functions/v1/razorpay-order`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${key}`
-      },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
       body: JSON.stringify({ amount: totalAmount })
     });
     
     const orderData = await response.json();
     if (!response.ok) throw new Error(orderData.error || 'Failed to create order');
-    
-    // 2. Razorpay ka Payment Popup kholein
+
     const options = {
-      key: window.RAZORPAY_KEY_ID, // config file se
+      key: window.RAZORPAY_KEY_ID,
       amount: orderData.amount,
       currency: orderData.currency,
       name: 'Hexa Computronics',
       description: 'IT Hardware & Solutions',
       order_id: orderData.id,
-     handler: async function (res) {
+      prefill: { name: cName, email: cEmail, contact: cPhone },
+      handler: async function (res) {
         showToast('Payment successful! Saving order...');
-        
-        // Supabase me order record insert karna
         try {
           const sb = window.supabase.createClient(window.HEXA_SUPABASE_URL, window.HEXA_SUPABASE_ANON_KEY);
           await sb.from('orders').insert([{
             razorpay_order_id: res.razorpay_order_id,
             razorpay_payment_id: res.razorpay_payment_id,
-            customer_name: 'Online Customer',
-            customer_phone: 'Not provided',
-            amount: orderData.amount / 100, // Paise ko wapas Rupees me convert kiya
+            customer_name: cName,
+            customer_phone: cPhone,
+            customer_email: cEmail,
+            delivery_address: cAddress,
+            pincode: cPin,
+            amount: totalAmount,
             status: 'paid',
             items: cart
           }]);
@@ -95,31 +110,23 @@ $('#demoCheckout').addEventListener('click', async () => {
         } catch (e) {
           console.error('Order save error:', e);
         }
-
-        cart = {};
-        renderCart();
+        cart = {}; renderCart();
+        checkoutForm.style.display = 'none'; 
+        $('#cName').value=''; $('#cPhone').value=''; $('#cEmail').value=''; $('#cAddress').value=''; $('#cPin').value='';
+        $('#demoCheckout').innerHTML = 'Continue <span>↗</span>';
         closeCart();
-      },
-      prefill: {
-        name: 'Customer Name',
-        email: 'info@hexacomputer.in',
-        contact: '9999999999'
       },
       theme: { color: '#2456a6' }
     };
-    
+
     const rzp = new window.Razorpay(options);
-    rzp.on('payment.failed', function (res) {
-      showToast('Payment failed: ' + res.error.description);
-    });
+    rzp.on('payment.failed', function (res) { showToast('Payment failed: ' + res.error.description); });
     rzp.open();
     
   } catch (err) {
-    console.error(err);
-    showToast('Checkout error: ' + err.message);
+    console.error(err); showToast('Checkout error: ' + err.message);
   } finally {
-    btn.disabled = false;
-    btn.innerHTML = originalText;
+    btn.disabled = false; btn.innerHTML = originalText;
   }
 });
 $('#menuToggle').addEventListener('click',()=>{
