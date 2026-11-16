@@ -72,6 +72,27 @@
 }
 .video-btn-thumb.active { border-color: #2563eb; opacity: 1; }
 
+/* Success Screen CSS */
+.success-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(255,255,255,0.98); z-index: 3000;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.4s;
+}
+.success-overlay.show { opacity: 1; pointer-events: auto; }
+.success-content { max-width: 500px; width: 100%; }
+.success-brand { display: inline-flex; align-items: center; font-weight: 800; font-size: 24px; color: #0f172a; margin-bottom: 20px; letter-spacing: -0.5px; }
+.success-brand .brand-mark { background: #0f172a; color: #fff; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 20px;}
+.success-brand .brand-mark span { color: #3b82f6; }
+.success-content h2 { font-size: 32px; color: #0f172a; margin: 0 0 10px; }
+.success-content p { color: #64748b; margin-bottom: 25px; line-height: 1.6; }
+.success-items { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px; }
+.success-items img { width: 80px; height: 80px; object-fit: cover; border-radius: 10px; border: 1px solid #e2e8f0; }
+
+/* Overriding product card button (+ to Add to Cart) */
+.product-bottom .add-button.text-btn { width: auto; padding: 6px 14px; border-radius: 20px; font-size: 13px; border: 1px solid #cbd5e1; background: #fff; color: #0f172a; font-weight: 600; display:flex; align-items:center;}
+.product-bottom .add-button.text-btn:hover { background: #f8fafc; border-color:#94a3b8;}
+
 @media(max-width: 768px) {
   .modal-grid { grid-template-columns: 1fr; padding: 25px; gap: 25px; }
   .modal-content { max-height: 95vh; }
@@ -87,7 +108,7 @@
   <nav id="mainNav"><a href="#shop">Shop</a><a href="#categories">Categories</a><a href="#business">Business solutions</a><a href="#refurbished">Refurbished</a><a href="#contact">Contact</a></nav>
   <div class="header-actions">
     <button class="search-trigger" id="searchJump" aria-label="Search products"><span>⌕</span><small>Search</small></button>
-    <button class="cart-trigger" id="cartOpen"><span>Bag</span><b id="cartCount">0</b></button>
+    <button class="cart-trigger" id="cartOpen"><span>Cart</span><b id="cartCount">0</b></button>
   </div>
 </header>
 
@@ -162,10 +183,10 @@
 
 <div class="overlay" id="overlay"></div>
 <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart">
-      <div class="drawer-head"><div><small>YOUR SELECTION</small><h3>Your bag <span id="drawerCount">(0)</span></h3></div><button id="cartClose" aria-label="Close cart">×</button></div>
-      <div class="cart-items" id="cartItems"><p class="empty-cart">Your bag is waiting for something great.</p></div>
+      <div class="drawer-head"><div><small>YOUR SELECTION</small><h3>Your cart <span id="drawerCount">(0)</span></h3></div><button id="cartClose" aria-label="Close cart">×</button></div>
+      <div class="cart-items" id="cartItems"><p class="empty-cart">Your cart is waiting for something great.</p></div>
       
-      <!-- Naya Checkout Form -->
+      <!-- Checkout Form -->
       <div id="checkoutForm" style="display:none; padding: 15px 20px; background:#f8fafc; border-top:1px solid #e2e8f0; flex-direction:column; gap:10px;">
         <h4 style="margin:0; font-size:12px; color:#64748b; letter-spacing:1px;">DELIVERY DETAILS</h4>
         <input type="text" id="cName" placeholder="Full Name" required style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
@@ -176,12 +197,24 @@
       </div>
       
       <div class="drawer-foot"><div><span>Estimated subtotal</span><b id="cartSubtotal">₹0</b></div><small>Secure checkout powered by Razorpay.</small><button id="demoCheckout" class="button primary">Continue <span>↗</span></button></div>
-    </aside>
+</aside>
+
+<!-- Big Success Screen -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-content">
+    <div class="success-brand"><span class="brand-mark">H<span>×</span></span> HEXA</div>
+    <h2>Thank you for your order!</h2>
+    <p>Your payment was successful and the receipt has been sent to your email. We will begin processing your order shortly.</p>
+    <div class="success-items" id="successItems"></div>
+    <button class="button primary" onclick="closeSuccess()" style="width:100%; justify-content:center; padding:15px; font-size:16px;">Continue Shopping <span>↗</span></button>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script src="app.js?v=11" defer></script>
+<script src="app.js?v=12" defer></script>
 
 <div id="productModal" class="modal-overlay" aria-hidden="true" hidden>
   <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -208,10 +241,11 @@
         <div class="modal-desc" id="modalDesc"></div>
         <ul class="modal-features" id="modalFeatures"></ul>
         <div class="modal-actions">
-          <button class="button primary" id="modalAddToCart">Add to Bag <span>+</span></button>
+          <button class="button primary" id="modalAddToCart">Add to Cart <span>+</span></button>
         </div>
       </div>
     </div>
   </div>
 </div>
-</body></html>
+</body>
+</html>
