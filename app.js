@@ -94,6 +94,8 @@ $('#demoCheckout').addEventListener('click', async () => {
         showToast('Payment successful! Saving order...');
         try {
           const sb = window.supabase.createClient(window.HEXA_SUPABASE_URL, window.HEXA_SUPABASE_ANON_KEY);
+          
+          // 1. Order database me save karein
           await sb.from('orders').insert([{
             razorpay_order_id: res.razorpay_order_id,
             razorpay_payment_id: res.razorpay_payment_id,
@@ -106,10 +108,30 @@ $('#demoCheckout').addEventListener('click', async () => {
             status: 'paid',
             items: cart
           }]);
-          showToast('Order saved successfully!');
+
+          // 2. Email Alert Send Karein
+          let itemsText = Object.entries(cart).map(([id, q]) => {
+            let p = products.find(x => String(x.id) === String(id));
+            return `${p.name} (Qty: ${q}) = ₹${p.price * q}`;
+          }).join('\n');
+
+          await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+              access_key: '86a543d1-069e-4187-b2e1-f43488b49ca7',
+              subject: `🎉 New Order from ${cName} (₹${totalAmount})`,
+              from_name: 'Hexa Computronics Orders',
+              email: cEmail,
+              message: `New Order Received!\n\nCustomer Details:\nName: ${cName}\nPhone: ${cPhone}\nEmail: ${cEmail}\nAddress: ${cAddress} - ${cPin}\nPayment ID: ${res.razorpay_payment_id}\n\nItems Ordered:\n${itemsText}\n\nTotal Paid: ₹${totalAmount}`
+            })
+          });
+
+          showToast('Order saved & email alert sent!');
         } catch (e) {
           console.error('Order save error:', e);
         }
+        
         cart = {}; renderCart();
         checkoutForm.style.display = 'none'; 
         $('#cName').value=''; $('#cPhone').value=''; $('#cEmail').value=''; $('#cAddress').value=''; $('#cPin').value='';
@@ -259,126 +281,3 @@ function getEmbedUrl(url) {
   if (ytMatch && ytMatch[1]) return `https://www.youtube.com/embed/${ytMatch[1]}`;
   const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?([0-9]+)/);
   if (vimeoMatch && vimeoMatch[1]) return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
-  return url; // fallback
-}
-
-window.openProductModal = async function(id) {
-  // Find basic info first
-  const basic = products.find(p => String(p.id) === String(id));
-  if(!basic) return;
-  
-  // Reset modal state
-  currentImageIndex = 0;
-  productImages = [basic.img]; // fallback
-  let videoUrl = null;
-  let fullDesc = '';
-  let features = [];
-  let regPrice = null;
-  
-  // Try to fetch full details from Supabase if connected
-  try {
-    const key = window.HEXA_SUPABASE_ANON_KEY;
-    if(window.supabase && key && !key.includes('PASTE_')) {
-      const sb = window.supabase.createClient(window.HEXA_SUPABASE_URL, key);
-      const {data, error} = await sb.from('products').select('*').eq('id', id).maybeSingle();
-      if(!error && data) {
-         if(data.images && data.images.length > 0) productImages = data.images;
-         videoUrl = data.video_url;
-         fullDesc = data.description || '';
-         features = data.features || [];
-         regPrice = data.regular_price > data.selling_price ? data.regular_price : null;
-      }
-    }
-  } catch(e) { console.warn('Could not load full details', e); }
-
-  // Populate Modal Info
-  $('#modalCat').textContent = basic.cat;
-  $('#modalTitle').textContent = basic.name;
-  
-  // Price formatting
-  let priceHtml = money(basic.price);
-  if(regPrice) priceHtml += `<del>${money(regPrice)}</del>`;
-  $('#modalPrice').innerHTML = priceHtml;
-  
-  $('#modalDesc').textContent = fullDesc || basic.spec;
-  $('#modalFeatures').innerHTML = features.length ? features.map(f => `<li>${f}</li>`).join('') : '';
-  
-  $('#modalAddToCart').onclick = () => {
-    addToCart(basic.id);
-    closeProductModal();
-  };
-
-  // Build Carousel Thumbnails
-  const thumbsContainer = $('#modalThumbnails');
-  let thumbsHtml = '';
-  productImages.forEach((img, idx) => {
-    thumbsHtml += `<img src="${img}" class="thumb-img ${idx === 0 ? 'active' : ''}" onclick="setCarouselIndex(${idx})">`;
-  });
-  
-  // If video exists, add a video thumbnail button
-  if(videoUrl) {
-    const embedUrl = getEmbedUrl(videoUrl);
-    $('#modalVideoPlayer').src = embedUrl; // Set iframe src
-    thumbsHtml += `<div class="video-btn-thumb" onclick="showVideo()" title="Play Video">▶</div>`;
-  } else {
-    $('#modalVideoPlayer').src = ''; // Clear iframe
-  }
-  
-  thumbsContainer.innerHTML = thumbsHtml;
-  
-  // Show first image
-  setCarouselIndex(0);
-  
-  // Display Modal
-  $('#productModal').hidden = false;
-  document.body.style.overflow = 'hidden';
-};
-
-window.closeProductModal = function() {
-  $('#productModal').hidden = true;
-  document.body.style.overflow = '';
-  $('#modalVideoPlayer').src = ''; // Stop video playing in background
-};
-
-window.setCarouselIndex = function(index) {
-  if(index < 0) index = productImages.length - 1;
-  if(index >= productImages.length) index = 0;
-  currentImageIndex = index;
-  
-  // Hide video if showing
-  $('#modalVideoWrap').hidden = true;
-  $('.carousel-main').style.display = 'flex';
-  
-  // Update main image
-  $('#modalMainImage').src = productImages[currentImageIndex];
-  
-  // Update active thumbnail
-  document.querySelectorAll('.thumb-img').forEach((el, idx) => {
-    el.classList.toggle('active', idx === currentImageIndex);
-  });
-  const vidThumb = $('.video-btn-thumb');
-  if(vidThumb) vidThumb.classList.remove('active');
-};
-
-window.showVideo = function() {
-  $('.carousel-main').style.display = 'none';
-  $('#modalVideoWrap').hidden = false;
-  
-  document.querySelectorAll('.thumb-img').forEach(el => el.classList.remove('active'));
-  $('.video-btn-thumb').classList.add('active');
-};
-
-// Event Listeners for Modal
-document.addEventListener('DOMContentLoaded', () => {
-  if($('#closeModal')) $('#closeModal').addEventListener('click', closeProductModal);
-  if($('#carouselPrev')) $('#carouselPrev').addEventListener('click', () => setCarouselIndex(currentImageIndex - 1));
-  if($('#carouselNext')) $('#carouselNext').addEventListener('click', () => setCarouselIndex(currentImageIndex + 1));
-  
-  // Close on outside click
-  const modal = document.getElementById('productModal');
-  if(modal) {
-    modal.addEventListener('click', e => {
-      if(e.target === modal) closeProductModal();
-    });
-  }
-});
