@@ -1,71 +1,249 @@
-let products=[
-{id:1,name:'Lenovo IdeaPad Slim 3',cat:'Laptops',price:42999,spec:'Core i5 · 16GB RAM · 512GB SSD',tag:'Popular',img:'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=700&q=82'},
-{id:2,name:'HP ProBook Business Laptop',cat:'Laptops',price:58999,spec:'Core i5 · 16GB RAM · 512GB SSD',tag:'Business pick',img:'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=700&q=82'},
-{id:3,name:'Custom Gaming Desktop',cat:'Desktops & Gaming',price:74999,spec:'Ryzen 5 · 16GB RAM · Gaming build',tag:'Performance',img:'https://images.unsplash.com/photo-1587831990711-23ca6441447b?auto=format&fit=crop&w=700&q=82'},
-{id:4,name:'24-inch Full HD Monitor',cat:'Monitors',price:8999,spec:'IPS · 100Hz · HDMI',tag:'Everyday essential',img:'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=700&q=82'},
-{id:5,name:'Dual Band Wi-Fi Router',cat:'Networking',price:2499,spec:'Dual band · Gigabit ports',tag:'Connectivity',img:'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=700&q=82'},
-{id:6,name:'4-Channel CCTV Kit',cat:'CCTV & Security',price:12499,spec:'4 cameras · DVR bundle',tag:'Security',img:'cctv-security.svg'},
-{id:7,name:'Refurbished Business Laptop',cat:'Refurbished',price:18999,spec:'Core i5 · 8GB RAM · SSD',tag:'Value choice',img:'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=700&q=82'},
-{id:8,name:'Wireless Keyboard & Mouse',cat:'Accessories',price:1,spec:'Wireless combo · USB receiver',tag:'Essential',img:'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=700&q=82'},
-{id:9,name:'Office Desktop Computer',cat:'Desktops & Gaming',price:28999,spec:'Core i3 · 8GB RAM · 512GB SSD',tag:'Office ready',img:'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=700&q=82'},
-{id:10,name:'Gigabit Network Switch',cat:'Networking',price:1899,spec:'8-port · Gigabit Ethernet',tag:'Network essential',img:'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=700&q=82'},
-{id:11,name:'USB-C Multiport Hub',cat:'Accessories',price:1799,spec:'HDMI · USB 3.0 · PD',tag:'On the go',img:'https://images.unsplash.com/photo-1625842268584-8f3296236761?auto=format&fit=crop&w=700&q=82'},
-{id:12,name:'Refurbished Desktop PC',cat:'Refurbished',price:13999,spec:'Core i5 · 8GB RAM · SSD',tag:'Value choice',img:'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=700&q=82'}
+// ====== PRODUCT DATA ======
+const products = [
+  { id: 1, name: "HP ProBook 440 G8", price: 42500, category: "Laptops", img: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80", spec: "Core i5 11th Gen · 8GB RAM · 512GB SSD", badge: "Bestseller", desc: "A sleek and powerful laptop designed for business professionals, featuring advanced security and long battery life.", features: ["Intel Core i5-1135G7", "8GB DDR4 RAM", "512GB NVMe SSD", "14-inch FHD Display"] },
+  { id: 2, name: "Dell OptiPlex 3080", price: 34999, category: "Desktops & Gaming", img: "https://images.unsplash.com/photo-1587831990711-23ca6441447b?auto=format&fit=crop&w=800&q=80", spec: "Core i3 10th Gen · 8GB RAM · 1TB HDD", desc: "Reliable and space-saving desktop computer ideal for everyday office tasks and basic home use.", features: ["Intel Core i3-10100", "8GB DDR4 RAM", "1TB 7200RPM HDD", "Windows 10 Pro"] },
+  { id: 3, name: "LG 24-inch IPS Monitor", price: 11200, category: "Monitors", img: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=800&q=80", spec: "FHD 1080p · 75Hz · HDMI/VGA", badge: "Value Pick", desc: "Crisp and vibrant display with wide viewing angles, perfect for work and entertainment.", features: ["24-inch IPS Panel", "1920x1080 Resolution", "75Hz Refresh Rate", "AMD FreeSync"] },
+  { id: 4, name: "TP-Link Archer AX50", price: 4800, category: "Networking", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80", spec: "Wi-Fi 6 Router · AX3000 · Dual Band", desc: "Next-gen Wi-Fi 6 router providing faster speeds, greater capacity, and reduced network congestion.", features: ["Wi-Fi 6 (802.11ax)", "Up to 3000 Mbps Speed", "Intel Home Wi-Fi Chipset", "OFDMA & MU-MIMO"] },
+  { id: 5, name: "CP Plus 2MP Dome Camera", price: 1450, category: "CCTV & Security", img: "cctv-security.svg", spec: "1080p Full HD · Night Vision · Indoor", badge: "Security Essential", desc: "High-definition indoor security camera with clear night vision for 24/7 monitoring.", features: ["2 Megapixel Sensor", "1080p Full HD Video", "20m IR Night Vision", "Wide Angle Lens"] },
+  { id: 6, name: "Logitech MK295 Wireless Combo", price: 2100, category: "Accessories", img: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&q=80", spec: "SilentTouch Keyboard & Mouse", desc: "Stay focused with a quiet wireless keyboard and mouse combo featuring SilentTouch technology.", features: ["SilentTouch Technology", "Full-size Keyboard", "Compact Mouse", "2.4GHz Wireless"] },
+  { id: 7, name: "Refurbished Lenovo ThinkPad T470", price: 18500, category: "Refurbished", img: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80", spec: "Core i5 6th Gen · 8GB RAM · 256GB SSD", badge: "Great Value", desc: "Durable and reliable refurbished business laptop, fully tested and certified for smooth performance.", features: ["Intel Core i5-6300U", "8GB DDR4 RAM", "256GB SSD", "14-inch HD Display"] },
+  { id: 8, name: "WD 1TB External Hard Drive", price: 4500, category: "Accessories", img: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&q=80", spec: "USB 3.0 · Portable Storage", desc: "Compact and reliable portable storage to backup your important files and media on the go.", features: ["1TB Capacity", "USB 3.0 Interface", "Compact Design", "Windows/Mac Compatible"] },
+  { id: 9, name: "Wired Keyboard", price: 498.99, category: "Accessories", img: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&q=80", spec: "Chiclet keyboard", badge: "New", desc: "Standard wired keyboard for everyday typing.", features: ["USB Connection", "Quiet Keys", "Spill-resistant"] }
 ];
-let activeCategory='All',cart={};
-const $=s=>document.querySelector(s),money=n=>'₹'+n.toLocaleString('en-IN');
-function renderProducts(){
- const query=$('#productSearch').value.trim().toLowerCase();
- let list=products.filter(p=>(activeCategory==='All'||p.cat===activeCategory)&&(`${p.name} ${p.cat} ${p.spec}`).toLowerCase().includes(query));
- const sort=$('#sortProducts').value;
- if(sort==='low')list.sort((a,b)=>a.price-b.price);
- if(sort==='high')list.sort((a,b)=>b.price-a.price);
- 
- $('#productGrid').innerHTML=list.map(p=>`<article class="product-card" onclick="openProductModal('${p.id}')" style="cursor:pointer;">
-    <div class="product-image">
-      <img loading="lazy" src="${p.img}" alt="${p.name}" onerror="this.onerror=null;this.src='technology-placeholder.svg';this.alt='Technology product placeholder'">
-      <span class="product-tag">${p.tag}</span>
-    </div>
-    <div class="product-info">
-      <span class="product-category">${p.cat}</span>
-      <h3>${p.name}</h3>
-      <p class="product-spec">${p.spec}</p>
-      <div class="product-bottom">
-        <b class="product-price">${money(p.price)}</b>
-        <button class="add-button text-btn" aria-label="View details">View Details</button>
-      </div>
-    </div>
-  </article>`).join('')||'<p class="no-results">No matching products. Try another search or category.</p>';
-}
-function setCategory(cat){activeCategory=cat;document.querySelectorAll('.filter').forEach(b=>b.classList.toggle('active',b.dataset.filter===cat));renderProducts();}
-function addToCart(id){cart[id]=(cart[id]||0)+1;renderCart();showToast('Added to your demo bag');}
-function changeQty(id,delta){cart[id]=(cart[id]||0)+delta;if(cart[id]<=0)delete cart[id];renderCart();}
-function renderCart(){
- const rows=Object.entries(cart),count=rows.reduce((s,[,q])=>s+q,0),total=rows.reduce((s,[id,q])=>s+products.find(p=>String(p.id)===String(id)).price*q,0);
- $('#cartCount').textContent=count;$('#drawerCount').textContent=`(${count})`;$('#cartSubtotal').textContent=money(total);
- $('#cartItems').innerHTML=rows.length?rows.map(([id,q])=>{const p=products.find(x=>String(x.id)===String(id));return `<div class="cart-line"><div><b>${p.name}</b><small>${money(p.price)} each</small><div class="qty-controls"><button onclick="changeQty(${id},-1)">−</button><span>${q}</span><button onclick="changeQty(${id},1)">+</button></div></div><b>${money(p.price*q)}</b></div>`}).join(''):'<p class="empty-cart">Your bag is waiting for something great.</p>';
-}
-function openCart(){$('#cartDrawer').classList.add('open');$('#overlay').classList.add('show');document.body.style.overflow='hidden';}
-function closeCart(){$('#cartDrawer').classList.remove('open');$('#overlay').classList.remove('show');document.body.style.overflow='';}
-function showToast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove('show'),2300);}
-$('#filterRow').addEventListener('click',e=>{const b=e.target.closest('[data-filter]');if(b)setCategory(b.dataset.filter);});
-document.querySelectorAll('.category-card').forEach(a=>a.addEventListener('click',()=>setCategory(a.dataset.category)));
-$('#productSearch').addEventListener('input',renderProducts);$('#sortProducts').addEventListener('change',renderProducts);
-$('#searchJump').addEventListener('click',()=>{$('#shop').scrollIntoView({behavior:'smooth'});setTimeout(()=>$('#productSearch').focus(),450);});
-$('#cartOpen').addEventListener('click',openCart);$('#cartClose').addEventListener('click',closeCart);$('#overlay').addEventListener('click',closeCart);
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCart();});
-$('#demoCheckout').addEventListener('click', async () => {
-  if (!Object.keys(cart).length) return showToast('Your bag is empty');
 
-  // Form display check
-  const checkoutForm = $('#checkoutForm');
-  if (checkoutForm.style.display === 'none') {
-    checkoutForm.style.display = 'flex';
-    $('#demoCheckout').innerHTML = 'Proceed to Pay <span>↗</span>';
-    return; 
+// ====== UTILITY FUNCTIONS ======
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+
+function formatPrice(p) {
+  return '₹' + p.toLocaleString('en-IN', { maximumFractionDigits: 2 });
+}
+
+function showToast(msg) {
+  const t = $('#toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ====== CART LOGIC ======
+let cart = {};
+
+function updateCartCount() {
+  const c = Object.values(cart).reduce((a, b) => a + b, 0);
+  $('#cartCount').textContent = c;
+  $('#drawerCount').textContent = `(${c})`;
+}
+
+function addToCart(id) {
+  cart[id] = (cart[id] || 0) + 1;
+  updateCartCount();
+  showToast('Item added to cart');
+  renderCart();
+  $('#cartDrawer').classList.add('open');
+  $('#overlay').classList.add('show');
+}
+
+function updateQty(id, delta) {
+  if (!cart[id]) return;
+  cart[id] += delta;
+  if (cart[id] <= 0) delete cart[id];
+  updateCartCount();
+  renderCart();
+}
+
+function renderCart() {
+  const cItems = $('#cartItems');
+  if (Object.keys(cart).length === 0) {
+    cItems.innerHTML = '<p class="empty-cart">Your cart is waiting for something great.</p>';
+    $('#cartSubtotal').textContent = '₹0';
+    $('#checkoutForm').style.display = 'none';
+    $('#demoCheckout').style.display = 'none';
+    return;
+  }
+  
+  let html = '', total = 0;
+  for (const [id, qty] of Object.entries(cart)) {
+    const p = products.find(x => String(x.id) === String(id));
+    if (!p) continue;
+    total += p.price * qty;
+    html += `
+      <div class="cart-item">
+        <img src="${p.img}" alt="${p.name}">
+        <div class="cart-item-info">
+          <h4>${p.name}</h4><p>${formatPrice(p.price)} each</p>
+          <div class="qty-control">
+            <button onclick="updateQty(${p.id}, -1)">−</button>
+            <span>${qty}</span>
+            <button onclick="updateQty(${p.id}, 1)">+</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  cItems.innerHTML = html;
+  $('#cartSubtotal').textContent = formatPrice(total);
+  $('#checkoutForm').style.display = 'flex';
+  $('#demoCheckout').style.display = 'flex';
+}
+
+// ====== DRAWER & MODAL TOGGLES ======
+function closeCart() {
+  $('#cartDrawer').classList.remove('open');
+  $('#overlay').classList.remove('show');
+}
+
+$('#cartOpen').addEventListener('click', () => {
+  renderCart();
+  $('#cartDrawer').classList.add('open');
+  $('#overlay').classList.add('show');
+});
+$('#cartClose').addEventListener('click', closeCart);
+$('#overlay').addEventListener('click', () => {
+  closeCart();
+  $('#productModal').hidden = true;
+});
+
+// ====== RENDER PRODUCTS ======
+function renderProducts(filter = 'All') {
+  const grid = $('#productGrid');
+  grid.innerHTML = '';
+  
+  let filtered = filter === 'All' ? products : products.filter(p => p.category === filter);
+  
+  const sortVal = $('#sortProducts').value;
+  if (sortVal === 'low') filtered.sort((a,b) => a.price - b.price);
+  if (sortVal === 'high') filtered.sort((a,b) => b.price - a.price);
+
+  const search = $('#productSearch').value.toLowerCase();
+  if (search) {
+    filtered = filtered.filter(p => p.name.toLowerCase().includes(search) || p.category.toLowerCase().includes(search));
   }
 
-  // Values nikalna
+  if (filtered.length === 0) {
+    grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; padding:40px; color:#64748b;">No products found matching your criteria.</p>';
+    return;
+  }
+
+  filtered.forEach(p => {
+    const card = document.createElement('article');
+    card.className = 'product-card';
+    card.innerHTML = `
+      <div class="product-image" onclick="openModal(${p.id})">
+        ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
+        <img src="${p.img}" alt="${p.name}" loading="lazy">
+      </div>
+      <div class="product-info">
+        <small>${p.category}</small>
+        <h3 onclick="openModal(${p.id})">${p.name}</h3>
+        <p class="product-spec">${p.spec}</p>
+        <div class="product-bottom">
+          <span class="product-price">${formatPrice(p.price)}</span>
+          <button class="add-button text-btn" onclick="addToCart(${p.id})">Add <span>+</span></button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ====== PRODUCT MODAL ======
+let currentProductId = null;
+function openModal(id) {
+  const p = products.find(x => String(x.id) === String(id));
+  if (!p) return;
+  currentProductId = p.id;
+  
+  $('#modalMainImage').src = p.img;
+  $('#modalThumbnails').innerHTML = `<img src="${p.img}" class="thumb-img active">`;
+  $('#modalVideoWrap').hidden = true;
+  $('#modalMainImage').style.display = 'block';
+  
+  $('#modalCat').textContent = p.category;
+  $('#modalTitle').textContent = p.name;
+  $('#modalPrice').innerHTML = formatPrice(p.price);
+  $('#modalBadges').innerHTML = p.badge ? `<span class="badge" style="position:static; margin-bottom:10px; display:inline-block;">${p.badge}</span>` : '';
+  $('#modalDesc').textContent = p.desc;
+  $('#modalFeatures').innerHTML = p.features.map(f => `<li>${f}</li>`).join('');
+  
+  $('#productModal').hidden = false;
+  $('#productModal').style.opacity = '1';
+}
+
+$('#closeModal').addEventListener('click', () => { $('#productModal').hidden = true; });
+$('#modalAddToCart').addEventListener('click', () => {
+  if (currentProductId) { addToCart(currentProductId); $('#productModal').hidden = true; }
+});
+
+// ====== EVENT LISTENERS ======
+$('#productSearch').addEventListener('input', () => renderProducts($('.filter.active').dataset.filter));
+$('#sortProducts').addEventListener('change', () => renderProducts($('.filter.active').dataset.filter));
+
+$$('.filter').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    $$('.filter').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    renderProducts(e.target.dataset.filter);
+  });
+});
+
+$$('.category-card').forEach(card => {
+  card.addEventListener('click', (e) => {
+    const cat = e.currentTarget.dataset.category;
+    $$('.filter').forEach(b => {
+      b.classList.toggle('active', b.dataset.filter === cat);
+    });
+    renderProducts(cat);
+  });
+});
+
+$('#menuToggle').addEventListener('click', (e) => {
+  const nav = $('#mainNav');
+  const exp = nav.classList.toggle('active');
+  e.target.setAttribute('aria-expanded', exp);
+});
+
+$('#year').textContent = new Date().getFullYear();
+
+// ====== CONTACT FORM (WhatsApp & Web3Forms) ======
+$('#enquiryForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const f = e.target;
+  const text = `Hi Hexa Computronics,\n\nName: ${f.name.value}\nPhone: ${f.phone.value}\nLooking for: ${f.requirement.value}\nMessage: ${f.message.value}`;
+  window.open(`https://wa.me/918400702268?text=${encodeURIComponent(text)}`, '_blank');
+});
+
+$('#emailEnquiry').addEventListener('click', async () => {
+  const f = $('#enquiryForm');
+  if (!f.checkValidity()) { f.reportValidity(); return; }
+  const btn = $('#emailEnquiry');
+  btn.textContent = 'Sending...'; btn.disabled = true;
+  
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: '86a543d1-069e-4187-b2e1-f43488b49ca7',
+        subject: `New Enquiry from ${f.name.value}`,
+        from_name: 'Hexa Website',
+        name: f.name.value, phone: f.phone.value, requirement: f.requirement.value, message: f.message.value
+      })
+    });
+    if (res.ok) {
+      $('#formMessage').textContent = 'Enquiry sent successfully! We will contact you soon.';
+      $('#formMessage').style.color = 'green';
+      f.reset();
+    } else { throw new Error('Failed'); }
+  } catch (e) {
+    $('#formMessage').textContent = 'Error sending enquiry. Please try WhatsApp.';
+    $('#formMessage').style.color = 'red';
+  }
+  btn.textContent = 'Send enquiry by Email ↗'; btn.disabled = false;
+});
+
+// ====== RAZORPAY CHECKOUT LOGIC (FIXED) ======
+$('#demoCheckout').addEventListener('click', async () => {
+  const btn = $('#demoCheckout');
   const cName = $('#cName').value.trim();
   const cPhone = $('#cPhone').value.trim();
   const cEmail = $('#cEmail').value.trim();
@@ -76,10 +254,8 @@ $('#demoCheckout').addEventListener('click', async () => {
     return showToast('Please fill all delivery details');
   }
 
-  const btn = $('#demoCheckout');
   const originalText = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = 'Processing...';
+  btn.innerHTML = 'Connecting...'; btn.disabled = true;
 
   try {
     const rows = Object.entries(cart);
@@ -88,6 +264,7 @@ $('#demoCheckout').addEventListener('click', async () => {
     const key = window.HEXA_SUPABASE_ANON_KEY;
     const url = window.HEXA_SUPABASE_URL;
 
+    // Backend order creation
     const response = await fetch(`${url}/functions/v1/razorpay-order`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
@@ -97,25 +274,26 @@ $('#demoCheckout').addEventListener('click', async () => {
     const orderData = await response.json();
     if (!response.ok) throw new Error(orderData.error || 'Failed to create order');
 
+    // Phone number fix (Clean any spaces/letters)
+    const cleanPhone = cPhone.replace(/\D/g, '');
+
     const options = {
       key: window.RAZORPAY_KEY_ID,
-      amount: orderData.amount,
-      currency: orderData.currency,
       name: 'Hexa Computronics',
       description: 'IT Hardware & Solutions',
-      order_id: orderData.id,
-      prefill: { name: cName, email: cEmail, contact: cPhone },
+      order_id: orderData.id, 
+      // AMOUNT aur CURRENCY explicitly nahi bhej rahe taaki float error na aaye
+      prefill: { name: cName, email: cEmail, contact: cleanPhone },
       handler: async function (res) {
         showToast('Processing your order...');
         try {
           const sb = window.supabase.createClient(window.HEXA_SUPABASE_URL, window.HEXA_SUPABASE_ANON_KEY);
           
-          // 1. Order database me save karein
           await sb.from('orders').insert([{
             razorpay_order_id: res.razorpay_order_id,
             razorpay_payment_id: res.razorpay_payment_id,
             customer_name: cName,
-            customer_phone: cPhone,
+            customer_phone: cleanPhone,
             customer_email: cEmail,
             delivery_address: cAddress,
             pincode: cPin,
@@ -129,7 +307,6 @@ $('#demoCheckout').addEventListener('click', async () => {
             return `${p.name} (Qty: ${q}) = ₹${p.price * q}`;
           }).join('\n');
 
-          // 2. Admin Alert Send Karein (Web3Forms)
           await fetch('https://api.web3forms.com/submit', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -138,11 +315,10 @@ $('#demoCheckout').addEventListener('click', async () => {
               subject: `🎉 New Order from ${cName} (₹${totalAmount})`,
               from_name: 'Hexa Computronics Orders',
               email: cEmail,
-              message: `New Order Received!\n\nCustomer Details:\nName: ${cName}\nPhone: ${cPhone}\nEmail: ${cEmail}\nAddress: ${cAddress} - ${cPin}\nPayment ID: ${res.razorpay_payment_id}\n\nItems Ordered:\n${itemsText}\n\nTotal Paid: ₹${totalAmount}`
+              message: `New Order Received!\n\nCustomer Details:\nName: ${cName}\nPhone: ${cleanPhone}\nEmail: ${cEmail}\nAddress: ${cAddress} - ${cPin}\nPayment ID: ${res.razorpay_payment_id}\n\nItems Ordered:\n${itemsText}\n\nTotal Paid: ₹${totalAmount}`
             })
           });
 
-          // 3. Customer ko Resend se Receipt Bhejein
           try {
             await fetch(`${window.HEXA_SUPABASE_URL}/functions/v1/send-receipt`, {
               method: 'POST',
@@ -155,30 +331,23 @@ $('#demoCheckout').addEventListener('click', async () => {
                 items: itemsText
               })
             });
-            console.log("Customer receipt sent!");
-          } catch (resendErr) {
-            console.error('Receipt send error:', resendErr);
-          }
+          } catch (e) { console.error('Receipt error', e); }
 
-          // 4. BIG SUCCESS SCREEN SHOW KAREIN
           let successImages = Object.keys(cart).map(id => {
             let p = products.find(x => String(x.id) === String(id));
-            return `<img src="${p.img}" alt="${p.name}" title="${p.name}">`;
+            return `<img src="${p.img}" alt="${p.name}">`;
           }).join('');
           $('#successItems').innerHTML = successImages;
           $('#successOverlay').classList.add('show');
           
-        } catch (e) {
-          console.error('Order save error:', e);
-        }
+        } catch (e) { console.error('DB save error:', e); }
         
         cart = {}; renderCart();
-        checkoutForm.style.display = 'none'; 
+        $('#checkoutForm').style.display = 'none'; 
         $('#cName').value=''; $('#cPhone').value=''; $('#cEmail').value=''; $('#cAddress').value=''; $('#cPin').value='';
-        $('#demoCheckout').innerHTML = 'Continue <span>↗</span>';
         closeCart();
       },
-      theme: { color: '#2456a6' }
+      theme: { color: '#0f172a' }
     };
 
     const rzp = new window.Razorpay(options);
@@ -192,261 +361,6 @@ $('#demoCheckout').addEventListener('click', async () => {
   }
 });
 
-// Success popup close function
-window.closeSuccess = function() {
-  $('#successOverlay').classList.remove('show');
-};
+function closeSuccess() { $('#successOverlay').classList.remove('show'); }
 
-$('#menuToggle').addEventListener('click',()=>{
- const open=$('#mainNav').classList.toggle('open');
- $('#menuToggle').setAttribute('aria-expanded',String(open));
- $('#menuToggle').setAttribute('aria-label',open?'Close menu':'Open menu');
-});
-function closeMobileMenu(){ $('#mainNav').classList.remove('open'); $('#menuToggle').setAttribute('aria-expanded','false'); $('#menuToggle').setAttribute('aria-label','Open menu'); }
-document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',closeMobileMenu));
-window.addEventListener('resize',()=>{if(window.innerWidth>760)closeMobileMenu();});
-$('#enquiryForm').addEventListener('submit',e=>{
- e.preventDefault();
- const form=e.currentTarget;
- if(!form.reportValidity())return;
- const data=new FormData(form);
- const name=String(data.get('name')||'').trim();
- const phone=String(data.get('phone')||'').trim();
- const digits=phone.replace(/\D/g,'');
- if(digits.length<10||digits.length>13){$('#formMessage').textContent='Please enter a valid phone number (10–13 digits).';return;}
- const requirement=String(data.get('requirement')||'Product enquiry');
- const message=String(data.get('message')||'').trim();
- const text=`Hello Hexa Computronics, I would like to make an enquiry.\n\nName: ${name}\nPhone: ${phone}\nRequirement: ${requirement}\nDetails: ${message||'Not provided'}\n\nPlease contact me.`;
- const url='https://wa.me/918400702268?text='+encodeURIComponent(text);
- $('#formMessage').textContent='Opening WhatsApp with your enquiry. Review the message and press Send to submit it.';
- const opened=window.open(url,'_blank','noopener,noreferrer');
- if(!opened)window.location.href=url;
-});
-function showEnquiryStatus(message,type='info'){
- const status=document.getElementById('formMessage');
- if(!status)return;
- const palettes={
-  success:{bg:'#e8f7ed',border:'#1f9d55',color:'#14532d'},
-  error:{bg:'#fff0f0',border:'#dc2626',color:'#991b1b'},
-  info:{bg:'#eef6ff',border:'#2563eb',color:'#1e40af'}
- };
- const p=palettes[type]||palettes.info;
- status.textContent=message;
- status.style.display='block';
- status.style.width='100%';
- status.style.boxSizing='border-box';
- status.style.margin='14px 0 0';
- status.style.padding='14px 16px';
- status.style.border='1px solid '+p.border;
- status.style.borderLeft='5px solid '+p.border;
- status.style.borderRadius='10px';
- status.style.background=p.bg;
- status.style.color=p.color;
- status.style.fontSize='16px';
- status.style.fontWeight='600';
- status.style.lineHeight='1.55';
- status.style.textAlign='left';
- status.style.whiteSpace='normal';
- status.style.boxShadow='0 3px 12px rgba(0,0,0,.06)';
- status.setAttribute('role','status');
- status.setAttribute('aria-live','polite');
-}
-async function sendEmailEnquiry(event){
- if(event){event.preventDefault();event.stopPropagation();}
- const form=document.getElementById('enquiryForm');
- const button=document.getElementById('emailEnquiry');
- const status=document.getElementById('formMessage');
- if(!form||!button||!status){alert('Enquiry form is unavailable. Please refresh the page.');return;}
- if(!form.reportValidity())return;
- const data=new FormData(form);
- const name=String(data.get('name')||'').trim();
- const phone=String(data.get('phone')||'').trim();
- const digits=phone.replace(/\D/g,'');
- if(digits.length<10||digits.length>13){status.textContent='Please enter a valid phone number (10–13 digits).';return;}
- const requirement=String(data.get('requirement')||'Product enquiry');
- const message=String(data.get('message')||'').trim()||'Not provided';
- const originalText=button.textContent;
- button.disabled=true;
- button.textContent='Sending...';
- showEnquiryStatus('Sending your enquiry securely...','info');
- try{
-  const response=await fetch('https://api.web3forms.com/submit',{
-   method:'POST',
-   headers:{'Content-Type':'application/json','Accept':'application/json'},
-   body:JSON.stringify({
-    access_key:'86a543d1-069e-4187-b2e1-f43488b49ca7',
-    subject:`Website enquiry: ${requirement}`,
-    from_name:'Hexa Computronics Website',
-    name,phone,requirement,message
-   })
-  });
-  const result=await response.json();
-  if(!response.ok||result.success!==true){
-   throw new Error(result.message||'The email service could not accept this enquiry.');
-  }
-  showEnquiryStatus('✓ Enquiry sent successfully! Thank you for contacting Hexa Computronics. Our team will contact you soon.','success');
-  form.reset();
- }catch(error){
-  showEnquiryStatus('✕ Email could not be sent. Please try again or contact us on WhatsApp. '+(error.message||''),'error');
- }finally{
-  button.disabled=false;
-  button.textContent=originalText;
- }
-}
-window.sendEmailEnquiry=sendEmailEnquiry;
-document.getElementById('emailEnquiry')?.addEventListener('click',sendEmailEnquiry);
-$('#year').textContent=new Date().getFullYear();
-async function loadSupabaseProducts(){
- try{
-  const key=window.HEXA_SUPABASE_ANON_KEY;
-  if(!window.supabase||!key||key.includes('PASTE_'))return;
-  const sb=window.supabase.createClient(window.HEXA_SUPABASE_URL,key);
-  const {data,error}=await sb.from('products').select('*').eq('status','published').order('created_at',{ascending:false});
-  if(error)throw error;
-  if(data&&data.length){
-   products=data.map(p=>({id:p.id,name:p.name,cat:p.category||'Other',price:Number(p.selling_price||0),
-    spec:(p.features||[]).join(' · ')||p.model||p.brand||'',tag:p.brand||'Available',img:(p.images||[])[0]||'technology-placeholder.svg'}));
-   renderProducts();renderCart();
-  }else{
-   products=[];renderProducts();renderCart();
-  }
- }catch(err){console.warn('Live catalogue could not load; showing preview catalogue.',err);}
-}
-loadSupabaseProducts();
-renderProducts();renderCart();
-
-// Carousel & Modal State
-let currentProductFull = null;
-let currentImageIndex = 0;
-let productImages = [];
-
-// Extracted from YouTube/Vimeo urls
-function getEmbedUrl(url) {
-  if (!url) return null;
-  const ytMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&\n?\#]+)/);
-  if (ytMatch && ytMatch[1]) return `https://www.youtube.com/embed/${ytMatch[1]}`;
-  const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?([0-9]+)/);
-  if (vimeoMatch && vimeoMatch[1]) return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
-  return url; // fallback
-}
-
-window.openProductModal = async function(id) {
-  // Find basic info first
-  const basic = products.find(p => String(p.id) === String(id));
-  if(!basic) return;
-  
-  // Reset modal state
-  currentImageIndex = 0;
-  productImages = [basic.img]; // fallback
-  let videoUrl = null;
-  let fullDesc = '';
-  let features = [];
-  let regPrice = null;
-  
-  // Try to fetch full details from Supabase if connected
-  try {
-    const key = window.HEXA_SUPABASE_ANON_KEY;
-    if(window.supabase && key && !key.includes('PASTE_')) {
-      const sb = window.supabase.createClient(window.HEXA_SUPABASE_URL, key);
-      const {data, error} = await sb.from('products').select('*').eq('id', id).maybeSingle();
-      if(!error && data) {
-         if(data.images && data.images.length > 0) productImages = data.images;
-         videoUrl = data.video_url;
-         fullDesc = data.description || '';
-         features = data.features || [];
-         regPrice = data.regular_price > data.selling_price ? data.regular_price : null;
-      }
-    }
-  } catch(e) { console.warn('Could not load full details', e); }
-
-  // Populate Modal Info
-  $('#modalCat').textContent = basic.cat;
-  $('#modalTitle').textContent = basic.name;
-  
-  // Price formatting
-  let priceHtml = money(basic.price);
-  if(regPrice) priceHtml += `<del>${money(regPrice)}</del>`;
-  $('#modalPrice').innerHTML = priceHtml;
-  
-  $('#modalDesc').textContent = fullDesc || basic.spec;
-  $('#modalFeatures').innerHTML = features.length ? features.map(f => `<li>${f}</li>`).join('') : '';
-  
-  $('#modalAddToCart').onclick = () => {
-    addToCart(basic.id);
-    closeProductModal();
-  };
-
-  // Build Carousel Thumbnails
-  const thumbsContainer = $('#modalThumbnails');
-  let thumbsHtml = '';
-  productImages.forEach((img, idx) => {
-    thumbsHtml += `<img src="${img}" class="thumb-img ${idx === 0 ? 'active' : ''}" onclick="setCarouselIndex(${idx})">`;
-  });
-  
-  // If video exists, add a video thumbnail button
-  if(videoUrl) {
-    const embedUrl = getEmbedUrl(videoUrl);
-    $('#modalVideoPlayer').src = embedUrl; // Set iframe src
-    thumbsHtml += `<div class="video-btn-thumb" onclick="showVideo()" title="Play Video">▶</div>`;
-  } else {
-    $('#modalVideoPlayer').src = ''; // Clear iframe
-  }
-  
-  thumbsContainer.innerHTML = thumbsHtml;
-  
-  // Show first image
-  setCarouselIndex(0);
-  
-  // Display Modal
-  $('#productModal').hidden = false;
-  document.body.style.overflow = 'hidden';
-};
-
-window.closeProductModal = function() {
-  $('#productModal').hidden = true;
-  document.body.style.overflow = '';
-  $('#modalVideoPlayer').src = ''; // Stop video playing in background
-};
-
-window.setCarouselIndex = function(index) {
-  if(index < 0) index = productImages.length - 1;
-  if(index >= productImages.length) index = 0;
-  currentImageIndex = index;
-  
-  // Hide video if showing
-  $('#modalVideoWrap').hidden = true;
-  $('.carousel-main').style.display = 'flex';
-  
-  // Update main image
-  $('#modalMainImage').src = productImages[currentImageIndex];
-  
-  // Update active thumbnail
-  document.querySelectorAll('.thumb-img').forEach((el, idx) => {
-    el.classList.toggle('active', idx === currentImageIndex);
-  });
-  const vidThumb = $('.video-btn-thumb');
-  if(vidThumb) vidThumb.classList.remove('active');
-};
-
-window.showVideo = function() {
-  $('.carousel-main').style.display = 'none';
-  $('#modalVideoWrap').hidden = false;
-  
-  document.querySelectorAll('.thumb-img').forEach(el => el.classList.remove('active'));
-  $('.video-btn-thumb').classList.add('active');
-};
-
-// Event Listeners for Modal
-document.addEventListener('DOMContentLoaded', () => {
-  if($('#closeModal')) $('#closeModal').addEventListener('click', closeProductModal);
-  if($('#carouselPrev')) $('#carouselPrev').addEventListener('click', () => setCarouselIndex(currentImageIndex - 1));
-  if($('#carouselNext')) $('#carouselNext').addEventListener('click', () => setCarouselIndex(currentImageIndex + 1));
-  
-  // Close on outside click
-  const modal = document.getElementById('productModal');
-  if(modal) {
-    modal.addEventListener('click', e => {
-      if(e.target === modal) closeProductModal();
-    });
-  }
-});
+renderProducts();
