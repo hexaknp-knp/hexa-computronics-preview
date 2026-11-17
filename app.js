@@ -55,7 +55,7 @@ $('#searchJump').addEventListener('click',()=>{$('#shop').scrollIntoView({behavi
 $('#cartOpen').addEventListener('click',openCart);$('#cartClose').addEventListener('click',closeCart);$('#overlay').addEventListener('click',closeCart);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCart();});
 
-// RAZORPAY CHECKOUT FIX
+// RAZORPAY CHECKOUT (PURANA DIRECT METHOD BYPASS)
 $('#demoCheckout').addEventListener('click', async () => {
   if (!Object.keys(cart).length) return showToast('Your bag is empty');
 
@@ -79,40 +79,27 @@ $('#demoCheckout').addEventListener('click', async () => {
   const btn = $('#demoCheckout');
   const originalText = btn.innerHTML;
   btn.disabled = true;
-  btn.innerHTML = 'Processing...';
+  btn.innerHTML = 'Opening Razorpay...';
 
   try {
     const rows = Object.entries(cart);
     const totalAmount = Math.round(rows.reduce((s, [id, q]) => s + products.find(p => String(p.id) === String(id)).price * q, 0));
-
-    const key = window.HEXA_SUPABASE_ANON_KEY;
-    const url = window.HEXA_SUPABASE_URL;
-
-    const response = await fetch(`${url}/functions/v1/razorpay-order`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
-      body: JSON.stringify({ amount: totalAmount })
-    });
-    
-    const orderData = await response.json();
-    if (!response.ok) throw new Error(orderData.error || 'Failed to create order');
-
     const cleanPhone = cPhone.replace(/\D/g, '');
-console.log("Razorpay Order Data from Backend:", orderData);
+
+    // PURANA DIRECT METHOD USE KAR RAHE HAIN (Bina order_id ke)
     const options = {
-      key: window.RAZORPAY_KEY_ID,
+      key: window.RAZORPAY_KEY_ID, 
+      amount: totalAmount * 100, // Paise me
+      currency: "INR",
       name: 'Hexa Computronics',
       description: 'IT Hardware & Solutions',
-      order_id: orderData.id,
-      // Amount aur Currency hata diye hain error rokne ke liye
       prefill: { name: cName, email: cEmail, contact: cleanPhone },
       handler: async function (res) {
-        showToast('Processing your order...');
+        showToast('Saving your order...');
         try {
           const sb = window.supabase.createClient(window.HEXA_SUPABASE_URL, window.HEXA_SUPABASE_ANON_KEY);
           
           await sb.from('orders').insert([{
-            razorpay_order_id: res.razorpay_order_id,
             razorpay_payment_id: res.razorpay_payment_id,
             customer_name: cName,
             customer_phone: cleanPhone,
@@ -157,7 +144,8 @@ console.log("Razorpay Order Data from Backend:", orderData);
 
           let successImages = Object.keys(cart).map(id => {
             let p = products.find(x => String(x.id) === String(id));
-            return `<img src="${p.img}" alt="${p.name}">`;
+            const imgUrl = p.img || p.image_url || 'cctv-security.svg';
+            return `<img src="${imgUrl}" alt="${p.name}">`;
           }).join('');
           $('#successItems').innerHTML = successImages;
           $('#successOverlay').classList.add('show');
@@ -165,7 +153,7 @@ console.log("Razorpay Order Data from Backend:", orderData);
         } catch (e) { console.error('Order save error:', e); }
         
         cart = {}; renderCart();
-        checkoutForm.style.display = 'none'; 
+        $('#checkoutForm').style.display = 'none'; 
         $('#cName').value=''; $('#cPhone').value=''; $('#cEmail').value=''; $('#cAddress').value=''; $('#cPin').value='';
         $('#demoCheckout').innerHTML = 'Continue <span>↗</span>';
         closeCart();
