@@ -98,7 +98,7 @@ $('#demoCheckout').addEventListener('click', async () => {
     if (!response.ok) throw new Error(orderData.error || 'Failed to create order');
 
     const cleanPhone = cPhone.replace(/\D/g, '');
-
+console.log("Razorpay Order Data from Backend:", orderData);
     const options = {
       key: window.RAZORPAY_KEY_ID,
       name: 'Hexa Computronics',
