@@ -38,12 +38,12 @@ function renderProducts(){
   </article>`).join('')||'<p class="no-results">No matching products. Try another search or category.</p>';
 }
 function setCategory(cat){activeCategory=cat;document.querySelectorAll('.filter').forEach(b=>b.classList.toggle('active',b.dataset.filter===cat));renderProducts();}
-function addToCart(id){cart[id]=(cart[id]||0)+1;renderCart();showToast('Added to your demo bag');}
+function addToCart(id){cart[id]=(cart[id]||0)+1;renderCart();showToast('Added to your bag');}
 function changeQty(id,delta){cart[id]=(cart[id]||0)+delta;if(cart[id]<=0)delete cart[id];renderCart();}
 function renderCart(){
  const rows=Object.entries(cart),count=rows.reduce((s,[,q])=>s+q,0),total=rows.reduce((s,[id,q])=>s+products.find(p=>String(p.id)===String(id)).price*q,0);
  $('#cartCount').textContent=count;$('#drawerCount').textContent=`(${count})`;$('#cartSubtotal').textContent=money(total);
- $('#cartItems').innerHTML=rows.length?rows.map(([id,q])=>{const p=products.find(x=>String(x.id)===String(id));return `<div class="cart-line"><div><b>${p.name}</b><small>${money(p.price)} each</small><div class="qty-controls"><button onclick="changeQty(${id},-1)">−</button><span>${q}</span><button onclick="changeQty(${id},1)">+</button></div></div><b>${money(p.price*q)}</b></div>`}).join(''):'<p class="empty-cart">Your bag is waiting for something great.</p>';
+ $('#cartItems').innerHTML=rows.length?rows.map(([id,q])=>{const p=products.find(x=>String(x.id)===String(id));return `<div class="cart-line"><div><b>${p.name}</b><small>${money(p.price)} each</small><div class="qty-controls"><button onclick="changeQty('${id}',-1)">−</button><span>${q}</span><button onclick="changeQty('${id}',1)">+</button></div></div><b>${money(p.price*q)}</b></div>`}).join(''):'<p class="empty-cart">Your bag is waiting for something great.</p>';
 }
 function openCart(){$('#cartDrawer').classList.add('open');$('#overlay').classList.add('show');document.body.style.overflow='hidden';}
 function closeCart(){$('#cartDrawer').classList.remove('open');$('#overlay').classList.remove('show');document.body.style.overflow='';}
@@ -54,10 +54,11 @@ $('#productSearch').addEventListener('input',renderProducts);$('#sortProducts').
 $('#searchJump').addEventListener('click',()=>{$('#shop').scrollIntoView({behavior:'smooth'});setTimeout(()=>$('#productSearch').focus(),450);});
 $('#cartOpen').addEventListener('click',openCart);$('#cartClose').addEventListener('click',closeCart);$('#overlay').addEventListener('click',closeCart);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCart();});
+
+// RAZORPAY CHECKOUT FIX
 $('#demoCheckout').addEventListener('click', async () => {
   if (!Object.keys(cart).length) return showToast('Your bag is empty');
 
-  // Form display check
   const checkoutForm = $('#checkoutForm');
   if (checkoutForm.style.display === 'none') {
     checkoutForm.style.display = 'flex';
@@ -65,7 +66,6 @@ $('#demoCheckout').addEventListener('click', async () => {
     return; 
   }
 
-  // Values nikalna
   const cName = $('#cName').value.trim();
   const cPhone = $('#cPhone').value.trim();
   const cEmail = $('#cEmail').value.trim();
@@ -97,7 +97,6 @@ $('#demoCheckout').addEventListener('click', async () => {
     const orderData = await response.json();
     if (!response.ok) throw new Error(orderData.error || 'Failed to create order');
 
-    // 10-digit number cleanup
     const cleanPhone = cPhone.replace(/\D/g, '');
 
     const options = {
@@ -105,13 +104,13 @@ $('#demoCheckout').addEventListener('click', async () => {
       name: 'Hexa Computronics',
       description: 'IT Hardware & Solutions',
       order_id: orderData.id,
+      // Amount aur Currency hata diye hain error rokne ke liye
       prefill: { name: cName, email: cEmail, contact: cleanPhone },
       handler: async function (res) {
         showToast('Processing your order...');
         try {
           const sb = window.supabase.createClient(window.HEXA_SUPABASE_URL, window.HEXA_SUPABASE_ANON_KEY);
           
-          // 1. Order database me save karein
           await sb.from('orders').insert([{
             razorpay_order_id: res.razorpay_order_id,
             razorpay_payment_id: res.razorpay_payment_id,
@@ -130,7 +129,6 @@ $('#demoCheckout').addEventListener('click', async () => {
             return `${p.name} (Qty: ${q}) = ₹${p.price * q}`;
           }).join('\n');
 
-          // 2. Admin Alert Send Karein (Web3Forms)
           await fetch('https://api.web3forms.com/submit', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -143,7 +141,6 @@ $('#demoCheckout').addEventListener('click', async () => {
             })
           });
 
-          // 3. Customer ko Resend se Receipt Bhejein
           try {
             await fetch(`${window.HEXA_SUPABASE_URL}/functions/v1/send-receipt`, {
               method: 'POST',
@@ -156,25 +153,19 @@ $('#demoCheckout').addEventListener('click', async () => {
                 items: itemsText
               })
             });
-            console.log("Customer receipt sent!");
-          } catch (resendErr) {
-            console.error('Receipt send error:', resendErr);
-          }
+          } catch (e) {}
 
-          // 4. BIG SUCCESS SCREEN SHOW KAREIN
           let successImages = Object.keys(cart).map(id => {
             let p = products.find(x => String(x.id) === String(id));
-            return `<img src="${p.img}" alt="${p.name}" title="${p.name}">`;
+            return `<img src="${p.img}" alt="${p.name}">`;
           }).join('');
           $('#successItems').innerHTML = successImages;
           $('#successOverlay').classList.add('show');
           
-        } catch (e) {
-          console.error('Order save error:', e);
-        }
+        } catch (e) { console.error('Order save error:', e); }
         
         cart = {}; renderCart();
-        $('#checkoutForm').style.display = 'none'; 
+        checkoutForm.style.display = 'none'; 
         $('#cName').value=''; $('#cPhone').value=''; $('#cEmail').value=''; $('#cAddress').value=''; $('#cPin').value='';
         $('#demoCheckout').innerHTML = 'Continue <span>↗</span>';
         closeCart();
@@ -193,7 +184,6 @@ $('#demoCheckout').addEventListener('click', async () => {
   }
 });
 
-// Success popup close function
 window.closeSuccess = function() {
   $('#successOverlay').classList.remove('show');
 };
@@ -298,6 +288,142 @@ window.sendEmailEnquiry=sendEmailEnquiry;
 document.getElementById('emailEnquiry')?.addEventListener('click',sendEmailEnquiry);
 $('#year').textContent=new Date().getFullYear();
 
-// Initial Render
-renderProducts();
-renderCart();
+// LIVE ADMIN PANEL DATABASE FETCH
+async function loadSupabaseProducts(){
+ try{
+  const key=window.HEXA_SUPABASE_ANON_KEY;
+  if(!window.supabase||!key||key.includes('PASTE_'))return;
+  const sb=window.supabase.createClient(window.HEXA_SUPABASE_URL,key);
+  const {data,error}=await sb.from('products').select('*').eq('status','published').order('created_at',{ascending:false});
+  if(error)throw error;
+  if(data&&data.length){
+   products=data.map(p=>({id:p.id,name:p.name,cat:p.category||'Other',price:Number(p.selling_price||0),
+    spec:(p.features||[]).join(' · ')||p.model||p.brand||'',tag:p.brand||'Available',img:(p.images||[])[0]||'technology-placeholder.svg'}));
+   renderProducts();renderCart();
+  }else{
+   products=[];renderProducts();renderCart();
+  }
+ }catch(err){console.warn('Live catalogue could not load; showing preview catalogue.',err);}
+}
+loadSupabaseProducts();
+renderProducts();renderCart();
+
+// CAROUSEL & MODAL SCRIPT
+let currentProductFull = null;
+let currentImageIndex = 0;
+let productImages = [];
+
+function getEmbedUrl(url) {
+  if (!url) return null;
+  const ytMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&\n?\#]+)/);
+  if (ytMatch && ytMatch[1]) return `https://www.youtube.com/embed/${ytMatch[1]}`;
+  const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?([0-9]+)/);
+  if (vimeoMatch && vimeoMatch[1]) return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+  return url; 
+}
+
+window.openProductModal = async function(id) {
+  const basic = products.find(p => String(p.id) === String(id));
+  if(!basic) return;
+  
+  currentImageIndex = 0;
+  productImages = [basic.img]; 
+  let videoUrl = null;
+  let fullDesc = '';
+  let features = [];
+  let regPrice = null;
+  
+  try {
+    const key = window.HEXA_SUPABASE_ANON_KEY;
+    if(window.supabase && key && !key.includes('PASTE_')) {
+      const sb = window.supabase.createClient(window.HEXA_SUPABASE_URL, key);
+      const {data, error} = await sb.from('products').select('*').eq('id', id).maybeSingle();
+      if(!error && data) {
+         if(data.images && data.images.length > 0) productImages = data.images;
+         videoUrl = data.video_url;
+         fullDesc = data.description || '';
+         features = data.features || [];
+         regPrice = data.regular_price > data.selling_price ? data.regular_price : null;
+      }
+    }
+  } catch(e) {}
+
+  $('#modalCat').textContent = basic.cat;
+  $('#modalTitle').textContent = basic.name;
+  
+  let priceHtml = money(basic.price);
+  if(regPrice) priceHtml += `<del>${money(regPrice)}</del>`;
+  $('#modalPrice').innerHTML = priceHtml;
+  
+  $('#modalDesc').textContent = fullDesc || basic.spec;
+  $('#modalFeatures').innerHTML = features.length ? features.map(f => `<li>${f}</li>`).join('') : '';
+  
+  $('#modalAddToCart').onclick = () => {
+    addToCart(basic.id);
+    closeProductModal();
+  };
+
+  const thumbsContainer = $('#modalThumbnails');
+  let thumbsHtml = '';
+  productImages.forEach((img, idx) => {
+    thumbsHtml += `<img src="${img}" class="thumb-img ${idx === 0 ? 'active' : ''}" onclick="setCarouselIndex(${idx})">`;
+  });
+  
+  if(videoUrl) {
+    const embedUrl = getEmbedUrl(videoUrl);
+    $('#modalVideoPlayer').src = embedUrl; 
+    thumbsHtml += `<div class="video-btn-thumb" onclick="showVideo()" title="Play Video">▶</div>`;
+  } else {
+    $('#modalVideoPlayer').src = ''; 
+  }
+  
+  thumbsContainer.innerHTML = thumbsHtml;
+  setCarouselIndex(0);
+  
+  $('#productModal').hidden = false;
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeProductModal = function() {
+  $('#productModal').hidden = true;
+  document.body.style.overflow = '';
+  $('#modalVideoPlayer').src = ''; 
+};
+
+window.setCarouselIndex = function(index) {
+  if(index < 0) index = productImages.length - 1;
+  if(index >= productImages.length) index = 0;
+  currentImageIndex = index;
+  
+  $('#modalVideoWrap').hidden = true;
+  $('.carousel-main').style.display = 'flex';
+  
+  $('#modalMainImage').src = productImages[currentImageIndex];
+  
+  document.querySelectorAll('.thumb-img').forEach((el, idx) => {
+    el.classList.toggle('active', idx === currentImageIndex);
+  });
+  const vidThumb = $('.video-btn-thumb');
+  if(vidThumb) vidThumb.classList.remove('active');
+};
+
+window.showVideo = function() {
+  $('.carousel-main').style.display = 'none';
+  $('#modalVideoWrap').hidden = false;
+  
+  document.querySelectorAll('.thumb-img').forEach(el => el.classList.remove('active'));
+  $('.video-btn-thumb').classList.add('active');
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  if($('#closeModal')) $('#closeModal').addEventListener('click', closeProductModal);
+  if($('#carouselPrev')) $('#carouselPrev').addEventListener('click', () => setCarouselIndex(currentImageIndex - 1));
+  if($('#carouselNext')) $('#carouselNext').addEventListener('click', () => setCarouselIndex(currentImageIndex + 1));
+  
+  const modal = document.getElementById('productModal');
+  if(modal) {
+    modal.addEventListener('click', e => {
+      if(e.target === modal) closeProductModal();
+    });
+  }
+});
