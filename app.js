@@ -86,10 +86,9 @@ $('#demoCheckout').addEventListener('click', async () => {
     const totalAmount = Math.round(rows.reduce((s, [id, q]) => s + products.find(p => String(p.id) === String(id)).price * q, 0));
     const cleanPhone = cPhone.replace(/\D/g, '');
 
-    // PURANA DIRECT METHOD USE KAR RAHE HAIN (Bina order_id ke)
     const options = {
       key: window.RAZORPAY_KEY_ID, 
-      amount: totalAmount * 100, // Paise me
+      amount: totalAmount * 100, 
       currency: "INR",
       name: 'Hexa Computronics',
       description: 'IT Hardware & Solutions',
@@ -98,7 +97,6 @@ $('#demoCheckout').addEventListener('click', async () => {
         showToast('Saving your order...');
         try {
           const sb = window.supabase.createClient(window.HEXA_SUPABASE_URL, window.HEXA_SUPABASE_ANON_KEY);
-          
           await sb.from('orders').insert([{
             razorpay_payment_id: res.razorpay_payment_id,
             customer_name: cName,
@@ -121,7 +119,7 @@ $('#demoCheckout').addEventListener('click', async () => {
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify({
               access_key: '86a543d1-069e-4187-b2e1-f43488b49ca7',
-              subject: `🎉 New Order from ${cName} (₹${totalAmount})`,
+              subject: `🎉 New Online Order from ${cName} (₹${totalAmount})`,
               from_name: 'Hexa Computronics Orders',
               email: cEmail,
               message: `New Order Received!\n\nCustomer Details:\nName: ${cName}\nPhone: ${cleanPhone}\nEmail: ${cEmail}\nAddress: ${cAddress} - ${cPin}\nPayment ID: ${res.razorpay_payment_id}\n\nItems Ordered:\n${itemsText}\n\nTotal Paid: ₹${totalAmount}`
@@ -132,13 +130,7 @@ $('#demoCheckout').addEventListener('click', async () => {
             await fetch(`${window.HEXA_SUPABASE_URL}/functions/v1/send-receipt`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${window.HEXA_SUPABASE_ANON_KEY}` },
-              body: JSON.stringify({
-                email: cEmail,
-                name: cName,
-                amount: totalAmount,
-                orderId: res.razorpay_payment_id,
-                items: itemsText
-              })
+              body: JSON.stringify({ email: cEmail, name: cName, amount: totalAmount, orderId: res.razorpay_payment_id, items: itemsText })
             });
           } catch (e) {}
 
@@ -148,6 +140,9 @@ $('#demoCheckout').addEventListener('click', async () => {
             return `<img src="${imgUrl}" alt="${p.name}">`;
           }).join('');
           $('#successItems').innerHTML = successImages;
+          
+          $('#successOverlay').querySelector('h2').innerText = "Thank you for your order!";
+          $('#successOverlay').querySelector('p').innerText = "Your payment was successful and the receipt has been sent to your email. We will begin processing your order shortly.";
           $('#successOverlay').classList.add('show');
           
         } catch (e) { console.error('Order save error:', e); }
@@ -183,10 +178,10 @@ $('#codCheckout').addEventListener('click', async () => {
     checkoutForm.style.display = 'flex';
     $('#codCheckout').innerHTML = 'Confirm COD Order <span>✓</span>';
     
-    // Show COD terms when they click COD for the first time
+    // Nayi COD Terms Notification
     const codTerms = $('#codTermsText');
     if(codTerms) {
-       codTerms.innerText = "COD is available for local Kanpur deliveries only. Delivery charges may apply.";
+       codTerms.innerText = "All India COD Available! A fully adjustable advance of ₹500 is required to process the order. Details will be shared post-confirmation.";
        codTerms.style.display = 'block';
     }
     return; 
@@ -205,7 +200,7 @@ $('#codCheckout').addEventListener('click', async () => {
   const btn = $('#codCheckout');
   const originalText = btn.innerHTML;
   btn.disabled = true;
-  btn.innerHTML = 'Placing Order...';
+  btn.innerHTML = 'Processing...';
   $('#demoCheckout').disabled = true;
 
   try {
@@ -214,7 +209,7 @@ $('#codCheckout').addEventListener('click', async () => {
     const cleanPhone = cPhone.replace(/\D/g, '');
     const codOrderId = 'COD_' + Date.now();
 
-    showToast('Saving your COD order...');
+    showToast('Saving your COD request...');
     
     // Save to Database
     const sb = window.supabase.createClient(window.HEXA_SUPABASE_URL, window.HEXA_SUPABASE_ANON_KEY);
@@ -235,20 +230,20 @@ $('#codCheckout').addEventListener('click', async () => {
       return `${p.name} (Qty: ${q}) = ₹${p.price * q}`;
     }).join('\n');
 
-    // Admin Email Alert
+    // Admin Alert for Advance Collection
     await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
         access_key: '86a543d1-069e-4187-b2e1-f43488b49ca7',
-        subject: `📦 New COD Order from ${cName} (₹${totalAmount})`,
+        subject: `📦 Action Required: Collect ₹500 Advance for COD Order (${cName})`,
         from_name: 'Hexa Computronics Orders',
         email: cEmail,
-        message: `New COD (Cash on Delivery) Order!\n\nCustomer Details:\nName: ${cName}\nPhone: ${cleanPhone}\nEmail: ${cEmail}\nAddress: ${cAddress} - ${cPin}\nOrder ID: ${codOrderId}\n\nItems Ordered:\n${itemsText}\n\nTotal Payable at Delivery: ₹${totalAmount}`
+        message: `New COD Request Received!\n\nCustomer Details:\nName: ${cName}\nPhone: ${cleanPhone}\nEmail: ${cEmail}\nAddress: ${cAddress} - ${cPin}\nOrder ID: ${codOrderId}\n\nItems Ordered:\n${itemsText}\n\nTotal Bill: ₹${totalAmount}\n\n📌 ACTION REQUIRED: Please contact the customer on WhatsApp to collect the ₹500 advance payment to confirm and process this order.`
       })
     });
 
-    // Show Success Screen
+    // Special COD Success Screen
     let successImages = Object.keys(cart).map(id => {
       let p = products.find(x => String(x.id) === String(id));
       const imgUrl = p.img || p.image_url || 'cctv-security.svg';
@@ -256,8 +251,8 @@ $('#codCheckout').addEventListener('click', async () => {
     }).join('');
     
     $('#successItems').innerHTML = successImages;
-    $('#successOverlay').querySelector('h2').innerText = "Order Placed Successfully!";
-    $('#successOverlay').querySelector('p').innerText = "Your Cash on Delivery order has been confirmed. You can pay cash when the product arrives.";
+    $('#successOverlay').querySelector('h2').innerText = "Order Request Received!";
+    $('#successOverlay').querySelector('p').innerText = "Your COD order is pending confirmation. Our team will contact you on WhatsApp shortly for the ₹500 advance payment to dispatch your item.";
     $('#successOverlay').classList.add('show');
     
     // Clear Cart
