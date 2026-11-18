@@ -106,8 +106,6 @@ p, .modal-desc, .modal-features { font-size: 1.1rem; color: #1e293b; font-weight
 .success-overlay.show { opacity: 1; pointer-events: auto; }
 .success-content { max-width: 500px; width: 100%; }
 .success-brand { display: inline-flex; align-items: center; font-weight: 800; font-size: 24px; color: #0f172a; margin-bottom: 20px; letter-spacing: -0.5px; }
-.success-brand .brand-mark { background: #0f172a; color: #fff; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 20px;}
-.success-brand .brand-mark span { color: #3b82f6; }
 .success-content h2 { font-size: 32px; color: #0f172a; margin: 0 0 10px; }
 .success-content p { color: #64748b; margin-bottom: 25px; line-height: 1.6; }
 .success-items { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px; }
@@ -339,9 +337,19 @@ p, .modal-desc, .modal-features { font-size: 1.1rem; color: #1e293b; font-weight
         <input type="email" id="cEmail" placeholder="Email Address" required style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
         <textarea id="cAddress" placeholder="Full Delivery Address" rows="2" required style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit; resize:none;"></textarea>
         <input type="text" id="cPin" placeholder="PIN Code" required style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
+        <!-- COD Terms Placeholder (To be updated via JS based on your terms) -->
+        <p id="codTermsText" style="display:none; font-size:11px; color:#dc2626; margin:0; font-weight:600;"></p>
       </div>
       
-      <div class="drawer-foot"><div><span>Estimated subtotal</span><b id="cartSubtotal">₹0</b></div><small>Secure checkout powered by Razorpay.</small><button id="demoCheckout" class="button primary">Continue <span>↗</span></button></div>
+      <!-- Payment Buttons -->
+      <div class="drawer-foot">
+        <div><span>Estimated subtotal</span><b id="cartSubtotal">₹0</b></div>
+        <small style="margin-bottom:8px; display:block;">Select your payment method:</small>
+        <div style="display: flex; gap: 10px;">
+          <button id="demoCheckout" class="button primary" style="flex:1; padding: 12px 10px; font-size:14px;">Pay Online</button>
+          <button id="codCheckout" class="button secondary" style="flex:1; padding: 12px 10px; font-size:14px; background: #fff; color: #0f172a; border: 2px solid #cbd5e1; font-weight: 700;">COD (Cash)</button>
+        </div>
+      </div>
 </aside>
 
 <!-- Big Success Screen -->
