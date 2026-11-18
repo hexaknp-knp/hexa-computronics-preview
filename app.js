@@ -477,4 +477,44 @@ window.openProductModal = async function(id) {
 
 window.closeProductModal = function() {
   $('#productModal').hidden = true;
-  document.body.style
+  document.body.style.overflow = '';
+  $('#modalVideoPlayer').src = ''; 
+};
+
+window.setCarouselIndex = function(index) {
+  if(index < 0) index = productImages.length - 1;
+  if(index >= productImages.length) index = 0;
+  currentImageIndex = index;
+  
+  $('#modalVideoWrap').hidden = true;
+  $('.carousel-main').style.display = 'flex';
+  
+  $('#modalMainImage').src = productImages[currentImageIndex];
+  
+  document.querySelectorAll('.thumb-img').forEach((el, idx) => {
+    el.classList.toggle('active', idx === currentImageIndex);
+  });
+  const vidThumb = $('.video-btn-thumb');
+  if(vidThumb) vidThumb.classList.remove('active');
+};
+
+window.showVideo = function() {
+  $('.carousel-main').style.display = 'none';
+  $('#modalVideoWrap').hidden = false;
+  
+  document.querySelectorAll('.thumb-img').forEach(el => el.classList.remove('active'));
+  $('.video-btn-thumb').classList.add('active');
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  if($('#closeModal')) $('#closeModal').addEventListener('click', closeProductModal);
+  if($('#carouselPrev')) $('#carouselPrev').addEventListener('click', () => setCarouselIndex(currentImageIndex - 1));
+  if($('#carouselNext')) $('#carouselNext').addEventListener('click', () => setCarouselIndex(currentImageIndex + 1));
+  
+  const modal = document.getElementById('productModal');
+  if(modal) {
+    modal.addEventListener('click', e => {
+      if(e.target === modal) closeProductModal();
+    });
+  }
+});
