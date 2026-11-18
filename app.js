@@ -155,7 +155,7 @@ $('#demoCheckout').addEventListener('click', async () => {
         cart = {}; renderCart();
         $('#checkoutForm').style.display = 'none'; 
         $('#cName').value=''; $('#cPhone').value=''; $('#cEmail').value=''; $('#cAddress').value=''; $('#cPin').value='';
-        $('#demoCheckout').innerHTML = 'Continue <span>↗</span>';
+        $('#demoCheckout').innerHTML = 'Pay Online';
         closeCart();
       },
       theme: { color: '#0f172a' }
@@ -169,6 +169,109 @@ $('#demoCheckout').addEventListener('click', async () => {
     console.error(err); showToast('Checkout error: ' + err.message);
   } finally {
     btn.disabled = false; btn.innerHTML = originalText;
+  }
+});
+
+// ==========================================
+// COD (CASH ON DELIVERY) CHECKOUT LOGIC
+// ==========================================
+$('#codCheckout').addEventListener('click', async () => {
+  if (!Object.keys(cart).length) return showToast('Your bag is empty');
+
+  const checkoutForm = $('#checkoutForm');
+  if (checkoutForm.style.display === 'none') {
+    checkoutForm.style.display = 'flex';
+    $('#codCheckout').innerHTML = 'Confirm COD Order <span>✓</span>';
+    
+    // Show COD terms when they click COD for the first time
+    const codTerms = $('#codTermsText');
+    if(codTerms) {
+       codTerms.innerText = "COD is available for local Kanpur deliveries only. Delivery charges may apply.";
+       codTerms.style.display = 'block';
+    }
+    return; 
+  }
+
+  const cName = $('#cName').value.trim();
+  const cPhone = $('#cPhone').value.trim();
+  const cEmail = $('#cEmail').value.trim();
+  const cAddress = $('#cAddress').value.trim();
+  const cPin = $('#cPin').value.trim();
+
+  if(!cName || !cPhone || !cEmail || !cAddress || !cPin) {
+    return showToast('Please fill all delivery details');
+  }
+
+  const btn = $('#codCheckout');
+  const originalText = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = 'Placing Order...';
+  $('#demoCheckout').disabled = true;
+
+  try {
+    const rows = Object.entries(cart);
+    const totalAmount = Math.round(rows.reduce((s, [id, q]) => s + products.find(p => String(p.id) === String(id)).price * q, 0));
+    const cleanPhone = cPhone.replace(/\D/g, '');
+    const codOrderId = 'COD_' + Date.now();
+
+    showToast('Saving your COD order...');
+    
+    // Save to Database
+    const sb = window.supabase.createClient(window.HEXA_SUPABASE_URL, window.HEXA_SUPABASE_ANON_KEY);
+    await sb.from('orders').insert([{
+      razorpay_payment_id: codOrderId,
+      customer_name: cName,
+      customer_phone: cleanPhone,
+      customer_email: cEmail,
+      delivery_address: cAddress,
+      pincode: cPin,
+      amount: totalAmount,
+      status: 'cod_pending',
+      items: cart
+    }]);
+
+    let itemsText = Object.entries(cart).map(([id, q]) => {
+      let p = products.find(x => String(x.id) === String(id));
+      return `${p.name} (Qty: ${q}) = ₹${p.price * q}`;
+    }).join('\n');
+
+    // Admin Email Alert
+    await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: '86a543d1-069e-4187-b2e1-f43488b49ca7',
+        subject: `📦 New COD Order from ${cName} (₹${totalAmount})`,
+        from_name: 'Hexa Computronics Orders',
+        email: cEmail,
+        message: `New COD (Cash on Delivery) Order!\n\nCustomer Details:\nName: ${cName}\nPhone: ${cleanPhone}\nEmail: ${cEmail}\nAddress: ${cAddress} - ${cPin}\nOrder ID: ${codOrderId}\n\nItems Ordered:\n${itemsText}\n\nTotal Payable at Delivery: ₹${totalAmount}`
+      })
+    });
+
+    // Show Success Screen
+    let successImages = Object.keys(cart).map(id => {
+      let p = products.find(x => String(x.id) === String(id));
+      const imgUrl = p.img || p.image_url || 'cctv-security.svg';
+      return `<img src="${imgUrl}" alt="${p.name}">`;
+    }).join('');
+    
+    $('#successItems').innerHTML = successImages;
+    $('#successOverlay').querySelector('h2').innerText = "Order Placed Successfully!";
+    $('#successOverlay').querySelector('p').innerText = "Your Cash on Delivery order has been confirmed. You can pay cash when the product arrives.";
+    $('#successOverlay').classList.add('show');
+    
+    // Clear Cart
+    cart = {}; renderCart();
+    $('#checkoutForm').style.display = 'none'; 
+    $('#cName').value=''; $('#cPhone').value=''; $('#cEmail').value=''; $('#cAddress').value=''; $('#cPin').value='';
+    if($('#codTermsText')) $('#codTermsText').style.display = 'none';
+    closeCart();
+    
+  } catch (err) {
+    console.error(err); showToast('Order error: ' + err.message);
+  } finally {
+    btn.disabled = false; btn.innerHTML = 'COD (Cash)';
+    $('#demoCheckout').disabled = false;
   }
 });
 
@@ -374,44 +477,4 @@ window.openProductModal = async function(id) {
 
 window.closeProductModal = function() {
   $('#productModal').hidden = true;
-  document.body.style.overflow = '';
-  $('#modalVideoPlayer').src = ''; 
-};
-
-window.setCarouselIndex = function(index) {
-  if(index < 0) index = productImages.length - 1;
-  if(index >= productImages.length) index = 0;
-  currentImageIndex = index;
-  
-  $('#modalVideoWrap').hidden = true;
-  $('.carousel-main').style.display = 'flex';
-  
-  $('#modalMainImage').src = productImages[currentImageIndex];
-  
-  document.querySelectorAll('.thumb-img').forEach((el, idx) => {
-    el.classList.toggle('active', idx === currentImageIndex);
-  });
-  const vidThumb = $('.video-btn-thumb');
-  if(vidThumb) vidThumb.classList.remove('active');
-};
-
-window.showVideo = function() {
-  $('.carousel-main').style.display = 'none';
-  $('#modalVideoWrap').hidden = false;
-  
-  document.querySelectorAll('.thumb-img').forEach(el => el.classList.remove('active'));
-  $('.video-btn-thumb').classList.add('active');
-};
-
-document.addEventListener('DOMContentLoaded', () => {
-  if($('#closeModal')) $('#closeModal').addEventListener('click', closeProductModal);
-  if($('#carouselPrev')) $('#carouselPrev').addEventListener('click', () => setCarouselIndex(currentImageIndex - 1));
-  if($('#carouselNext')) $('#carouselNext').addEventListener('click', () => setCarouselIndex(currentImageIndex + 1));
-  
-  const modal = document.getElementById('productModal');
-  if(modal) {
-    modal.addEventListener('click', e => {
-      if(e.target === modal) closeProductModal();
-    });
-  }
-});
+  document.body.style
