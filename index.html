@@ -117,6 +117,44 @@ p, .modal-desc, .modal-features { font-size: 1.1rem; color: #1e293b; font-weight
 .product-bottom .add-button.text-btn { width: auto; padding: 6px 14px; border-radius: 20px; font-size: 13px; border: 1px solid #cbd5e1; background: #fff; color: #0f172a; font-weight: 600; display:flex; align-items:center;}
 .product-bottom .add-button.text-btn:hover { background: #f8fafc; border-color:#94a3b8;}
 
+/* Premium Promo Banner CSS */
+.promo-banner {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1200px;
+  margin: 60px auto; background: #0f172a; border-radius: 20px; padding: 60px;
+  color: #fff; position: relative; overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.4); border: 1px solid #334155;
+}
+.promo-banner::before {
+  content: ''; position: absolute; top: -50%; right: -20%; width: 100%; height: 150%;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.25) 0%, transparent 60%); pointer-events: none;
+}
+.promo-content { z-index: 1; display: flex; flex-direction: column; justify-content: center; }
+.promo-content .eyebrow { color: #fbbf24; font-weight: 800; font-size: 13px; letter-spacing: 2px; margin-bottom: 15px; display: inline-block; }
+.promo-content h2 { font-size: 2.8rem; color: #fff; margin: 0 0 15px; line-height: 1.15; font-weight: 800; }
+.promo-content h2 em { color: #a855f7; font-style: normal; }
+.promo-content p { color: #94a3b8; font-size: 1.1rem; margin-bottom: 25px; line-height: 1.6; }
+.promo-list { list-style: none; padding: 0; margin: 0 0 35px; color: #e2e8f0; font-weight: 500; font-size: 1.05rem; }
+.promo-list li { margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+.promo-list li::before { content: '✓'; color: #22c55e; font-weight: 900; font-size: 18px; }
+.promo-actions { display: flex; gap: 15px; }
+.promo-media { z-index: 1; position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); background: #000; aspect-ratio: 16/9; border: 2px solid #334155; }
+.promo-media img { width: 100%; height: 100%; object-fit: cover; }
+.promo-play-btn {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 65px; height: 65px; background: rgba(255,255,255,0.95); color: #0f172a;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 24px; cursor: pointer; transition: transform 0.2s, background 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+.promo-play-btn:hover { transform: translate(-50%, -50%) scale(1.1); background: #fff; }
+.promo-media iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+@media(max-width: 990px) {
+  .promo-banner { grid-template-columns: 1fr; padding: 40px 20px; text-align: center; margin: 40px 15px; }
+  .promo-list li { justify-content: center; }
+  .promo-actions { justify-content: center; flex-wrap: wrap; }
+  .promo-content h2 { font-size: 2.2rem; }
+}
+
 /* Logo Animation - Electric Glow & 360 Flip */
 @keyframes electricGlow {
   0% { box-shadow: 0 0 5px rgba(168, 85, 247, 0.4), 0 0 10px rgba(168, 85, 247, 0.2); }
@@ -135,7 +173,6 @@ p, .modal-desc, .modal-features { font-size: 1.1rem; color: #1e293b; font-weight
 .brand:hover img {
   transform: rotateY(360deg) !important;
 }
-
 </style>
 </head>
 <body>
@@ -187,6 +224,32 @@ p, .modal-desc, .modal-features { font-size: 1.1rem; color: #1e293b; font-weight
     <a class="category-card" data-category="Networking" href="#shop"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=85" alt="Network equipment"><span class="category-overlay"></span><div><small>04 / CONNECTIVITY</small><b>Networking</b><span>Explore range ↗</span></div></a>
     <a class="category-card" data-category="CCTV & Security" href="#shop"><img src="cctv-security.svg" alt="Security camera"><span class="category-overlay"></span><div><small>05 / PROTECTION</small><b>CCTV & Security</b><span>Explore range ↗</span></div></a>
     <a class="category-card" data-category="Accessories" href="#shop"><img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&q=85" alt="Computer accessories"><span class="category-overlay"></span><div><small>06 / ESSENTIALS</small><b>Accessories</b><span>Explore range ↗</span></div></a>
+  </div>
+</section>
+
+<!-- PREMIUM PROMO BANNER (Offers, Videos, Images) -->
+<section class="promo-banner" id="special-offer">
+  <div class="promo-content">
+    <span class="eyebrow">🔥 SPECIAL SHOWCASE</span>
+    <h2>Upgrade Your Tech<br><em>Premium Combos</em></h2>
+    <p>Enhance productivity with our exclusive Business Laptop and Networking combo. Perfect for seamless work-from-home or office setups.</p>
+    <ul class="promo-list">
+      <li>Best-in-class Laptops & Desktop Builds</li>
+      <li>Professional CCTV Setup & Installation</li>
+      <li>Free Kanpur Local Delivery</li>
+    </ul>
+    <div class="promo-actions">
+      <a class="button primary" href="#shop" style="background:#a855f7; border-color:#a855f7;">Grab Offer <span>↗</span></a>
+      <a class="button secondary" href="https://youtube.com/@hexacomptech" target="_blank" style="color:#fff; border-color:rgba(255,255,255,0.3); background: transparent;">View Channel</a>
+    </div>
+  </div>
+  <div class="promo-media">
+    <!-- Display Image -->
+    <img id="promoImg" src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=800&q=80" alt="Special Offer">
+    <!-- Play Button (Paste your YouTube Link Inside the brackets below) -->
+    <div id="promoPlayBtn" class="promo-play-btn" onclick="playPromoVideo('https://www.youtube.com/watch?v=sU1bT4FzYmI')" title="Play Video">▶</div>
+    <!-- Hidden YouTube Player -->
+    <iframe id="promoIframe" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen hidden></iframe>
   </div>
 </section>
 
@@ -306,6 +369,26 @@ p, .modal-desc, .modal-features { font-size: 1.1rem; color: #1e293b; font-weight
 <script src="supabase-config.js"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="app.js?v=12" defer></script>
+
+<!-- Script for Promo Video Player -->
+<script>
+  function playPromoVideo(videoUrl) {
+    const img = document.getElementById('promoImg');
+    const btn = document.getElementById('promoPlayBtn');
+    const iframe = document.getElementById('promoIframe');
+    
+    let embedUrl = videoUrl;
+    const ytMatch = videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&\n?\#]+)/);
+    if (ytMatch && ytMatch[1]) {
+      embedUrl = `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1`;
+    }
+    
+    img.style.display = 'none';
+    btn.style.display = 'none';
+    iframe.src = embedUrl;
+    iframe.hidden = false;
+  }
+</script>
 
 <div id="productModal" class="modal-overlay" aria-hidden="true" hidden>
   <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
