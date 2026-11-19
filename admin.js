@@ -1,7 +1,7 @@
 (() => {
  const $=id=>document.getElementById(id);
  const url=window.HEXA_SUPABASE_URL, key=window.HEXA_SUPABASE_ANON_KEY;
- let sb=null, currentProducts=[], existingImages=[];
+ let sb=null, currentProducts=[], existingImages=[], selectedFiles=[];
  const say=(id,msg)=>$(id).textContent=msg;
  function configOK(){return url&&key&&!key.includes('PASTE_');}
  function client(){if(!sb){if(!configOK())throw Error('Supabase publishable/anon key is not configured in supabase-config.js');sb=window.supabase.createClient(url,key);}return sb;}
@@ -73,6 +73,38 @@
   $('productList').innerHTML=currentProducts.map(x=>`<article class="admin-product"><img src="${esc((x.images||[])[0]||'technology-placeholder.svg')}" alt=""><div><h3>${esc(x.name)}</h3><p>₹${Number(x.selling_price).toLocaleString('en-IN')} · ${esc(x.category||'Other')} · <span class="status-pill">${esc(x.status)}</span></p><div class="admin-product-actions"><button data-edit="${x.id}">Edit</button><button class="delete" data-delete="${x.id}">Delete</button></div></div></article>`).join('')||'<p>No products yet. Add your first product.</p>';
  }
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+ // Render Image Previews with Individual Remove (×) Buttons
+ function renderImagePreviews(){
+  const wrap=$('imagePreview');
+  const existingHtml=existingImages.map((src,i)=>`
+   <div style="position:relative;display:inline-block;margin:6px;">
+    <img src="${esc(src)}" alt="Product image" style="width:76px;height:76px;object-fit:cover;border-radius:8px;border:1px solid #cbd5e1;display:block;">
+    <button type="button" data-remove-existing="${i}" title="Remove image" style="position:absolute;top:-7px;right:-7px;width:22px;height:22px;border-radius:50%;border:none;background:#dc2626;color:#fff;font-size:14px;font-weight:700;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.25);">×</button>
+   </div>`).join('');
+  const newHtml=selectedFiles.map((file,i)=>{
+   const blobUrl=URL.createObjectURL(file);
+   return `
+   <div style="position:relative;display:inline-block;margin:6px;">
+    <img src="${blobUrl}" alt="${esc(file.name)}" style="width:76px;height:76px;object-fit:cover;border-radius:8px;border:2px solid #2563eb;display:block;">
+    <button type="button" data-remove-new="${i}" title="Remove image" style="position:absolute;top:-7px;right:-7px;width:22px;height:22px;border-radius:50%;border:none;background:#dc2626;color:#fff;font-size:14px;font-weight:700;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.25);">×</button>
+   </div>`;
+  }).join('');
+  wrap.innerHTML=existingHtml+newHtml;
+ }
+
+ $('imagePreview').addEventListener('click',e=>{
+  const remExisting=e.target.closest('[data-remove-existing]');
+  const remNew=e.target.closest('[data-remove-new]');
+  if(remExisting){
+   existingImages.splice(Number(remExisting.dataset.removeExisting),1);
+   renderImagePreviews();
+  }else if(remNew){
+   selectedFiles.splice(Number(remNew.dataset.removeNew),1);
+   renderImagePreviews();
+  }
+ });
+
  $('productList').addEventListener('click',async e=>{
   const edit=e.target.closest('[data-edit]'),del=e.target.closest('[data-delete]');
   if(edit){const x=currentProducts.find(p=>p.id===edit.dataset.edit);if(x)fillForm(x);}
@@ -82,11 +114,14 @@
   $('productId').value=x.id;$('name').value=x.name||'';$('category').value=x.category||'Other';$('brand').value=x.brand||'';$('model').value=x.model||'';
   $('stock').value=x.stock_quantity??0;$('features').value=(x.features||[]).join('\n');$('description').value=x.description||'';
   $('specifications').value=JSON.stringify(x.specifications||{},null,2);$('regularPrice').value=x.regular_price??0;$('sellingPrice').value=x.selling_price??'';
-  $('videoUrl').value=x.video_url||'';$('status').value=x.status||'draft';existingImages=x.images||[];
-  $('imagePreview').innerHTML=existingImages.map(src=>`<img src="${esc(src)}" alt="Existing product image">`).join('');
+  $('videoUrl').value=x.video_url||'';$('status').value=x.status||'draft';
+  existingImages=[...(x.images||[])];
+  selectedFiles=[];
+  $('images').value='';
+  renderImagePreviews();
   $('editorTitle').textContent='Edit product';window.scrollTo({top:0,behavior:'smooth'});
  }
- function resetForm(){ $('productForm').reset();$('productId').value='';$('stock').value=1;$('regularPrice').value=0;$('status').value='draft';existingImages=[];$('imagePreview').innerHTML='';$('editorTitle').textContent='Add a product';say('productMessage','');}
+ function resetForm(){ $('productForm').reset();$('productId').value='';$('stock').value=1;$('regularPrice').value=0;$('status').value='draft';existingImages=[];selectedFiles=[];$('imagePreview').innerHTML='';$('editorTitle').textContent='Add a product';say('productMessage','');}
  $('resetForm').addEventListener('click',resetForm);$('refreshProducts').addEventListener('click',()=>loadProducts().catch(e=>say('productMessage',e.message)));
  async function uploadFiles(files){
   const urls=[];
@@ -100,12 +135,21 @@
   }
   return urls;
  }
- $('images').addEventListener('change',()=>{$('imagePreview').innerHTML=Array.from($('images').files||[]).map(f=>`<span>${esc(f.name)}</span>`).join(' ')+(existingImages.length?`<small>${existingImages.length} existing image(s) retained until save.</small>`:'');});
+ $('images').addEventListener('change',()=>{
+  const picked=Array.from($('images').files||[]);
+  if(picked.length){
+   selectedFiles.push(...picked);
+   $('images').value='';
+   renderImagePreviews();
+  }
+ });
  $('productForm').addEventListener('submit',async e=>{
   e.preventDefault();const btn=$('saveProduct');btn.disabled=true;btn.textContent='Saving…';say('productMessage','Saving product…');
   try{
    await requireAdmin();
-   let images=[...existingImages];const newImages=await uploadFiles(Array.from($('images').files||[]));images.push(...newImages);
+   let images=[...existingImages];
+   const newImages=await uploadFiles(selectedFiles);
+   images.push(...newImages);
    let videoUrl=$('videoUrl').value.trim();
    const video=$('videoFile').files[0];
    if(video){const [uploaded]=await uploadFiles([video]);videoUrl=uploaded;}
