@@ -70,9 +70,24 @@
   $('totalProducts').textContent=currentProducts.length;
   $('publishedProducts').textContent=currentProducts.filter(x=>x.status==='published').length;
   $('draftProducts').textContent=currentProducts.filter(x=>x.status==='draft').length;
-  $('productList').innerHTML=currentProducts.map(x=>`<article class="admin-product"><img src="${esc((x.images||[])[0]||'technology-placeholder.svg')}" alt=""><div><h3>${esc(x.name)}</h3><p>₹${Number(x.selling_price).toLocaleString('en-IN')} · ${esc(x.category||'Other')} · <span class="status-pill">${esc(x.status)}</span></p><div class="admin-product-actions"><button data-edit="${x.id}">Edit</button><button class="delete" data-delete="${x.id}">Delete</button></div></div></article>`).join('')||'<p>No products yet. Add your first product.</p>';
+  $('productList').innerHTML=currentProducts.map(x=>{
+   const shipLabel=x.free_shipping?'Free Shipping':(Number(x.shipping_charge)>0?`+₹${Number(x.shipping_charge)} Ship`:'Std Ship');
+   return `<article class="admin-product"><img src="${esc((x.images||[])[0]||'technology-placeholder.svg')}" alt=""><div><h3>${esc(x.name)}</h3><p>₹${Number(x.selling_price).toLocaleString('en-IN')} · ${esc(shipLabel)} · ${esc(x.category||'Other')} · <span class="status-pill">${esc(x.status)}</span></p><div class="admin-product-actions"><button data-edit="${x.id}">Edit</button><button class="delete" data-delete="${x.id}">Delete</button></div></div></article>`;
+  }).join('')||'<p>No products yet. Add your first product.</p>';
  }
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+ // Toggle Shipping Charge Input when Free Shipping is checked
+ if($('freeShipping')){
+  $('freeShipping').addEventListener('change',()=>{
+   if($('freeShipping').checked){
+    $('shippingCharge').value=0;
+    $('shippingCharge').disabled=true;
+   }else{
+    $('shippingCharge').disabled=false;
+   }
+  });
+ }
 
  // Render Image Previews with Individual Remove (×) Buttons
  function renderImagePreviews(){
@@ -114,6 +129,11 @@
   $('productId').value=x.id;$('name').value=x.name||'';$('category').value=x.category||'Other';$('brand').value=x.brand||'';$('model').value=x.model||'';
   $('stock').value=x.stock_quantity??0;$('features').value=(x.features||[]).join('\n');$('description').value=x.description||'';
   $('specifications').value=JSON.stringify(x.specifications||{},null,2);$('regularPrice').value=x.regular_price??0;$('sellingPrice').value=x.selling_price??'';
+  if($('freeShipping')){
+   $('freeShipping').checked=Boolean(x.free_shipping);
+   $('shippingCharge').value=x.free_shipping?0:(x.shipping_charge??0);
+   $('shippingCharge').disabled=Boolean(x.free_shipping);
+  }
   $('videoUrl').value=x.video_url||'';$('status').value=x.status||'draft';
   existingImages=[...(x.images||[])];
   selectedFiles=[];
@@ -121,7 +141,11 @@
   renderImagePreviews();
   $('editorTitle').textContent='Edit product';window.scrollTo({top:0,behavior:'smooth'});
  }
- function resetForm(){ $('productForm').reset();$('productId').value='';$('stock').value=1;$('regularPrice').value=0;$('status').value='draft';existingImages=[];selectedFiles=[];$('imagePreview').innerHTML='';$('editorTitle').textContent='Add a product';say('productMessage','');}
+ function resetForm(){
+  $('productForm').reset();$('productId').value='';$('stock').value=1;$('regularPrice').value=0;$('status').value='draft';
+  if($('freeShipping')){$('shippingCharge').value=0;$('freeShipping').checked=false;$('shippingCharge').disabled=false;}
+  existingImages=[];selectedFiles=[];$('imagePreview').innerHTML='';$('editorTitle').textContent='Add a product';say('productMessage','');
+ }
  $('resetForm').addEventListener('click',resetForm);$('refreshProducts').addEventListener('click',()=>loadProducts().catch(e=>say('productMessage',e.message)));
  async function uploadFiles(files){
   const urls=[];
@@ -155,10 +179,13 @@
    if(video){const [uploaded]=await uploadFiles([video]);videoUrl=uploaded;}
    let specs={};const raw=$('specifications').value.trim();if(raw){specs=JSON.parse(raw);if(!specs||Array.isArray(specs)||typeof specs!=='object')throw Error('Specifications must be a JSON object.');}
    const name=$('name').value.trim();
+   const isFreeShip=$('freeShipping')?$('freeShipping').checked:false;
+   const shipAmt=$('shippingCharge')?Number($('shippingCharge').value||0):0;
    const payload={name,slug:name.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'-'+Math.random().toString(36).slice(2,7),
     category:$('category').value,brand:$('brand').value.trim(),model:$('model').value.trim(),description:$('description').value.trim(),
     features:$('features').value.split('\n').map(s=>s.trim()).filter(Boolean),specifications:specs,
     regular_price:Number($('regularPrice').value||0),selling_price:Number($('sellingPrice').value),
+    shipping_charge:isFreeShip?0:shipAmt,free_shipping:isFreeShip,
     images,video_url:videoUrl||null,stock_quantity:Number($('stock').value||0),status:$('status').value,updated_at:new Date().toISOString()};
    const id=$('productId').value;let result;
    if(id)result=await client().from('products').update(payload).eq('id',id);
