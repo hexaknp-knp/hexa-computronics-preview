@@ -12,27 +12,30 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <style>
-/* SEO & Readability Font Updates */
-html { font-size: 17px !important; scroll-behavior: smooth; } 
-body { font-size: 1rem; line-height: 1.6; color: #1e293b; }
-#filterRow { scroll-margin-top: 115px; }
+/* === BASE, DESKTOP 100% ZOOM & READABILITY === */
+*, *::before, *::after { box-sizing: border-box; }
+html { font-size: 15px !important; scroll-behavior: smooth; overflow-x: hidden; }
+body { font-size: 1rem; line-height: 1.55; color: #1e293b; overflow-x: hidden; max-width: 100vw; }
+img { max-width: 100%; }
+#filterRow { scroll-margin-top: 110px; }
 #contact { scroll-margin-top: 90px; }
-.product-info h3 { font-size: 1.15rem; margin-bottom: 6px; color: #0f172a; font-weight: 700; }
-.product-spec { font-size: 0.95rem; color: #334155; font-weight: 600; }
-.product-price { font-size: 1.3rem; color: #0f172a; }
-p, .modal-desc, .modal-features { font-size: 1.1rem; color: #1e293b; font-weight: 500; }
-.category-card div b { font-size: 1.1rem; color: #0f172a; }
-.section-heading h2 { font-size: 2.5rem; color: #0f172a; }
 
-/* Smooth Moving Announcement Ticker (COD, EMI, Cards, Free Shipping) */
+.product-info h3 { font-size: 1.12rem; margin-bottom: 6px; color: #0f172a; font-weight: 700; }
+.product-spec { font-size: 0.92rem; color: #334155; font-weight: 600; }
+.product-price { font-size: 1.25rem; color: #0f172a; }
+p, .modal-desc, .modal-features { font-size: 1.02rem; color: #1e293b; font-weight: 500; }
+.category-card div b { font-size: 1.08rem; color: #0f172a; }
+.section-heading h2 { font-size: 2.3rem; color: #0f172a; }
+
+/* Smooth Moving Announcement Ticker */
 .announcement-ticker {
   background: linear-gradient(90deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
   color: #f8fafc;
   overflow: hidden;
   white-space: nowrap;
-  padding: 9px 0;
+  padding: 6px 0;
   border-bottom: 1px solid rgba(168, 85, 247, 0.35);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
   letter-spacing: 0.3px;
 }
@@ -42,47 +45,21 @@ p, .modal-desc, .modal-features { font-size: 1.1rem; color: #1e293b; font-weight
   width: max-content;
   animation: hexaTicker 34s linear infinite;
 }
-.announcement-ticker:hover .ticker-track {
-  animation-play-state: paused;
-}
-.ticker-group {
-  display: inline-flex;
-  align-items: center;
-  gap: 28px;
-  padding-right: 28px;
-}
-.ticker-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  color: #e2e8f0;
-}
-.ticker-item strong {
-  color: #ffffff;
-  font-weight: 700;
-}
-.ticker-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #a855f7;
-  display: inline-block;
-}
-.ticker-link {
-  color: #38bdf8;
-  text-decoration: none;
-  font-weight: 700;
-}
-.ticker-link:hover {
-  text-decoration: underline;
-}
+.announcement-ticker:hover .ticker-track { animation-play-state: paused; }
+.ticker-group { display: inline-flex; align-items: center; gap: 26px; padding-right: 26px; }
+.ticker-item { display: inline-flex; align-items: center; gap: 7px; color: #e2e8f0; }
+.ticker-item strong { color: #ffffff; font-weight: 700; }
+.ticker-dot { width: 5px; height: 5px; border-radius: 50%; background: #a855f7; display: inline-block; }
+.ticker-link { color: #38bdf8; text-decoration: none; font-weight: 700; }
+.ticker-link:hover { text-decoration: underline; }
 @keyframes hexaTicker {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
 
-/* Dark Header for Logo Blend */
-.site-header { background-color: #0f172a; border-bottom: 1px solid #1e293b; }
+/* Compact Utility & Dark Header */
+.utility { padding: 4px 5% !important; font-size: 12px !important; }
+.site-header { background-color: #0f172a; border-bottom: 1px solid #1e293b; padding-top: 8px !important; padding-bottom: 8px !important; }
 #mainNav a { color: #e2e8f0 !important; }
 #mainNav a:hover { color: #ffffff !important; }
 .header-actions button { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #ffffff !important; padding: 6px 12px; border-radius: 8px; }
@@ -90,10 +67,25 @@ p, .modal-desc, .modal-features { font-size: 1.1rem; color: #1e293b; font-weight
 .header-actions button small { color: #cbd5e1 !important; }
 .mobile-menu { color: #ffffff !important; }
 
-@media(max-width: 768px) {
-  html { font-size: 16px !important; }
-  .section-heading h2 { font-size: 2rem; }
-  .announcement-ticker { font-size: 12px; padding: 8px 0; }
+/* Hero Section - Balanced for 100% Desktop Zoom */
+.hero {
+  padding-top: 22px !important;
+  padding-bottom: 24px !important;
+  min-height: auto !important;
+  align-items: center !important;
+  gap: 28px !important;
+}
+.hero h1 {
+  font-size: clamp(2rem, 3.6vw, 3.1rem) !important;
+  line-height: 1.08 !important;
+  margin: 8px 0 12px !important;
+}
+.hero-copy p { font-size: 0.96rem !important; margin-bottom: 16px !important; }
+.hero-buttons { margin-bottom: 12px !important; }
+.hero-visual .hero-product {
+  max-height: 350px !important;
+  width: 100% !important;
+  object-fit: cover !important;
 }
 
 /* Modal & Carousel CSS */
@@ -138,13 +130,13 @@ p, .modal-desc, .modal-features { font-size: 1.1rem; color: #1e293b; font-weight
   border: 2px solid transparent; opacity: 0.6; transition: all 0.2s;
 }
 .thumb-img.active { border-color: #2563eb; opacity: 1; }
-.modal-video-wrap { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden; margin-top: 15px;}
+.modal-video-wrap { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden; margin-top: 15px; }
 .modal-video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
 .modal-info { display: flex; flex-direction: column; gap: 15px; }
 .modal-cat { font-size: 12px; font-weight: 700; letter-spacing: 1px; color: #64748b; text-transform: uppercase; }
-.modal-info h2 { font-size: 32px; margin: 0; line-height: 1.2; color: #0f172a; }
-.modal-price { font-size: 28px; font-weight: 700; color: #0f172a; }
+.modal-info h2 { font-size: 30px; margin: 0; line-height: 1.2; color: #0f172a; }
+.modal-price { font-size: 26px; font-weight: 700; color: #0f172a; }
 .modal-price del { font-size: 18px; color: #94a3b8; font-weight: 400; margin-left: 10px; }
 .modal-desc { color: #475569; font-size: 15px; line-height: 1.6; }
 .modal-features { padding-left: 20px; color: #475569; font-size: 14px; margin: 0; }
@@ -167,18 +159,18 @@ p, .modal-desc, .modal-features { font-size: 1.1rem; color: #1e293b; font-weight
 .success-overlay.show { opacity: 1; pointer-events: auto; }
 .success-content { max-width: 500px; width: 100%; }
 .success-brand { display: inline-flex; align-items: center; font-weight: 800; font-size: 24px; color: #0f172a; margin-bottom: 20px; letter-spacing: -0.5px; }
-.success-brand .brand-mark { background: #0f172a; color: #fff; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 20px;}
+.success-brand .brand-mark { background: #0f172a; color: #fff; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 20px; }
 .success-brand .brand-mark span { color: #3b82f6; }
-.success-content h2 { font-size: 32px; color: #0f172a; margin: 0 0 10px; }
+.success-content h2 { font-size: 30px; color: #0f172a; margin: 0 0 10px; }
 .success-content p { color: #64748b; margin-bottom: 25px; line-height: 1.6; }
 .success-items { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px; }
 .success-items img { width: 80px; height: 80px; object-fit: cover; border-radius: 10px; border: 1px solid #e2e8f0; }
 
-/* Overriding product card button (+ to Add to Cart) */
-.product-bottom .add-button.text-btn { width: auto; padding: 6px 14px; border-radius: 20px; font-size: 13px; border: 1px solid #cbd5e1; background: #fff; color: #0f172a; font-weight: 600; display:flex; align-items:center;}
-.product-bottom .add-button.text-btn:hover { background: #f8fafc; border-color:#94a3b8;}
+/* Product Card Button */
+.product-bottom .add-button.text-btn { width: auto; padding: 6px 14px; border-radius: 20px; font-size: 13px; border: 1px solid #cbd5e1; background: #fff; color: #0f172a; font-weight: 600; display: flex; align-items: center; }
+.product-bottom .add-button.text-btn:hover { background: #f8fafc; border-color: #94a3b8; }
 
-/* SUPER COMPACT PROMO BANNER (Monitor Style Card) */
+/* SUPER COMPACT PROMO BANNER */
 .promo-banner {
   display: flex; align-items: center; justify-content: space-between; gap: 20px;
   max-width: 750px; margin: 0 auto 30px auto; background: #0f172a; border-radius: 12px; padding: 20px;
@@ -210,14 +202,7 @@ p, .modal-desc, .modal-features { font-size: 1.1rem; color: #1e293b; font-weight
 .promo-play-btn:hover { transform: translate(-50%, -50%) scale(1.1); background: #fff; }
 .promo-media iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-@media(max-width: 768px) {
-  .promo-banner { flex-direction: column; max-width: 100%; text-align: center; }
-  .promo-media { width: 100%; }
-  .promo-list li { justify-content: center; }
-  .promo-actions { justify-content: center; }
-}
-
-/* Logo Animation - Electric Glow & 360 Flip */
+/* Logo Animation */
 @keyframes electricGlow {
   0% { box-shadow: 0 0 5px rgba(168, 85, 247, 0.4), 0 0 10px rgba(168, 85, 247, 0.2); }
   25% { box-shadow: 0 0 15px rgba(234, 179, 8, 0.6), 0 0 25px rgba(168, 85, 247, 0.4); }
@@ -225,86 +210,56 @@ p, .modal-desc, .modal-features { font-size: 1.1rem; color: #1e293b; font-weight
   75% { box-shadow: 0 0 15px rgba(234, 179, 8, 0.6), 0 0 25px rgba(168, 85, 247, 0.4); }
   100% { box-shadow: 0 0 5px rgba(168, 85, 247, 0.4), 0 0 10px rgba(168, 85, 247, 0.2); }
 }
-
 .brand img {
+  height: 44px !important;
+  width: 44px !important;
   animation: electricGlow 1.5s infinite !important;
   transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
   transform-style: preserve-3d;
 }
+.brand:hover img { transform: rotateY(360deg) !important; }
 
-.brand:hover img {
-  transform: rotateY(360deg) !important;
-}
-/* === DESKTOP 100% ZOOM & MOBILE OPTIMIZATION === */
-html { font-size: 15.5px !important; overflow-x: hidden; }
-body { overflow-x: hidden; }
-
-/* Top bars ko thoda compact karein taaki Hero section poora dikhe */
-.announcement-ticker { padding: 6px 0 !important; font-size: 12.5px !important; }
-.utility { padding: 4px 5% !important; font-size: 12px !important; }
-.site-header { padding-top: 8px !important; padding-bottom: 8px !important; }
-.brand img { height: 44px !important; width: 44px !important; }
-
-/* Hero Section: 100% zoom par poora fit hoga (zero cutting) */
-.hero {
-  padding-top: 26px !important;
-  padding-bottom: 30px !important;
-  min-height: auto !important;
-  align-items: center !important;
-  gap: 32px !important;
-}
-.hero h1 {
-  font-size: clamp(2.1rem, 3.8vw, 3.2rem) !important;
-  line-height: 1.08 !important;
-  margin: 10px 0 14px !important;
-}
-.hero-copy p {
-  font-size: 0.98rem !important;
-  margin-bottom: 18px !important;
-}
-.hero-buttons {
-  margin-bottom: 14px !important;
-}
-.hero-visual .hero-product {
-  max-height: 360px !important;
-  width: 100% !important;
-  object-fit: cover !important;
-}
-
-/* Mobile Optimization (768px se chhoti screens ke liye) */
+/* === FULL MOBILE OPTIMIZATION (Phones & Tablets) === */
 @media (max-width: 768px) {
-  html { font-size: 15px !important; }
+  html { font-size: 14.5px !important; }
+  .announcement-ticker { font-size: 11.5px !important; padding: 6px 0 !important; }
   .utility {
     flex-direction: column !important;
     text-align: center !important;
     gap: 2px !important;
-    padding: 6px 12px !important;
+    padding: 5px 12px !important;
+    font-size: 11.5px !important;
   }
-  .site-header {
-    padding: 8px 14px !important;
-  }
+  .site-header { padding: 8px 14px !important; gap: 8px !important; }
+  .brand img { height: 38px !important; width: 38px !important; }
+  .header-actions button { padding: 6px 9px !important; font-size: 12.5px !important; }
+  .header-actions button small { display: none !important; }
+
   .hero {
     grid-template-columns: 1fr !important;
-    padding: 20px 16px 28px !important;
-    gap: 22px !important;
+    padding: 18px 16px 26px !important;
+    gap: 20px !important;
     text-align: left !important;
   }
-  .hero h1 {
-    font-size: 2rem !important;
-  }
-  .hero-buttons {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: 10px !important;
-  }
-  .hero-visual .hero-product {
-    max-height: 260px !important;
-  }
-  .modal-grid {
+  .hero h1 { font-size: 2rem !important; }
+  .hero-buttons { display: flex !important; flex-wrap: wrap !important; gap: 10px !important; }
+  .hero-buttons .button { flex: 1 1 auto; justify-content: center; }
+  .hero-visual .hero-product { max-height: 240px !important; }
+
+  .section-heading h2 { font-size: 1.85rem !important; }
+  .promo-banner { flex-direction: column; max-width: 100%; text-align: center; padding: 16px; }
+  .promo-media { width: 100%; }
+  .promo-list li { justify-content: center; }
+  .promo-actions { justify-content: center; }
+
+  .feature-banner, .business-section, .contact-section {
     grid-template-columns: 1fr !important;
-    padding: 20px !important;
-    gap: 20px !important;
   }
+  .modal-overlay { padding: 10px; }
+  .modal-grid { grid-template-columns: 1fr !important; padding: 18px !important; gap: 18px !important; }
+  .modal-info h2 { font-size: 22px; }
+  .modal-price { font-size: 22px; }
+  .cart-drawer { width: 100% !important; max-width: 100vw !important; }
 }
 </style>
 </head>
@@ -346,11 +301,11 @@ body { overflow-x: hidden; }
 
 <div class="utility"><span>Technology partner for home, work & business</span><span>Call <a href="tel:8400702268">84007 02268</a> <b>·</b> <a href="tel:9935529306">99355 29306</a></span></div>
 <header class="site-header">
- <a class="brand" href="#home" aria-label="Hexa Computronics home" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
-  <img src="hexalogoamwinnew_2.png" alt="Hexa Logo" style="height: 55px; width: 55px; border-radius: 10px; object-fit: cover; box-shadow: 0 4px 15px rgba(126, 34, 206, 0.4);">
+ <a class="brand" href="#home" aria-label="Hexa Computronics home" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+  <img src="hexalogoamwinnew_2.png" alt="Hexa Logo" style="border-radius: 10px; object-fit: cover; box-shadow: 0 4px 15px rgba(126, 34, 206, 0.4);">
   <div style="display: flex; flex-direction: column; line-height: 1.1;">
-    <span style="font-size: 24px; font-weight: 900; color: #ffffff; letter-spacing: 0.5px;">HEXA</span>
-    <span style="font-size: 11.5px; font-weight: 700; color: #a855f7; letter-spacing: 1.5px;">COMPUTRONICS</span>
+    <span style="font-size: 22px; font-weight: 900; color: #ffffff; letter-spacing: 0.5px;">HEXA</span>
+    <span style="font-size: 10.5px; font-weight: 700; color: #a855f7; letter-spacing: 1.5px;">COMPUTRONICS</span>
   </div>
 </a>
   <button class="mobile-menu" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mainNav">☰</button>
@@ -368,7 +323,6 @@ body { overflow-x: hidden; }
     <h1>Find your next<br><em>great upgrade.</em></h1>
     <p>From everyday laptops to powerful gaming PCs, smart networking and security solutions — discover the right technology with expert help at every step.</p>
     <div class="hero-buttons"><a class="button primary" href="#filterRow">Explore products <span>↗</span></a><a class="button secondary" href="#contact">Talk to an expert</a></div>
-    <!-- NEW SEO ALL-INDIA DELIVERY TEXT -->
     <div class="hero-assurance"><span>✓ Secure All-India Delivery</span><span>✓ 100% Genuine IT Products</span></div>
   </div>
   <div class="hero-visual">
@@ -411,11 +365,8 @@ body { overflow-x: hidden; }
         </div>
       </div>
       <div class="promo-media">
-        <!-- Display Image -->
         <img id="promoImg" src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=800&q=80" alt="Special Offer">
-        <!-- Play Button (Paste your YouTube Link Inside the brackets below) -->
         <div id="promoPlayBtn" class="promo-play-btn" onclick="playPromoVideo('https://youtu.be/QtfyCx6SSa8?si=An8tinPila3RbMnk')" title="Play Video">▶</div>
-        <!-- Hidden YouTube Player -->
         <iframe id="promoIframe" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen hidden></iframe>
       </div>
     </div>
@@ -462,17 +413,14 @@ body { overflow-x: hidden; }
     </a>
     <p>Technology, made simple.<br>IT products and solutions for home and business.</p>
     
-    <!-- Social Media Links (Animated Official Icons) -->
+    <!-- Social Media Links -->
     <div style="display: flex; gap: 18px; margin-top: 15px; align-items: center;">
-      <!-- YouTube -->
       <a href="https://www.youtube.com/@hexacomptech" target="_blank" aria-label="YouTube" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: #f8fafc; transition: transform 0.2s, background 0.2s;" onmouseover="this.style.background='#fee2e2'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#f8fafc'; this.style.transform='translateY(0)'">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="#FF0000"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
       </a>
-      <!-- Facebook -->
       <a href="https://facebook.com/hexacomputronics" target="_blank" aria-label="Facebook" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: #f8fafc; transition: transform 0.2s, background 0.2s;" onmouseover="this.style.background='#dbeafe'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#f8fafc'; this.style.transform='translateY(0)'">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="#1877F2"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
       </a>
-      <!-- Instagram -->
       <a href="https://instagram.com/hcomputronics" target="_blank" aria-label="Instagram" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: #f8fafc; transition: transform 0.2s, background 0.2s;" onmouseover="this.style.background='#fce7f3'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#f8fafc'; this.style.transform='translateY(0)'">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="url(#ig-grad)"><defs><linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#f09433" /><stop offset="25%" stop-color="#e6683c" /><stop offset="50%" stop-color="#dc2743" /><stop offset="75%" stop-color="#cc2366" /><stop offset="100%" stop-color="#bc1888" /></linearGradient></defs><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
       </a>
@@ -495,30 +443,29 @@ body { overflow-x: hidden; }
 
 <div class="overlay" id="overlay"></div>
 <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart">
-      <div class="drawer-head"><div><small>YOUR SELECTION</small><h3>Your cart <span id="drawerCount">(0)</span></h3></div><button id="cartClose" aria-label="Close cart">×</button></div>
-      <div class="cart-items" id="cartItems"><p class="empty-cart">Your cart is waiting for something great.</p></div>
-      
-      <!-- Checkout Form -->
-      <div id="checkoutForm" style="display:none; padding: 15px 20px; background:#f8fafc; border-top:1px solid #e2e8f0; flex-direction:column; gap:10px;">
-        <h4 style="margin:0; font-size:12px; color:#64748b; letter-spacing:1px;">DELIVERY DETAILS</h4>
-        <input type="text" id="cName" placeholder="Full Name" required style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
-        <input type="tel" id="cPhone" placeholder="Phone Number" required style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
-        <input type="email" id="cEmail" placeholder="Email Address" required style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
-        <textarea id="cAddress" placeholder="Full Delivery Address" rows="2" required style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit; resize:none;"></textarea>
-        <input type="text" id="cPin" placeholder="PIN Code" required style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
-        <!-- COD Terms Placeholder (To be updated via JS based on your terms) -->
-        <p id="codTermsText" style="display:none; font-size:11px; color:#dc2626; margin:0; font-weight:600;"></p>
-      </div>
-      
-      <!-- Payment Buttons -->
-      <div class="drawer-foot">
-        <div><span>Estimated subtotal</span><b id="cartSubtotal">₹0</b></div>
-        <small style="margin-bottom:8px; display:block;">Select your payment method:</small>
-        <div style="display: flex; gap: 10px;">
-          <button id="demoCheckout" class="button primary" style="flex:1; padding: 12px 10px; font-size:14px;">Pay Online</button>
-          <button id="codCheckout" class="button secondary" style="flex:1; padding: 12px 10px; font-size:14px; background: #fff; color: #0f172a; border: 2px solid #cbd5e1; font-weight: 700;">COD (Cash)</button>
-        </div>
-      </div>
+  <div class="drawer-head"><div><small>YOUR SELECTION</small><h3>Your cart <span id="drawerCount">(0)</span></h3></div><button id="cartClose" aria-label="Close cart">×</button></div>
+  <div class="cart-items" id="cartItems"><p class="empty-cart">Your cart is waiting for something great.</p></div>
+  
+  <!-- Checkout Form -->
+  <div id="checkoutForm" style="display:none; padding: 15px 20px; background:#f8fafc; border-top:1px solid #e2e8f0; flex-direction:column; gap:10px;">
+    <h4 style="margin:0; font-size:12px; color:#64748b; letter-spacing:1px;">DELIVERY DETAILS</h4>
+    <input type="text" id="cName" placeholder="Full Name" required style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
+    <input type="tel" id="cPhone" placeholder="Phone Number" required style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
+    <input type="email" id="cEmail" placeholder="Email Address" required style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
+    <textarea id="cAddress" placeholder="Full Delivery Address" rows="2" required style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit; resize:none;"></textarea>
+    <input type="text" id="cPin" placeholder="PIN Code" required style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
+    <p id="codTermsText" style="display:none; font-size:11px; color:#dc2626; margin:0; font-weight:600;"></p>
+  </div>
+  
+  <!-- Payment Buttons -->
+  <div class="drawer-foot">
+    <div><span>Estimated subtotal</span><b id="cartSubtotal">₹0</b></div>
+    <small style="margin-bottom:8px; display:block;">Select your payment method:</small>
+    <div style="display: flex; gap: 10px;">
+      <button id="demoCheckout" class="button primary" style="flex:1; padding: 12px 10px; font-size:14px;">Pay Online</button>
+      <button id="codCheckout" class="button secondary" style="flex:1; padding: 12px 10px; font-size:14px; background: #fff; color: #0f172a; border: 2px solid #cbd5e1; font-weight: 700;">COD (Cash)</button>
+    </div>
+  </div>
 </aside>
 
 <!-- Big Success Screen -->
