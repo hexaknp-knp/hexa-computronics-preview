@@ -235,7 +235,77 @@ p, .modal-desc, .modal-features { font-size: 1.1rem; color: #1e293b; font-weight
 .brand:hover img {
   transform: rotateY(360deg) !important;
 }
+/* === DESKTOP 100% ZOOM & MOBILE OPTIMIZATION === */
+html { font-size: 15.5px !important; overflow-x: hidden; }
+body { overflow-x: hidden; }
 
+/* Top bars ko thoda compact karein taaki Hero section poora dikhe */
+.announcement-ticker { padding: 6px 0 !important; font-size: 12.5px !important; }
+.utility { padding: 4px 5% !important; font-size: 12px !important; }
+.site-header { padding-top: 8px !important; padding-bottom: 8px !important; }
+.brand img { height: 44px !important; width: 44px !important; }
+
+/* Hero Section: 100% zoom par poora fit hoga (zero cutting) */
+.hero {
+  padding-top: 26px !important;
+  padding-bottom: 30px !important;
+  min-height: auto !important;
+  align-items: center !important;
+  gap: 32px !important;
+}
+.hero h1 {
+  font-size: clamp(2.1rem, 3.8vw, 3.2rem) !important;
+  line-height: 1.08 !important;
+  margin: 10px 0 14px !important;
+}
+.hero-copy p {
+  font-size: 0.98rem !important;
+  margin-bottom: 18px !important;
+}
+.hero-buttons {
+  margin-bottom: 14px !important;
+}
+.hero-visual .hero-product {
+  max-height: 360px !important;
+  width: 100% !important;
+  object-fit: cover !important;
+}
+
+/* Mobile Optimization (768px se chhoti screens ke liye) */
+@media (max-width: 768px) {
+  html { font-size: 15px !important; }
+  .utility {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 2px !important;
+    padding: 6px 12px !important;
+  }
+  .site-header {
+    padding: 8px 14px !important;
+  }
+  .hero {
+    grid-template-columns: 1fr !important;
+    padding: 20px 16px 28px !important;
+    gap: 22px !important;
+    text-align: left !important;
+  }
+  .hero h1 {
+    font-size: 2rem !important;
+  }
+  .hero-buttons {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+  .hero-visual .hero-product {
+    max-height: 260px !important;
+  }
+  .modal-grid {
+    grid-template-columns: 1fr !important;
+    padding: 20px !important;
+    gap: 20px !important;
+  }
+}
 </style>
 </head>
 <body>
