@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Apex Saddlery &amp; Exports | Business Website Demo by Hexa Computronics</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+  body { color: #1e293b; line-height: 1.6; background: #f8fafc; overflow-x: hidden; }
+  .hexa-bar { background: #0f172a; color: #fff; padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; font-size: 13px; flex-wrap: wrap; gap: 8px; position: sticky; top: 0; z-index: 100; }
+  .hexa-bar a { color: #38bdf8; text-decoration: none; font-weight: 700; }
+  .hexa-bar .cta { background: #a855f7; color: #fff; padding: 6px 14px; border-radius: 6px; }
+
+  header { background: #fff; padding: 16px 6%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; }
+  .logo { font-size: 22px; font-weight: 900; color: #0f172a; letter-spacing: 0.5px; }
+  .logo span { color: #2563eb; }
+  nav a { margin-left: 22px; text-decoration: none; color: #334155; font-weight: 600; font-size: 14px; }
+
+  /* Animated Hero with Horse/Equestrian Background */
+  .hero { position: relative; min-height: 460px; display: flex; align-items: center; padding: 70px 6%; overflow: hidden; color: #fff; }
+  .hero-bg { position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&w=1400&q=85') center/cover no-repeat; animation: kenBurns 18s ease-in-out infinite alternate; z-index: 0; }
+  .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(15,23,42,0.92) 0%, rgba(15,23,42,0.65) 60%, rgba(15,23,42,0.35) 100%); z-index: 1; }
+  .hero-content { position: relative; z-index: 2; max-width: 640px; }
+  .badge { display: inline-block; background: rgba(37,99,235,0.25); border: 1px solid #60a5fa; color: #bfdbfe; padding: 5px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; margin-bottom: 14px; }
+  .hero h1 { font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.15; margin-bottom: 14px; }
+  .hero p { color: #e2e8f0; margin-bottom: 24px; font-size: 1.05rem; }
+  .btn { display: inline-block; background: #2563eb; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; transition: transform 0.2s, background 0.2s; }
+  .btn:hover { background: #1d4ed8; transform: translateY(-2px); }
+
+  .section { padding: 60px 6%; max-width: 1180px; margin: auto; }
+  .section h2 { font-size: 2rem; margin-bottom: 10px; color: #0f172a; }
+  .section .sub { color: #64748b; margin-bottom: 28px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; }
+  .card { background: #fff; border-radius: 14px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 6px 18px rgba(15,23,42,0.05); transition: transform 0.3s ease; }
+  .card:hover { transform: translateY(-6px); }
+  .card-img { height: 200px; overflow: hidden; }
+  .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+  .card:hover .card-img img { transform: scale(1.1); }
+  .card-body { padding: 20px; }
+  .card-body h3 { margin-bottom: 8px; color: #0f172a; font-size: 1.15rem; }
+  .card-body p { font-size: 14px; color: #475569; }
+
+  @keyframes kenBurns {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.12); }
+  }
+  footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 24px; font-size: 13px; margin-top: 30px; }
+  @media(max-width: 640px) { nav { display: none; } }
+</style>
+</head>
+<body>
+  <div class="hexa-bar">
+    <span>⚡ Live Demo Template by <strong>Hexa Computronics</strong></span>
+    <div><a href="index.html#website-samples" style="margin-right:15px;">← Back</a><a class="cta" href="index.html#contact">Get Similar Website ↗</a></div>
+  </div>
+  <header>
+    <div class="logo">APEX<span>EXPORTS</span></div>
+    <nav><a href="#products">Products</a><a href="#logistics">Global Shipping</a><a href="#contact">Contact</a></nav>
+  </header>
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <span class="badge">🌍 ISO-9001 CERTIFIED EXPORTER</span>
+      <h1>Premium Saddlery, Leather &amp; Global B2B Exports.</h1>
+      <p>Handcrafted equestrian saddlery, leather accessories, and industrial goods exported worldwide with strict quality assurance and on-time container dispatch.</p>
+      <a class="btn" href="index.html#contact">Request Export Catalogue ↗</a>
+    </div>
+  </section>
+  <section class="section" id="products">
+    <h2>Our Export Divisions</h2>
+    <p class="sub">Trusted by international buyers across Europe, USA, and the Middle East.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&w=800&q=85" alt="Equestrian Saddlery"></div>
+        <div class="card-body"><h3>🐎 Equestrian &amp; Saddlery</h3><p>Premium leather saddles, bridles, halters, and horse riding gear crafted for global equestrian brands.</p></div>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=800&q=85" alt="Leather Goods"></div>
+        <div class="card-body"><h3>👜 Fine Leather Goods</h3><p>Bulk OEM manufacturing of bags, belts, and corporate accessories with custom private-label branding.</p></div>
+      </div>
+      <div class="card" id="logistics">
+        <div class="card-img"><img src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=800&q=85" alt="Global Cargo Shipping"></div>
+        <div class="card-body"><h3>🚢 Worldwide Sea &amp; Air Freight</h3><p>End-to-end export documentation, customs clearance, and tracked container logistics.</p></div>
+      </div>
+    </div>
+  </section>
+  <footer id="contact">Demo Website designed by Hexa Computronics, Kanpur · Call 84007 02268 for your business website.</footer>
+</body>
+</html>
