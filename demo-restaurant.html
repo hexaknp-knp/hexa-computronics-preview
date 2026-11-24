@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Royal Spice Kitchen &amp; Bakery | Website Demo by Hexa Computronics</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+  body { color: #1c1917; line-height: 1.6; background: #fffbeb; overflow-x: hidden; }
+  .hexa-bar { background: #0f172a; color: #fff; padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; font-size: 13px; flex-wrap: wrap; gap: 8px; position: sticky; top: 0; z-index: 100; }
+  .hexa-bar a { color: #38bdf8; text-decoration: none; font-weight: 700; }
+  .hexa-bar .cta { background: #a855f7; color: #fff; padding: 6px 14px; border-radius: 6px; }
+
+  .hero { position: relative; min-height: 430px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 70px 6%; overflow: hidden; color: #fff; }
+  .hero-bg { position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=1400&q=85') center/cover no-repeat; animation: slowZoom 16s ease-in-out infinite alternate; z-index: 0; }
+  .hero::after { content: ''; position: absolute; inset: 0; background: rgba(28, 25, 23, 0.72); z-index: 1; }
+  .hero-content { position: relative; z-index: 2; max-width: 650px; }
+  .hero h1 { font-size: clamp(2.1rem, 4.2vw, 3.4rem); margin-bottom: 12px; color: #fef3c7; }
+  .hero p { color: #fde68a; margin-bottom: 24px; font-size: 1.05rem; }
+  .btn { display: inline-block; background: #f59e0b; color: #1c1917; padding: 12px 26px; border-radius: 8px; text-decoration: none; font-weight: 800; transition: transform 0.2s, background 0.2s; }
+  .btn:hover { background: #d97706; color: #fff; transform: translateY(-2px); }
+
+  .section { padding: 55px 6%; max-width: 1120px; margin: auto; }
+  .section h2 { text-align: center; font-size: 2rem; margin-bottom: 28px; color: #7c2d12; }
+  .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 22px; }
+  .food-card { background: #fff; border-radius: 14px; border: 1px solid #fde68a; overflow: hidden; box-shadow: 0 8px 20px rgba(124,45,18,0.08); transition: transform 0.3s ease; }
+  .food-card:hover { transform: translateY(-6px); }
+  .food-img { height: 200px; overflow: hidden; position: relative; }
+  .food-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+  .food-card:hover .food-img img { transform: scale(1.1); }
+  .price-tag { position: absolute; bottom: 12px; right: 12px; background: #7c2d12; color: #fff; font-weight: 800; padding: 5px 12px; border-radius: 999px; font-size: 14px; }
+  .food-body { padding: 18px; }
+  .food-body h3 { color: #7c2d12; margin-bottom: 6px; font-size: 1.15rem; }
+  .food-body p { font-size: 14px; color: #57534e; margin-bottom: 14px; }
+  .order-link { color: #b45309; font-weight: 700; text-decoration: none; font-size: 13.5px; }
+
+  @keyframes slowZoom {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.12); }
+  }
+  footer { background: #451a03; color: #fde68a; text-align: center; padding: 22px; font-size: 13px; margin-top: 30px; }
+</style>
+</head>
+<body>
+  <div class="hexa-bar">
+    <span>⚡ Live Demo Template by <strong>Hexa Computronics</strong></span>
+    <div><a href="index.html#website-samples" style="margin-right:15px;">← Back</a><a class="cta" href="index.html#contact">Get Similar Website ↗</a></div>
+  </div>
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1>Royal Spice Kitchen &amp; Bakery</h1>
+      <p>Authentic Mughlai Biryani, Kebabs, and Fresh Artisan Cakes — Order directly on WhatsApp with zero third-party commission.</p>
+      <a class="btn" href="https://wa.me/918400702268" target="_blank">Order on WhatsApp ↗</a>
+    </div>
+  </section>
+  <section class="section">
+    <h2>Popular Menu Highlights</h2>
+    <div class="menu-grid">
+      <div class="food-card">
+        <div class="food-img">
+          <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=85" alt="Hyderabadi Dum Biryani">
+          <span class="price-tag">₹280</span>
+        </div>
+        <div class="food-body">
+          <h3>Hyderabadi Dum Biryani</h3>
+          <p>Slow-cooked aromatic basmati rice with tender spiced chicken, served with raita &amp; salan.</p>
+          <a class="order-link" href="https://wa.me/918400702268" target="_blank">Order Now on WhatsApp →</a>
+        </div>
+      </div>
+      <div class="food-card">
+        <div class="food-img">
+          <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=800&q=85" alt="Kebab Platter">
+          <span class="price-tag">₹320</span>
+        </div>
+        <div class="food-body">
+          <h3>Signature Kebab Platter</h3>
+          <p>Charcoal-grilled smoky kebabs served hot with mint chutney and laccha onions.</p>
+          <a class="order-link" href="https://wa.me/918400702268" target="_blank">Order Now on WhatsApp →</a>
+        </div>
+      </div>
+      <div class="food-card">
+        <div class="food-img">
+          <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=85" alt="Belgian Chocolate Cake">
+          <span class="price-tag">₹550</span>
+        </div>
+        <div class="food-body">
+          <h3>Belgian Chocolate Truffle Cake</h3>
+          <p>500g freshly baked rich dark chocolate cake — custom birthday messages available.</p>
+          <a class="order-link" href="https://wa.me/918400702268" target="_blank">Order Now on WhatsApp →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer>Demo Website designed by Hexa Computronics, Kanpur · Call 84007 02268 for your restaurant or bakery website.</footer>
+</body>
+</html>
