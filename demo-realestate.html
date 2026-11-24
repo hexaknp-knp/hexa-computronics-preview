@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prime Estate Infra — Flats, Plots & Commercial Properties | Demo by Hexa Computronics</title>
+  <meta name="description" content="Sample Real Estate & Property Dealer website template designed by Hexa Computronics, Kanpur.">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { color: #1e293b; background: #f8fafc; line-height: 1.6; }
+    .demo-bar { background: #111827; color: #fff; text-align: center; padding: 8px 16px; font-size: 13px; }
+    .demo-bar a { color: #fbbf24; font-weight: 600; text-decoration: none; }
+    header { background: #fff; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 50; }
+    .nav { max-width: 1120px; margin: auto; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 20px; font-weight: 800; color: #0f766e; }
+    .btn { display: inline-block; background: #0f766e; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; border: none; cursor: pointer; }
+    .btn:hover { background: #115e59; }
+    .hero { background: linear-gradient(135deg, #0f172a, #134e4a); color: #fff; padding: 70px 20px; text-align: center; }
+    .hero h1 { font-size: clamp(28px, 5vw, 44px); margin-bottom: 12px; }
+    .hero p { max-width: 650px; margin: 0 auto 24px; color: #ccfbf1; font-size: 17px; }
+    .section { max-width: 1120px; margin: 48px auto; padding: 0 20px; }
+    .section h2 { text-align: center; font-size: 28px; margin-bottom: 28px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px; }
+    .prop-card { background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; display: flex; flex-direction: column; }
+    .prop-banner { height: 160px; background: linear-gradient(120deg, #0f766e, #14b8a6); color: #fff; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; }
+    .tag { background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 6px; font-size: 12px; width: fit-content; }
+    .prop-body { padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .price { font-size: 22px; font-weight: 800; color: #0f766e; margin: 10px 0; }
+    .meta { font-size: 14px; color: #475569; margin-bottom: 16px; }
+    .cta-strip { background: #0f766e; color: #fff; border-radius: 14px; padding: 36px 24px; text-align: center; }
+    footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 28px 20px; margin-top: 60px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="demo-bar">
+    Demo Template by <a href="index.html#website-samples">Hexa Computronics</a> — Builders & Property Dealers ke liye Ready Website
+  </div>
+
+  <header>
+    <div class="nav">
+      <div class="logo">Prime Estate Infra</div>
+      <a href="#visit" class="btn">Schedule Site Visit</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>RERA Approved Flats, Plots & Commercial Spaces</h1>
+    <p>Transparent deals, bank loan assistance aur prime locations par ready-to-move properties — direct builder prices par.</p>
+    <a href="#listings" class="btn" style="background:#f59e0b; color:#0f172a;">Featured Properties Dekhein</a>
+  </section>
+
+  <section class="section" id="listings">
+    <h2>Featured Properties</h2>
+    <div class="grid">
+      <div class="prop-card">
+        <div class="prop-banner">
+          <span class="tag">Ready to Move • RERA Approved</span>
+          <h3>3 BHK Luxury Apartment</h3>
+        </div>
+        <div class="prop-body">
+          <div>
+            <div class="price">₹68 Lakhs</div>
+            <div class="meta">1,550 sq.ft • Covered Parking • Lift & 24x7 Security</div>
+          </div>
+          <a href="https://wa.me/91XXXXXXXXXX?text=Hi,%20mujhe%203%20BHK%20Luxury%20Apartment%20ki%20details%20chahiye" target="_blank" class="btn" style="text-align:center;">WhatsApp Details & Brochure</a>
+        </div>
+      </div>
+
+      <div class="prop-card">
+        <div class="prop-banner" style="background:linear-gradient(120deg,#1e3a8a,#3b82f6);">
+          <span class="tag">Gated Township • Registry Ready</span>
+          <h3>Residential Plots (100 - 200 Gaj)</h3>
+        </div>
+        <div class="prop-body">
+          <div>
+            <div class="price">₹24 Lakhs onwards</div>
+            <div class="meta">Wide 40ft Roads • Park Facing • Bank Loan Available</div>
+          </div>
+          <a href="https://wa.me/91XXXXXXXXXX?text=Hi,%20mujhe%20Residential%20Plots%20ki%20site%20visit%20book%20karni%20hai" target="_blank" class="btn" style="text-align:center;">Book Free Site Visit</a>
+        </div>
+      </div>
+
+      <div class="prop-card">
+        <div class="prop-banner" style="background:linear-gradient(120deg,#7c2d12,#ea580c);">
+          <span class="tag">High ROI • Main Road</span>
+          <h3>Commercial Showroom / Office</h3>
+        </div>
+        <div class="prop-body">
+          <div>
+            <div class="price">₹1.15 Crore</div>
+            <div class="meta">1,200 sq.ft Ground Floor • High Footfall Market Area</div>
+          </div>
+          <a href="https://wa.me/91XXXXXXXXXX?text=Hi,%20mujhe%20Commercial%20Showroom%20ke%20baare%20mein%20jaanna%20hai" target="_blank" class="btn" style="text-align:center;">Get Floor Plan</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="visit">
+    <div class="cta-strip">
+      <h2>Apni Pasand Ki Property Visit Karein</h2>
+      <p style="margin:10px 0 20px; color:#ccfbf1;">Free site visit aur SBI / HDFC home loan guidance ke liye seedha WhatsApp par baat karein.</p>
+      <a href="https://wa.me/91XXXXXXXXXX?text=Hi,%20mujhe%20property%20visit%20schedule%20karni%20hai" target="_blank" class="btn" style="background:#fff; color:#0f766e;">WhatsApp Par Contact Karein</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Prime Estate Infra (Demo Website). Designed by <a href="https://hexacomputer.in" style="color:#fbbf24;">Hexa Computronics, Kanpur</a></p>
+  </footer>
+</body>
+</html>
