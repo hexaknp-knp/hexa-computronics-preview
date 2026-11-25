@@ -669,6 +669,31 @@ p, .modal-desc, .modal-features { font-size: 1.02rem; color: #1e293b; font-weigh
   .modal-price { font-size: 22px; }
   .cart-drawer { width: 100% !important; max-width: 100vw !important; }
 }
+  /* === FLOATING WHATSAPP BUTTON === */
+.wa-float {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  z-index: 990;
+  background: #25D366;
+  color: #ffffff;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.wa-float:hover {
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 0 10px 26px rgba(37, 211, 102, 0.55);
+}
+@media (max-width: 768px) {
+  .wa-float { bottom: 16px; right: 16px; width: 52px; height: 52px; }
+}
 </style>
 </head>
 <body>
