@@ -1,31 +1,622 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Hexa Admin | Product Manager</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="admin.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script><script src="admin.js" defer></script></head>
-<body class="admin-body"><main class="admin-shell">
-<header class="admin-top"><a class="brand" href="index.html"><span class="brand-mark">H<span>×</span></span><span class="brand-name">HEXA<small>COMPUTRONICS</small></span></a><span class="admin-label">SECURE ADMIN</span></header>
-<section id="loginPanel" class="admin-panel login-panel"><span class="eyebrow">ADMIN ACCESS</span><h1>Welcome back.</h1><p>Sign in with your authorized Hexa administrator account.</p>
-<form id="loginForm"><label>Email<input id="loginEmail" type="email" value="hexaknp@gmail.com" required autocomplete="username"></label><label>Password<div class="password-input-wrapper"><input id="loginPassword" type="password" required autocomplete="current-password"><span id="toggleLoginPassword" class="eye-icon">👁️</span></div></label><button class="button primary" type="submit">Sign in ↗</button><button id="forgotPasswordBtn" class="text-link" type="button">Forgot password?</button><p id="loginMessage" class="admin-message" role="status"></p></form>
-<form id="forgotForm" hidden><h2>Reset your password</h2><p>We will email a secure password reset link to your admin email.</p><label>Admin email<input id="recoveryEmail" type="email" value="hexaknp@gmail.com" required autocomplete="email"></label><button class="button primary" type="submit">Send reset link</button><button id="backToLogin" class="text-link" type="button">Back to sign in</button><p id="recoveryMessage" class="admin-message" role="status"></p></form>
-<form id="newPasswordForm" hidden><h2>Choose a new password</h2><label>New password<div class="password-input-wrapper"><input id="newPassword" type="password" minlength="8" required autocomplete="new-password"><span id="toggleNewPassword" class="eye-icon">👁️</span></div></label><label>Confirm new password<div class="password-input-wrapper"><input id="confirmPassword" type="password" minlength="8" required autocomplete="new-password"><span id="toggleConfirmPassword" class="eye-icon">👁️</span></div></label><button class="button primary" type="submit">Save new password</button><p id="newPasswordMessage" class="admin-message" role="status"></p></form></section>
-<section id="dashboard" hidden>
-<div class="admin-heading"><div><span class="eyebrow">PRODUCT CONTROL CENTER</span><h1>Manage products<span>.</span></h1><p>Add products, update prices, upload media and control what appears in your shop.</p></div><button id="logoutBtn" class="button secondary">Sign out</button></div>
-<div class="admin-stats"><article><small>TOTAL PRODUCTS</small><b id="totalProducts">0</b></article><article><small>PUBLISHED</small><b id="publishedProducts">0</b></article><article><small>DRAFTS</small><b id="draftProducts">0</b></article></div>
-<div class="admin-layout"><section class="admin-panel product-editor"><div class="editor-head"><h2 id="editorTitle">Add a product</h2><button id="resetForm" type="button" class="text-link">Clear form</button></div>
-<form id="productForm">
-<input type="hidden" id="productId">
-<label>Product name *<input id="name" required maxlength="150" placeholder="e.g. HP ProBook 440 G10"></label>
-<div class="form-two"><label>Category<select id="category"><option>Laptops</option><option>Desktops & Gaming</option><option>Monitors</option><option>Networking</option><option>CCTV & Security</option><option>Accessories</option><option>Refurbished</option><option>Printers</option><option>Other</option></select></label><label>Brand<input id="brand" placeholder="HP, Dell, Lenovo..."></label></div>
-<div class="form-two"><label>Model<input id="model" placeholder="Model number"></label><label>Stock quantity<input id="stock" type="number" min="0" step="1" value="1"></label></div>
-<label>Short features (one per line)<textarea id="features" rows="4" placeholder="Core i5 12th Gen&#10;16GB RAM&#10;512GB SSD"></textarea></label>
-<label>Full description<textarea id="description" rows="4" placeholder="Detailed product description"></textarea></label>
-<label>Specifications (optional JSON)<textarea id="specifications" rows="3" placeholder='{"Processor":"Core i5","RAM":"16GB"}'></textarea></label>
-<div class="form-two"><label>MRP / Regular price (₹)<input id="regularPrice" type="number" min="0" step="0.01" value="0"></label><label>Selling price (₹) *<input id="sellingPrice" type="number" min="0.01" step="0.01" required></label></div>
-<label>Product images (multiple allowed)<input id="images" type="file" accept="image/*" multiple><small>JPG, PNG, WebP. Public product images are displayed on the website.</small></label><div id="imagePreview" class="media-preview"></div>
-<label>Product video (optional)<input id="videoFile" type="file" accept="video/mp4,video/webm,video/quicktime"><small>Or use a YouTube/Vimeo URL below. Keep videos compressed to fit your storage quota.</small></label>
-<label>Video URL<input id="videoUrl" type="url" placeholder="https://www.youtube.com/watch?v=..."></label>
-<label>Publish status<select id="status"><option value="draft">Draft (hidden from shop)</option><option value="published">Published (visible in shop)</option><option value="archived">Archived</option></select></label>
-<button class="button primary" id="saveProduct" type="submit">Save product ↗</button><p id="productMessage" class="admin-message" role="status"></p>
-</form></section>
-<section class="admin-panel product-list-panel"><div class="editor-head"><h2>Your catalogue</h2><button id="refreshProducts" class="text-link" type="button">Refresh ↻</button></div><div id="productList" class="admin-product-list"><p>Loading products…</p></div></section></div>
-</section><footer class="admin-footer">Hexa Computronics · Kanpur · Admin access only</footer></main></body></html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Hexa Admin | Product &amp; Order Manager</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="admin.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="admin.js" defer></script>
+<style>
+  /* === ORDER MANAGEMENT UPGRADE STYLES === */
+  .admin-tabs {
+    display: flex;
+    gap: 10px;
+    margin: 18px 0 22px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .admin-tab-btn {
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+  }
+  .admin-tab-btn:hover { background: #e2e8f0; color: #0f172a; }
+  .admin-tab-btn.active {
+    background: #0f172a;
+    color: #ffffff;
+    border-color: #0f172a;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+  }
+  .tab-badge {
+    background: #ef4444;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 999px;
+  }
+  .orders-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .orders-toolbar input,
+  .orders-toolbar select {
+    padding: 10px 13px;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    font-size: 14px;
+    background: #ffffff;
+    color: #0f172a;
+  }
+  .orders-toolbar input { flex: 1; min-width: 220px; }
+  .orders-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .order-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 3px 10px rgba(15, 23, 42, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .order-card.cod-highlight { border-left: 5px solid #f59e0b; }
+  .order-card.paid-highlight { border-left: 5px solid #22c55e; }
+  .order-card.shipped-highlight { border-left: 5px solid #3b82f6; }
+  .order-card.delivered-highlight { border-left: 5px solid #15803d; }
+  .order-card.cancelled-highlight { border-left: 5px solid #ef4444; opacity: 0.78; }
+
+  .order-top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 10px;
+  }
+  .order-id { font-weight: 800; font-size: 15px; color: #0f172a; }
+  .order-date { font-size: 12.5px; color: #64748b; display: block; margin-top: 2px; }
+  .order-amount { font-size: 20px; font-weight: 900; color: #0f172a; }
+  .status-pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-left: 8px;
+  }
+  .st-cod_pending { background: #fef3c7; color: #92400e; }
+  .st-paid { background: #dcfce7; color: #166534; }
+  .st-confirmed { background: #e0e7ff; color: #3730a3; }
+  .st-shipped { background: #dbeafe; color: #1e40af; }
+  .st-delivered { background: #bbf7d0; color: #14532d; }
+  .st-cancelled { background: #fee2e2; color: #991b1b; }
+
+  .order-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 14px;
+    font-size: 13.5px;
+    color: #334155;
+  }
+  .order-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 12px;
+  }
+  .order-box small {
+    display: block;
+    font-size: 11px;
+    font-weight: 800;
+    color: #64748b;
+    letter-spacing: 0.7px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+  }
+  .order-items-ul { margin: 0; padding-left: 16px; }
+  .order-items-ul li { margin-bottom: 4px; font-weight: 600; color: #0f172a; }
+
+  .order-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed #e2e8f0;
+  }
+  .order-status-select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-weight: 700;
+    font-size: 13px;
+    background: #ffffff;
+    color: #0f172a;
+    cursor: pointer;
+  }
+  .ord-btn {
+    padding: 8px 13px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: opacity 0.2s;
+  }
+  .ord-btn:hover { opacity: 0.88; }
+  .btn-wa-cod { background: #f59e0b; color: #0f172a; }
+  .btn-wa-msg { background: #16a34a; color: #ffffff; }
+  .btn-print { background: #0f172a; color: #ffffff; }
+  .btn-del-ord { background: #fee2e2; color: #b91c1c; margin-left: auto; }
+  .orders-status-msg { font-size: 13px; font-weight: 600; color: #15803d; margin-bottom: 10px; min-height: 18px; }
+</style>
+</head>
+<body class="admin-body">
+<main class="admin-shell">
+  <header class="admin-top">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">H<span>×</span></span>
+      <span class="brand-name">HEXA<small>COMPUTRONICS</small></span>
+    </a>
+    <span class="admin-label">SECURE ADMIN</span>
+  </header>
+
+  <section id="loginPanel" class="admin-panel login-panel">
+    <span class="eyebrow">ADMIN ACCESS</span>
+    <h1>Welcome back.</h1>
+    <p>Sign in with your authorized Hexa administrator account.</p>
+    <form id="loginForm">
+      <label>Email<input id="loginEmail" type="email" value="hexaknp@gmail.com" required autocomplete="username"></label>
+      <label>Password<div class="password-input-wrapper"><input id="loginPassword" type="password" required autocomplete="current-password"><span id="toggleLoginPassword" class="eye-icon">👁️</span></div></label>
+      <button class="button primary" type="submit">Sign in ↗</button>
+      <button id="forgotPasswordBtn" class="text-link" type="button">Forgot password?</button>
+      <p id="loginMessage" class="admin-message" role="status"></p>
+    </form>
+    <form id="forgotForm" hidden>
+      <h2>Reset your password</h2>
+      <p>We will email a secure password reset link to your admin email.</p>
+      <label>Admin email<input id="recoveryEmail" type="email" value="hexaknp@gmail.com" required autocomplete="email"></label>
+      <button class="button primary" type="submit">Send reset link</button>
+      <button id="backToLogin" class="text-link" type="button">Back to sign in</button>
+      <p id="recoveryMessage" class="admin-message" role="status"></p>
+    </form>
+    <form id="newPasswordForm" hidden>
+      <h2>Choose a new password</h2>
+      <label>New password<div class="password-input-wrapper"><input id="newPassword" type="password" minlength="8" required autocomplete="new-password"><span id="toggleNewPassword" class="eye-icon">👁️</span></div></label>
+      <label>Confirm new password<div class="password-input-wrapper"><input id="confirmPassword" type="password" minlength="8" required autocomplete="new-password"><span id="toggleConfirmPassword" class="eye-icon">👁️</span></div></label>
+      <button class="button primary" type="submit">Save new password</button>
+      <p id="newPasswordMessage" class="admin-message" role="status"></p>
+    </form>
+  </section>
+
+  <section id="dashboard" hidden>
+    <div class="admin-heading">
+      <div>
+        <span class="eyebrow">HEXA CONTROL CENTER</span>
+        <h1>Manage store<span>.</span></h1>
+        <p>Add products, update prices, manage customer orders, COD advances and dispatch slips.</p>
+      </div>
+      <button id="logoutBtn" class="button secondary">Sign out</button>
+    </div>
+
+    <!-- NAVIGATION TABS: PRODUCTS vs ORDERS -->
+    <div class="admin-tabs" role="tablist">
+      <button type="button" class="admin-tab-btn active" id="tabProductsBtn" onclick="switchAdminTab('products')">📦 Products Manager</button>
+      <button type="button" class="admin-tab-btn" id="tabOrdersBtn" onclick="switchAdminTab('orders')">
+        🛒 Orders Manager <span id="codPendingBadge" class="tab-badge" hidden>0</span>
+      </button>
+    </div>
+
+    <!-- TAB 1: EXISTING PRODUCTS MANAGER -->
+    <div id="productsTabPanel">
+      <div class="admin-stats">
+        <article><small>TOTAL PRODUCTS</small><b id="totalProducts">0</b></article>
+        <article><small>PUBLISHED</small><b id="publishedProducts">0</b></article>
+        <article><small>DRAFTS</small><b id="draftProducts">0</b></article>
+      </div>
+
+      <div class="admin-layout">
+        <section class="admin-panel product-editor">
+          <div class="editor-head">
+            <h2 id="editorTitle">Add a product</h2>
+            <button id="resetForm" type="button" class="text-link">Clear form</button>
+          </div>
+          <form id="productForm">
+            <input type="hidden" id="productId">
+            <label>Product name *<input id="name" required maxlength="150" placeholder="e.g. HP ProBook 440 G10"></label>
+            <div class="form-two">
+              <label>Category
+                <select id="category">
+                  <option>Laptops</option>
+                  <option>Desktops &amp; Gaming</option>
+                  <option>Monitors</option>
+                  <option>Networking</option>
+                  <option>CCTV &amp; Security</option>
+                  <option>Accessories</option>
+                  <option>Refurbished</option>
+                  <option>Printers</option>
+                  <option>Antivirus</option>
+                  <option>Other</option>
+                </select>
+              </label>
+              <label>Brand<input id="brand" placeholder="HP, Dell, Lenovo..."></label>
+            </div>
+            <div class="form-two">
+              <label>Model<input id="model" placeholder="Model number"></label>
+              <label>Stock quantity<input id="stock" type="number" min="0" step="1" value="1"></label>
+            </div>
+            <label>Short features (one per line)<textarea id="features" rows="4" placeholder="Core i5 12th Gen&#10;16GB RAM&#10;512GB SSD"></textarea></label>
+            <label>Full description<textarea id="description" rows="4" placeholder="Detailed product description"></textarea></label>
+            <label>Specifications (optional JSON)<textarea id="specifications" rows="3" placeholder='{"Processor":"Core i5","RAM":"16GB"}'></textarea></label>
+            <div class="form-two">
+              <label>MRP / Regular price (₹)<input id="regularPrice" type="number" min="0" step="0.01" value="0"></label>
+              <label>Selling price (₹) *<input id="sellingPrice" type="number" min="0.01" step="0.01" required></label>
+            </div>
+            <label>Product images (multiple allowed)<input id="images" type="file" accept="image/*" multiple><small>JPG, PNG, WebP. Public product images are displayed on the website.</small></label>
+            <div id="imagePreview" class="media-preview"></div>
+            <label>Product video (optional)<input id="videoFile" type="file" accept="video/mp4,video/webm,video/quicktime"><small>Or use a YouTube/Vimeo URL below. Keep videos compressed to fit your storage quota.</small></label>
+            <label>Video URL<input id="videoUrl" type="url" placeholder="https://www.youtube.com/watch?v=..."></label>
+            <label>Publish status
+              <select id="status">
+                <option value="draft">Draft (hidden from shop)</option>
+                <option value="published">Published (visible in shop)</option>
+                <option value="archived">Archived</option>
+              </select>
+            </label>
+            <button class="button primary" id="saveProduct" type="submit">Save product ↗</button>
+            <p id="productMessage" class="admin-message" role="status"></p>
+          </form>
+        </section>
+
+        <section class="admin-panel product-list-panel">
+          <div class="editor-head">
+            <h2>Your catalogue</h2>
+            <button id="refreshProducts" class="text-link" type="button">Refresh ↻</button>
+          </div>
+          <div id="productList" class="admin-product-list"><p>Loading products…</p></div>
+        </section>
+      </div>
+    </div>
+
+    <!-- TAB 2: UPGRADED ORDER MANAGEMENT PANEL -->
+    <div id="ordersTabPanel" hidden>
+      <div class="admin-stats">
+        <article><small>TOTAL ORDERS</small><b id="statTotalOrders">0</b></article>
+        <article><small>COD PENDING</small><b id="statCodPending" style="color:#d97706;">0</b></article>
+        <article><small>PAID / CONFIRMED</small><b id="statPaidOrders" style="color:#16a34a;">0</b></article>
+        <article><small>TOTAL REVENUE</small><b id="statTotalRevenue">₹0</b></article>
+      </div>
+
+      <section class="admin-panel">
+        <div class="editor-head" style="margin-bottom:14px;">
+          <h2>Customer Orders</h2>
+          <button id="refreshOrdersBtn" class="text-link" type="button" onclick="loadAdminOrders()">Refresh Orders ↻</button>
+        </div>
+
+        <div class="orders-toolbar">
+          <input type="search" id="orderSearch" placeholder="Search by customer name, phone, PIN or Order ID..." oninput="renderAdminOrders()">
+          <select id="orderStatusFilter" onchange="renderAdminOrders()">
+            <option value="all">All Statuses</option>
+            <option value="cod_pending">COD Pending (₹500 Advance)</option>
+            <option value="paid">Paid (Online)</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="shipped">Shipped</option>
+            <option value="delivered">Delivered</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+
+        <div id="ordersStatusMsg" class="orders-status-msg" role="status"></div>
+        <div id="ordersList" class="orders-list"><p>Loading orders…</p></div>
+      </section>
+    </div>
+  </section>
+
+  <footer class="admin-footer">Hexa Computronics · Kanpur · Admin access only</footer>
+</main>
+
+<!-- SELF-CONTAINED ORDER MANAGEMENT SCRIPT -->
+<script>
+(function() {
+  let adminSb = null;
+  let allOrders = [];
+  let productLookup = {};
+
+  function getAdminSb() {
+    if (adminSb) return adminSb;
+    if (!window.supabase || !window.HEXA_SUPABASE_URL || !window.HEXA_SUPABASE_ANON_KEY) return null;
+    adminSb = window.supabase.createClient(window.HEXA_SUPABASE_URL, window.HEXA_SUPABASE_ANON_KEY);
+    return adminSb;
+  }
+
+  function formatINR(num) {
+    return '₹' + Math.round(Number(num || 0)).toLocaleString('en-IN');
+  }
+
+  function escapeHtml(str) {
+    return String(str || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  window.switchAdminTab = function(tab) {
+    const prodPanel = document.getElementById('productsTabPanel');
+    const ordPanel = document.getElementById('ordersTabPanel');
+    const prodBtn = document.getElementById('tabProductsBtn');
+    const ordBtn = document.getElementById('tabOrdersBtn');
+
+    if (tab === 'orders') {
+      prodPanel.hidden = true;
+      ordPanel.hidden = false;
+      prodBtn.classList.remove('active');
+      ordBtn.classList.add('active');
+      loadAdminOrders();
+    } else {
+      prodPanel.hidden = false;
+      ordPanel.hidden = true;
+      prodBtn.classList.add('active');
+      ordBtn.classList.remove('active');
+    }
+  };
+
+  async function buildProductLookup(sb) {
+    try {
+      const { data } = await sb.from('products').select('id, name, selling_price');
+      if (data) {
+        data.forEach(p => { productLookup[String(p.id)] = p; });
+      }
+    } catch (e) {}
+  }
+
+  function formatOrderItemsList(itemsObj) {
+    if (!itemsObj || typeof itemsObj !== 'object') return ['No item details'];
+    return Object.entries(itemsObj).map(([id, qty]) => {
+      const p = productLookup[String(id)];
+      if (p) return `${p.name} × ${qty} (${formatINR(Number(p.selling_price || 0) * qty)})`;
+      return `Product #${id} × ${qty}`;
+    });
+  }
+
+  window.loadAdminOrders = async function() {
+    const listEl = document.getElementById('ordersList');
+    const msgEl = document.getElementById('ordersStatusMsg');
+    const sb = getAdminSb();
+    if (!sb) return;
+
+    listEl.innerHTML = '<p>Loading orders…</p>';
+    msgEl.textContent = '';
+
+    try {
+      await buildProductLookup(sb);
+      let { data, error } = await sb.from('orders').select('*').order('created_at', { ascending: false });
+      if (error) {
+        // Fallback if created_at column does not exist
+        const res2 = await sb.from('orders').select('*').order('id', { ascending: false });
+        data = res2.data;
+        error = res2.error;
+      }
+      if (error) throw error;
+
+      allOrders = data || [];
+      updateOrderStats();
+      renderAdminOrders();
+    } catch (err) {
+      listEl.innerHTML = `<p style="color:#dc2626;">Could not load orders: ${escapeHtml(err.message)}</p>`;
+    }
+  };
+
+  function updateOrderStats() {
+    const total = allOrders.length;
+    const codPending = allOrders.filter(o => o.status === 'cod_pending').length;
+    const paidOrConf = allOrders.filter(o => ['paid', 'confirmed', 'shipped', 'delivered'].includes(o.status)).length;
+    const revenue = allOrders
+      .filter(o => o.status !== 'cancelled')
+      .reduce((sum, o) => sum + Number(o.amount || 0), 0);
+
+    document.getElementById('statTotalOrders').textContent = total;
+    document.getElementById('statCodPending').textContent = codPending;
+    document.getElementById('statPaidOrders').textContent = paidOrConf;
+    document.getElementById('statTotalRevenue').textContent = formatINR(revenue);
+
+    const badge = document.getElementById('codPendingBadge');
+    if (codPending > 0) {
+      badge.textContent = codPending;
+      badge.hidden = false;
+    } else {
+      badge.hidden = true;
+    }
+  }
+
+  window.renderAdminOrders = function() {
+    const listEl = document.getElementById('ordersList');
+    const q = (document.getElementById('orderSearch').value || '').trim().toLowerCase();
+    const stFilter = document.getElementById('orderStatusFilter').value;
+
+    const filtered = allOrders.filter(o => {
+      const matchStatus = stFilter === 'all' || o.status === stFilter;
+      const hay = `${o.customer_name} ${o.customer_phone} ${o.customer_email} ${o.pincode} ${o.razorpay_payment_id} ${o.delivery_address}`.toLowerCase();
+      return matchStatus && (!q || hay.includes(q));
+    });
+
+    if (!filtered.length) {
+      listEl.innerHTML = '<p style="color:#64748b; padding:16px 0;">No matching orders found.</p>';
+      return;
+    }
+
+    listEl.innerHTML = filtered.map((o, idx) => {
+      const st = o.status || 'cod_pending';
+      const dateStr = o.created_at ? new Date(o.created_at).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) : 'Recent Order';
+      const itemsArr = formatOrderItemsList(o.items);
+      const phone10 = String(o.customer_phone || '').replace(/\D/g, '').slice(-10);
+      const highlightClass = st === 'cod_pending' ? 'cod-highlight' : (st === 'paid' || st === 'confirmed') ? 'paid-highlight' : st === 'shipped' ? 'shipped-highlight' : st === 'delivered' ? 'delivered-highlight' : 'cancelled-highlight';
+
+      const codMsg = `Hello ${o.customer_name}, thank you for your COD order (${o.razorpay_payment_id}) of ${formatINR(o.amount)} at Hexa Computronics. To confirm & dispatch your order, please pay the ₹500 adjustable COD advance via UPI. Reply here once done!`;
+      const updateMsg = `Hello ${o.customer_name}, your Hexa Computronics order (${o.razorpay_payment_id}) status is now: ${st.toUpperCase()}. Total: ${formatINR(o.amount)}. Thank you for shopping with us!`;
+
+      return `
+      <article class="order-card ${highlightClass}">
+        <div class="order-top">
+          <div>
+            <span class="order-id">${escapeHtml(o.razorpay_payment_id || ('Order #' + o.id))}</span>
+            <span class="status-pill st-${escapeHtml(st)}">${escapeHtml(st.replace('_', ' '))}</span>
+            <span class="order-date">${escapeHtml(dateStr)}</span>
+          </div>
+          <div class="order-amount">${formatINR(o.amount)}</div>
+        </div>
+
+        <div class="order-grid">
+          <div class="order-box">
+            <small>Customer &amp; Delivery</small>
+            <b>${escapeHtml(o.customer_name)}</b><br>
+            📞 <a href="tel:${escapeHtml(phone10)}">${escapeHtml(o.customer_phone)}</a> · ✉️ ${escapeHtml(o.customer_email || 'N/A')}<br>
+            📍 ${escapeHtml(o.delivery_address)} — <b>PIN: ${escapeHtml(o.pincode)}</b>
+          </div>
+          <div class="order-box">
+            <small>Ordered Items</small>
+            <ul class="order-items-ul">
+              ${itemsArr.map(it => `<li>${escapeHtml(it)}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+
+        <div class="order-actions">
+          <select class="order-status-select" onchange="updateOrderStatus('${escapeHtml(o.id)}', this.value)" aria-label="Change order status">
+            <option value="cod_pending" ${st === 'cod_pending' ? 'selected' : ''}>COD Pending</option>
+            <option value="paid" ${st === 'paid' ? 'selected' : ''}>Paid (Online)</option>
+            <option value="confirmed" ${st === 'confirmed' ? 'selected' : ''}>Confirmed</option>
+            <option value="shipped" ${st === 'shipped' ? 'selected' : ''}>Shipped</option>
+            <option value="delivered" ${st === 'delivered' ? 'selected' : ''}>Delivered</option>
+            <option value="cancelled" ${st === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+          </select>
+
+          ${st === 'cod_pending' ? `<a class="ord-btn btn-wa-cod" href="https://wa.me/91${phone10}?text=${encodeURIComponent(codMsg)}" target="_blank" rel="noopener">💬 Ask ₹500 COD Advance</a>` : ''}
+          <a class="ord-btn btn-wa-msg" href="https://wa.me/91${phone10}?text=${encodeURIComponent(updateMsg)}" target="_blank" rel="noopener">💬 WhatsApp Update</a>
+          <button type="button" class="ord-btn btn-print" onclick="printOrderSlip('${escapeHtml(o.id)}')">🖨️ Print Slip</button>
+          <button type="button" class="ord-btn btn-del-ord" onclick="deleteAdminOrder('${escapeHtml(o.id)}')">🗑️ Delete</button>
+        </div>
+      </article>`;
+    }).join('');
+  };
+
+  window.updateOrderStatus = async function(orderId, newStatus) {
+    const msgEl = document.getElementById('ordersStatusMsg');
+    const sb = getAdminSb();
+    if (!sb) return;
+    msgEl.style.color = '#1e40af';
+    msgEl.textContent = 'Updating order status...';
+    try {
+      const { error } = await sb.from('orders').update({ status: newStatus }).eq('id', orderId);
+      if (error) throw error;
+      const target = allOrders.find(o => String(o.id) === String(orderId));
+      if (target) target.status = newStatus;
+      updateOrderStats();
+      renderAdminOrders();
+      msgEl.style.color = '#15803d';
+      msgEl.textContent = `✓ Order status updated to "${newStatus.toUpperCase()}".`;
+    } catch (err) {
+      msgEl.style.color = '#dc2626';
+      msgEl.textContent = '✕ Update failed: ' + err.message;
+    }
+  };
+
+  window.deleteAdminOrder = async function(orderId) {
+    if (!confirm('Are you sure you want to permanently delete this order?')) return;
+    const msgEl = document.getElementById('ordersStatusMsg');
+    const sb = getAdminSb();
+    if (!sb) return;
+    try {
+      const { error } = await sb.from('orders').delete().eq('id', orderId);
+      if (error) throw error;
+      allOrders = allOrders.filter(o => String(o.id) !== String(orderId));
+      updateOrderStats();
+      renderAdminOrders();
+      msgEl.style.color = '#15803d';
+      msgEl.textContent = '✓ Order deleted.';
+    } catch (err) {
+      msgEl.style.color = '#dc2626';
+      msgEl.textContent = '✕ Delete failed: ' + err.message;
+    }
+  };
+
+  window.printOrderSlip = function(orderId) {
+    const o = allOrders.find(x => String(x.id) === String(orderId));
+    if (!o) return;
+    const itemsArr = formatOrderItemsList(o.items);
+    const dateStr = o.created_at ? new Date(o.created_at).toLocaleString('en-IN') : new Date().toLocaleDateString('en-IN');
+    const win = window.open('', '_blank', 'width=720,height=780');
+    win.document.write(`
+      <!doctype html><html><head><title>Order Slip - ${escapeHtml(o.razorpay_payment_id)}</title>
+      <style>
+        body { font-family: system-ui, sans-serif; padding: 28px; color: #0f172a; line-height: 1.5; }
+        .head { display: flex; justify-content: space-between; border-bottom: 2px solid #0f172a; padding-bottom: 12px; margin-bottom: 18px; }
+        .box { border: 1px solid #cbd5e1; border-radius: 8px; padding: 14px; margin-bottom: 16px; }
+        h1 { margin: 0; font-size: 20px; } h3 { margin: 0 0 8px; font-size: 14px; text-transform: uppercase; color: #475569; }
+        .total { font-size: 20px; font-weight: 800; text-align: right; margin-top: 12px; }
+        @media print { button { display: none; } }
+      </style></head><body>
+      <div class="head">
+        <div><h1>HEXA COMPUTRONICS</h1><small>119/540 New Basant Cinema Building, Gumti No. 5, Kanpur, UP<br>Phone: 84007 02268 / 99355 29306 · www.hexacomputer.in</small></div>
+        <div style="text-align:right;"><b>PACKING / ORDER SLIP</b><br><small>Order ID: ${escapeHtml(o.razorpay_payment_id)}<br>Date: ${escapeHtml(dateStr)}<br>Status: ${escapeHtml((o.status || '').toUpperCase())}</small></div>
+      </div>
+      <div class="box">
+        <h3>Deliver To</h3>
+        <b>${escapeHtml(o.customer_name)}</b><br>
+        ${escapeHtml(o.delivery_address)}<br>
+        <b>PIN Code: ${escapeHtml(o.pincode)}</b><br>
+        Phone: ${escapeHtml(o.customer_phone)} · Email: ${escapeHtml(o.customer_email || 'N/A')}
+      </div>
+      <div class="box">
+        <h3>Items</h3>
+        <ul>${itemsArr.map(i => `<li>${escapeHtml(i)}</li>`).join('')}</ul>
+        <div class="total">Total Payable / Paid: ${formatINR(o.amount)}</div>
+      </div>
+      <button onclick="window.print()" style="padding:10px 20px; background:#0f172a; color:#fff; border:none; border-radius:6px; cursor:pointer; font-weight:700;">Print Slip</button>
+      </body></html>
+    `);
+    win.document.close();
+  };
+
+  // Auto-load orders count once admin signs in and #dashboard becomes visible
+  document.addEventListener('DOMContentLoaded', () => {
+    const dash = document.getElementById('dashboard');
+    if (!dash) return;
+    const observer = new MutationObserver(() => {
+      if (!dash.hidden && allOrders.length === 0) {
+        loadAdminOrders();
+      }
+    });
+    observer.observe(dash, { attributes: true, attributeFilter: ['hidden'] });
+    if (!dash.hidden) loadAdminOrders();
+  });
+})();
+</script>
+</body>
+</html>
