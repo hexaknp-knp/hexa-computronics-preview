@@ -3,42 +3,78 @@
   <!-- Main Home Page -->
   <url>
     <loc>https://www.hexacomputer.in/</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <!-- Website Creation Live Demo Templates -->
+  <url>
+    <loc>https://www.hexacomputer.in/demo-business.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.hexacomputer.in/demo-clinic.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.hexacomputer.in/demo-restaurant.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.hexacomputer.in/demo-coaching.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.hexacomputer.in/demo-realestate.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.hexacomputer.in/demo-ca.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.hexacomputer.in/demo-showroom.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- Policy Pages -->
   <url>
     <loc>https://www.hexacomputer.in/shipping.html</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.hexacomputer.in/refund.html</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.hexacomputer.in/privacy.html</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.hexacomputer.in/terms.html</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.6</priority>
   </url>
-</urlset>
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://hexacomputer.in/</loc><priority>1.0</priority></url>
-  <url><loc>https://hexacomputer.in/demo-business.html</loc><priority>0.8</priority></url>
-  <url><loc>https://hexacomputer.in/demo-clinic.html</loc><priority>0.8</priority></url>
-  <url><loc>https://hexacomputer.in/demo-restaurant.html</loc><priority>0.8</priority></url>
-  <url><loc>https://hexacomputer.in/demo-coaching.html</loc><priority>0.8</priority></url>
-  <url><loc>https://hexacomputer.in/demo-realestate.html</loc><priority>0.8</priority></url>
 </urlset>
