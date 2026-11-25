@@ -3,106 +3,178 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Apex Academy — IIT-JEE, NEET & Skill Coaching | Demo by Hexa Computronics</title>
-  <meta name="description" content="Sample Coaching Institute & Academy website template designed by Hexa Computronics, Kanpur.">
+  <title>Apex Academy — IIT-JEE, NEET &amp; Career Coaching | Demo by Hexa Computronics</title>
+  <meta name="description" content="Modern Coaching Institute &amp; Academy website template designed by Hexa Computronics, Kanpur.">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-    body { color: #1e293b; background: #f8fafc; line-height: 1.6; }
-    .demo-bar { background: #0f172a; color: #fff; text-align: center; padding: 8px 16px; font-size: 13px; }
+    :root { --primary: #1d4ed8; --primary-dark: #1e3a8a; --accent: #f59e0b; --dark: #0f172a; --muted: #64748b; --bg: #f8fafc; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    body { color: var(--dark); background: var(--bg); line-height: 1.6; }
+    .demo-bar { background: var(--dark); color: #e2e8f0; text-align: center; padding: 8px 16px; font-size: 13px; }
     .demo-bar a { color: #38bdf8; font-weight: 600; text-decoration: none; }
-    header { background: #fff; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 50; }
-    .nav { max-width: 1100px; margin: auto; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-size: 20px; font-weight: 800; color: #1d4ed8; }
-    .nav-links a { margin-left: 20px; text-decoration: none; color: #334155; font-weight: 500; font-size: 15px; }
-    .btn { display: inline-block; background: #1d4ed8; color: #fff; padding: 11px 22px; border-radius: 8px; text-decoration: none; font-weight: 600; border: none; cursor: pointer; }
-    .btn:hover { background: #1e40af; }
-    .hero { background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #fff; padding: 64px 20px; text-align: center; }
-    .hero h1 { font-size: clamp(28px, 5vw, 44px); margin-bottom: 14px; }
-    .hero p { max-width: 640px; margin: 0 auto 24px; color: #dbeafe; font-size: 17px; }
-    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; max-width: 900px; margin: -30px auto 40px; padding: 0 20px; }
-    .stat-card { background: #fff; padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,0.06); }
-    .stat-card h3 { font-size: 26px; color: #1d4ed8; }
-    .section { max-width: 1100px; margin: 48px auto; padding: 0 20px; }
-    .section h2 { text-align: center; font-size: 28px; margin-bottom: 28px; color: #0f172a; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-    .card { background: #fff; padding: 24px; border-radius: 12px; border: 1px solid #e2e8f0; }
-    .card h3 { margin-bottom: 8px; color: #0f172a; }
-    .badge { display: inline-block; background: #eff6ff; color: #1d4ed8; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 10px; }
-    .price { font-size: 20px; font-weight: 700; color: #0f172a; margin: 14px 0; }
-    .form-box { background: #fff; max-width: 600px; margin: auto; padding: 28px; border-radius: 14px; border: 1px solid #e2e8f0; }
-    .form-box input, .form-box select { width: 100%; padding: 12px; margin-bottom: 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 15px; }
-    footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 28px 20px; margin-top: 60px; font-size: 14px; }
-    @media (max-width: 640px) { .nav-links { display: none; } }
+    header { background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 50; }
+    .nav { max-width: 1140px; margin: auto; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 22px; font-weight: 800; color: var(--primary-dark); letter-spacing: -0.3px; }
+    .logo span { color: var(--accent); }
+    .nav-links a { margin-left: 22px; text-decoration: none; color: #334155; font-weight: 600; font-size: 14.5px; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--primary); }
+    .btn { display: inline-block; background: var(--primary); color: #fff; padding: 11px 22px; border-radius: 10px; text-decoration: none; font-weight: 600; border: none; cursor: pointer; transition: all 0.25s ease; }
+    .btn:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(29,78,216,0.28); }
+    .hero { background: linear-gradient(135deg, rgba(15,23,42,0.88), rgba(29,78,216,0.80)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat; color: #fff; padding: 88px 20px 104px; text-align: center; }
+    .hero-badge { display: inline-block; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.28); padding: 6px 16px; border-radius: 50px; font-size: 13px; margin-bottom: 16px; backdrop-filter: blur(6px); }
+    .hero h1 { font-size: clamp(30px, 5vw, 48px); margin-bottom: 14px; line-height: 1.15; }
+    .hero p { max-width: 660px; margin: 0 auto 28px; color: #e2e8f0; font-size: 17px; }
+    .stats { max-width: 960px; margin: -46px auto 48px; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px; position: relative; z-index: 10; }
+    .stat-card { background: #fff; padding: 22px; border-radius: 14px; text-align: center; box-shadow: 0 10px 28px rgba(15,23,42,0.08); border: 1px solid #e2e8f0; transition: transform 0.25s ease; }
+    .stat-card:hover { transform: translateY(-4px); }
+    .stat-card h3 { font-size: 27px; color: var(--primary); }
+    .stat-card p { font-size: 13px; color: var(--muted); font-weight: 500; }
+    .section { max-width: 1140px; margin: 56px auto; padding: 0 20px; }
+    .section h2 { text-align: center; font-size: 30px; margin-bottom: 8px; color: var(--dark); }
+    .section-sub { text-align: center; color: var(--muted); margin-bottom: 34px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .card { background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; transition: all 0.3s ease; display: flex; flex-direction: column; }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 18px 36px rgba(15,23,42,0.1); border-color: #93c5fd; }
+    .card-img { height: 190px; overflow: hidden; position: relative; }
+    .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.45s ease; }
+    .card:hover .card-img img { transform: scale(1.08); }
+    .badge { position: absolute; top: 12px; left: 12px; background: rgba(15,23,42,0.82); color: #fff; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+    .card-body { padding: 22px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .card h3 { font-size: 20px; color: var(--dark); margin-bottom: 8px; }
+    .card p { font-size: 14.5px; color: #475569; margin-bottom: 14px; }
+    .price { font-size: 21px; font-weight: 800; color: var(--primary-dark); margin-bottom: 16px; padding-top: 12px; border-top: 1px dashed #e2e8f0; }
+    .topper-card { background: #fff; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 16px; transition: all 0.25s ease; }
+    .topper-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(15,23,42,0.07); }
+    .topper-avatar { width: 58px; height: 58px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), #6366f1); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; flex-shrink: 0; }
+    .rank-pill { display: inline-block; background: #fef3c7; color: #92400e; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; margin-bottom: 4px; }
+    .form-box { background: #fff; max-width: 600px; margin: auto; padding: 32px; border-radius: 18px; border: 1px solid #e2e8f0; box-shadow: 0 14px 32px rgba(15,23,42,0.06); }
+    .form-box input, .form-box select { width: 100%; padding: 13px 14px; margin-bottom: 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 15px; outline: none; transition: border 0.2s; }
+    .form-box input:focus, .form-box select:focus { border-color: var(--primary); }
+    footer { background: var(--dark); color: #94a3b8; text-align: center; padding: 30px 20px; margin-top: 64px; font-size: 14px; }
+    @media (max-width: 680px) { .nav-links { display: none; } }
   </style>
 </head>
 <body>
   <div class="demo-bar">
-    Demo Template by <a href="index.html#website-samples">Hexa Computronics</a> — Aapke Institute ke liye aisi website banwayein
+    Demo Template by <a href="index.html#website-samples">Hexa Computronics</a> — Coaching Institutes &amp; Academies ke liye Modern Website
   </div>
 
   <header>
     <div class="nav">
-      <div class="logo">Apex Academy</div>
+      <div class="logo">Apex <span>Academy</span></div>
       <nav class="nav-links">
         <a href="#courses">Courses</a>
-        <a href="#results">Results</a>
+        <a href="#results">Toppers</a>
         <a href="#demo-class">Free Demo</a>
       </nav>
-      <a href="#demo-class" class="btn">Book Demo</a>
+      <a href="#demo-class" class="btn">Book Free Demo</a>
     </div>
   </header>
 
   <section class="hero">
+    <div class="hero-badge">Admissions Open 2026–27 • Limited Batch Size</div>
     <h1>Apne Career Ko Dein Sahi Disha</h1>
-    <p>IIT-JEE, NEET, Board Exams aur Computer Skill Courses ke liye expert faculty, regular mock tests aur personal mentorship.</p>
-    <a href="#demo-class" class="btn" style="background:#f59e0b; color:#0f172a;">3 Din Ki Free Demo Class Lein</a>
+    <p>IIT-JEE, NEET, Board Exams aur Job-Oriented Computer Courses ke liye expert faculty, weekly CBT mock tests aur personal mentorship.</p>
+    <a href="#demo-class" class="btn" style="background:var(--accent); color:var(--dark);">3 Din Ki Free Demo Class Lein</a>
   </section>
 
   <div class="stats">
-    <div class="stat-card"><h3>12+ Yrs</h3><p>Teaching Experience</p></div>
+    <div class="stat-card"><h3>12+ Yrs</h3><p>Teaching Excellence</p></div>
     <div class="stat-card"><h3>2,400+</h3><p>Students Selected</p></div>
-    <div class="stat-card"><h3>25:1</h3><p>Batch Ratio</p></div>
+    <div class="stat-card"><h3>25:1</h3><p>Small Batch Ratio</p></div>
     <div class="stat-card"><h3>4.9★</h3><p>Parent Rating</p></div>
   </div>
 
   <section class="section" id="courses">
-    <h2>Popular Batches & Courses</h2>
+    <h2>Popular Batches &amp; Courses</h2>
+    <p class="section-sub">Structured study material, doubt counters aur regular parent-teacher progress reports.</p>
     <div class="grid">
       <div class="card">
-        <span class="badge">Class 11 & 12</span>
-        <h3>IIT-JEE & NEET Foundation</h3>
-        <p>Daily practice sheets, weekly CBT tests aur doubt-clearing sessions.</p>
-        <div class="price">₹2,500 / month</div>
-        <a href="#demo-class" class="btn">Enquire Now</a>
+        <div class="card-img">
+          <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80" alt="IIT-JEE and NEET Foundation" loading="lazy">
+          <span class="badge">Class 11 &amp; 12</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <h3>IIT-JEE &amp; NEET Foundation</h3>
+            <p>Daily practice sheets, weekly CBT tests, NCERT line-by-line coverage aur 1-on-1 doubt sessions.</p>
+          </div>
+          <div>
+            <div class="price">₹2,500 / month</div>
+            <a href="#demo-class" class="btn" style="width:100%; text-align:center;">Enquire Now</a>
+          </div>
+        </div>
       </div>
+
       <div class="card">
-        <span class="badge">Job Oriented</span>
-        <h3>Tally Prime + GST & Advance Excel</h3>
-        <p>100% practical lab training, live GST filing aur placement assistance.</p>
-        <div class="price">₹6,500 (Complete)</div>
-        <a href="#demo-class" class="btn">Enquire Now</a>
+        <div class="card-img">
+          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80" alt="Tally Prime GST and Advance Excel" loading="lazy">
+          <span class="badge">Job Oriented</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <h3>Tally Prime + GST &amp; Excel</h3>
+            <p>100% practical computer lab training, live GST return filing aur local placement assistance.</p>
+          </div>
+          <div>
+            <div class="price">₹6,500 (Complete)</div>
+            <a href="#demo-class" class="btn" style="width:100%; text-align:center;">Enquire Now</a>
+          </div>
+        </div>
       </div>
+
       <div class="card">
-        <span class="badge">Board Special</span>
-        <h3>CBSE / ICSE Class 9 & 10</h3>
-        <p>Maths, Science aur English par strong focus + full syllabus revision.</p>
-        <div class="price">₹1,800 / month</div>
-        <a href="#demo-class" class="btn">Enquire Now</a>
+        <div class="card-img">
+          <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80" alt="CBSE and ICSE Board Classes" loading="lazy">
+          <span class="badge">Board Special</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <h3>CBSE / ICSE Class 9 &amp; 10</h3>
+            <p>Maths, Science aur English par strong conceptual focus + full syllabus pre-board revision.</p>
+          </div>
+          <div>
+            <div class="price">₹1,800 / month</div>
+            <a href="#demo-class" class="btn" style="width:100%; text-align:center;">Enquire Now</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <section class="section" id="results">
     <h2>Hamare Star Toppers</h2>
+    <p class="section-sub">Har saal consistent board results aur competitive selections.</p>
     <div class="grid">
-      <div class="card"><h3>Aarav Sharma</h3><p><strong>98.6%</strong> — Class 12 CBSE Boards (Maths 100/100)</p></div>
-      <div class="card"><h3>Ananya Verma</h3><p><strong>AIR 1,420</strong> — NEET UG Qualified (Govt. Medical College)</p></div>
-      <div class="card"><h3>Rohan Gupta</h3><p><strong>Placed</strong> — Senior Accounts Executive (Tally & GST Batch)</p></div>
+      <div class="topper-card">
+        <div class="topper-avatar">AS</div>
+        <div>
+          <span class="rank-pill">98.6% • CBSE Class 12</span>
+          <h3>Aarav Sharma</h3>
+          <p style="font-size:13.5px; color:#475569;">Maths 100/100 • Physics 99/100</p>
+        </div>
+      </div>
+      <div class="topper-card">
+        <div class="topper-avatar" style="background:linear-gradient(135deg,#0f766e,#14b8a6);">AV</div>
+        <div>
+          <span class="rank-pill">AIR 1,420 • NEET UG</span>
+          <h3>Ananya Verma</h3>
+          <p style="font-size:13.5px; color:#475569;">Selected in Govt. Medical College</p>
+        </div>
+      </div>
+      <div class="topper-card">
+        <div class="topper-avatar" style="background:linear-gradient(135deg,#b45309,#f59e0b);">RG</div>
+        <div>
+          <span class="rank-pill">Placed • Tally &amp; GST</span>
+          <h3>Rohan Gupta</h3>
+          <p style="font-size:13.5px; color:#475569;">Senior Accounts Executive</p>
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="section" id="demo-class">
     <h2>Free Demo Class Book Karein</h2>
+    <p class="section-sub">Form bharein aur seedha WhatsApp par apni seat confirm karein.</p>
     <div class="form-box">
       <form onsubmit="sendEnquiry(event)">
         <input type="text" id="studentName" placeholder="Student ka Naam" required>
@@ -110,8 +182,8 @@
         <select id="courseSelect" required>
           <option value="">Course Select Karein</option>
           <option>IIT-JEE / NEET Foundation</option>
-          <option>Tally Prime + GST & Excel</option>
-          <option>Class 9 & 10 Boards</option>
+          <option>Tally Prime + GST &amp; Excel</option>
+          <option>Class 9 &amp; 10 Boards</option>
         </select>
         <button type="submit" class="btn" style="width:100%;">WhatsApp Par Demo Book Karein</button>
       </form>
@@ -119,7 +191,7 @@
   </section>
 
   <footer>
-    <p>© 2026 Apex Academy (Demo Website). Designed & Developed by <a href="https://hexacomputer.in" style="color:#38bdf8;">Hexa Computronics, Kanpur</a></p>
+    <p>© 2026 Apex Academy (Demo Website). Designed &amp; Developed by <a href="https://www.hexacomputer.in" style="color:#38bdf8;">Hexa Computronics, Kanpur</a></p>
   </footer>
 
   <script>
@@ -129,7 +201,7 @@
       const phone = document.getElementById('studentPhone').value;
       const course = document.getElementById('courseSelect').value;
       const msg = `Hello, mujhe ${course} ki Free Demo Class book karni hai. Name: ${name}, Phone: ${phone}`;
-      window.open(`https://wa.me/91XXXXXXXXXX?text=${encodeURIComponent(msg)}`, '_blank');
+      window.open(`https://wa.me/918400702268?text=${encodeURIComponent(msg)}`, '_blank');
     }
   </script>
 </body>
