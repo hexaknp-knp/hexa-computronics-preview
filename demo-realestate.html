@@ -3,94 +3,131 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Prime Estate Infra — Flats, Plots & Commercial Properties | Demo by Hexa Computronics</title>
-  <meta name="description" content="Sample Real Estate & Property Dealer website template designed by Hexa Computronics, Kanpur.">
+  <title>Prime Estate Infra — Luxury Flats, Plots &amp; Commercial | Demo by Hexa Computronics</title>
+  <meta name="description" content="Classy Real Estate, Builders &amp; Property Dealer website template by Hexa Computronics, Kanpur.">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-    body { color: #1e293b; background: #f8fafc; line-height: 1.6; }
-    .demo-bar { background: #111827; color: #fff; text-align: center; padding: 8px 16px; font-size: 13px; }
+    :root { --teal: #0f766e; --teal-dark: #115e59; --gold: #f59e0b; --dark: #0f172a; --muted: #64748b; --bg: #f8fafc; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    body { color: var(--dark); background: var(--bg); line-height: 1.6; }
+    .demo-bar { background: #111827; color: #e2e8f0; text-align: center; padding: 8px 16px; font-size: 13px; }
     .demo-bar a { color: #fbbf24; font-weight: 600; text-decoration: none; }
-    header { background: #fff; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 50; }
-    .nav { max-width: 1120px; margin: auto; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-size: 20px; font-weight: 800; color: #0f766e; }
-    .btn { display: inline-block; background: #0f766e; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; border: none; cursor: pointer; }
-    .btn:hover { background: #115e59; }
-    .hero { background: linear-gradient(135deg, #0f172a, #134e4a); color: #fff; padding: 70px 20px; text-align: center; }
-    .hero h1 { font-size: clamp(28px, 5vw, 44px); margin-bottom: 12px; }
-    .hero p { max-width: 650px; margin: 0 auto 24px; color: #ccfbf1; font-size: 17px; }
-    .section { max-width: 1120px; margin: 48px auto; padding: 0 20px; }
-    .section h2 { text-align: center; font-size: 28px; margin-bottom: 28px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px; }
-    .prop-card { background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; display: flex; flex-direction: column; }
-    .prop-banner { height: 160px; background: linear-gradient(120deg, #0f766e, #14b8a6); color: #fff; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; }
-    .tag { background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 6px; font-size: 12px; width: fit-content; }
-    .prop-body { padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-    .price { font-size: 22px; font-weight: 800; color: #0f766e; margin: 10px 0; }
-    .meta { font-size: 14px; color: #475569; margin-bottom: 16px; }
-    .cta-strip { background: #0f766e; color: #fff; border-radius: 14px; padding: 36px 24px; text-align: center; }
-    footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 28px 20px; margin-top: 60px; font-size: 14px; }
+    header { background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 50; }
+    .nav { max-width: 1140px; margin: auto; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 22px; font-weight: 800; color: var(--teal); letter-spacing: -0.3px; }
+    .logo span { color: var(--dark); }
+    .btn { display: inline-block; background: var(--teal); color: #fff; padding: 11px 22px; border-radius: 10px; text-decoration: none; font-weight: 600; border: none; cursor: pointer; transition: all 0.25s ease; }
+    .btn:hover { background: var(--teal-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15,118,110,0.28); }
+    .hero { background: linear-gradient(135deg, rgba(15,23,42,0.84), rgba(19,78,74,0.78)), url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat; color: #fff; padding: 94px 20px 106px; text-align: center; }
+    .hero-tag { display: inline-block; border: 1px solid rgba(251,191,36,0.7); color: #fde68a; background: rgba(15,23,42,0.45); padding: 6px 16px; border-radius: 50px; font-size: 13px; margin-bottom: 16px; letter-spacing: 0.4px; }
+    .hero h1 { font-size: clamp(30px, 5vw, 48px); margin-bottom: 14px; line-height: 1.15; }
+    .hero p { max-width: 650px; margin: 0 auto 28px; color: #ccfbf1; font-size: 17px; }
+    .trust-bar { max-width: 960px; margin: -44px auto 48px; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; position: relative; z-index: 10; }
+    .trust-item { background: #fff; padding: 20px; border-radius: 14px; text-align: center; box-shadow: 0 10px 28px rgba(15,23,42,0.08); border: 1px solid #e2e8f0; }
+    .trust-item b { display: block; font-size: 18px; color: var(--teal); }
+    .trust-item span { font-size: 13px; color: var(--muted); }
+    .section { max-width: 1140px; margin: 56px auto; padding: 0 20px; }
+    .section h2 { text-align: center; font-size: 30px; margin-bottom: 8px; }
+    .section-sub { text-align: center; color: var(--muted); margin-bottom: 34px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 26px; }
+    .prop-card { background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; display: flex; flex-direction: column; transition: all 0.3s ease; }
+    .prop-card:hover { transform: translateY(-7px); box-shadow: 0 20px 38px rgba(15,23,42,0.12); border-color: #99f6e4; }
+    .prop-img { height: 220px; overflow: hidden; position: relative; }
+    .prop-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .prop-card:hover .prop-img img { transform: scale(1.09); }
+    .tag { position: absolute; top: 12px; left: 12px; background: rgba(15,23,42,0.82); color: #fde68a; padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+    .prop-body { padding: 22px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .prop-body h3 { font-size: 20px; color: var(--dark); margin-bottom: 6px; }
+    .price { font-size: 23px; font-weight: 800; color: var(--teal); margin-bottom: 12px; }
+    .specs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+    .specs span { background: #f1f5f9; color: #334155; font-size: 12.5px; font-weight: 600; padding: 4px 10px; border-radius: 6px; }
+    .cta-strip { background: linear-gradient(135deg, #0f172a, #0f766e); color: #fff; border-radius: 18px; padding: 44px 24px; text-align: center; box-shadow: 0 14px 32px rgba(15,118,110,0.2); }
+    footer { background: var(--dark); color: #94a3b8; text-align: center; padding: 30px 20px; margin-top: 64px; font-size: 14px; }
   </style>
 </head>
 <body>
   <div class="demo-bar">
-    Demo Template by <a href="index.html#website-samples">Hexa Computronics</a> — Builders & Property Dealers ke liye Ready Website
+    Demo Template by <a href="index.html#website-samples">Hexa Computronics</a> — Builders &amp; Property Dealers ke liye Classy Website
   </div>
 
   <header>
     <div class="nav">
-      <div class="logo">Prime Estate Infra</div>
+      <div class="logo">Prime<span>Estate</span></div>
       <a href="#visit" class="btn">Schedule Site Visit</a>
     </div>
   </header>
 
   <section class="hero">
-    <h1>RERA Approved Flats, Plots & Commercial Spaces</h1>
-    <p>Transparent deals, bank loan assistance aur prime locations par ready-to-move properties — direct builder prices par.</p>
-    <a href="#listings" class="btn" style="background:#f59e0b; color:#0f172a;">Featured Properties Dekhein</a>
+    <div class="hero-tag">RERA REGISTERED • DIRECT BUILDER DEALS</div>
+    <h1>Luxury Flats, Plots &amp; Commercial Spaces</h1>
+    <p>Transparent registry-ready deals, SBI/HDFC home loan assistance aur prime locations par ready-to-move properties.</p>
+    <a href="#listings" class="btn" style="background:var(--gold); color:var(--dark);">Featured Properties Dekhein</a>
   </section>
+
+  <div class="trust-bar">
+    <div class="trust-item"><b>100% RERA</b><span>Verified Projects</span></div>
+    <div class="trust-item"><b>Zero</b><span>Hidden Brokerage</span></div>
+    <div class="trust-item"><b>SBI / HDFC</b><span>Approved Loans</span></div>
+    <div class="trust-item"><b>500+</b><span>Happy Families</span></div>
+  </div>
 
   <section class="section" id="listings">
     <h2>Featured Properties</h2>
+    <p class="section-sub">High-appreciation residential aur commercial projects — seedha brochure aur floor plan paayein.</p>
     <div class="grid">
       <div class="prop-card">
-        <div class="prop-banner">
-          <span class="tag">Ready to Move • RERA Approved</span>
-          <h3>3 BHK Luxury Apartment</h3>
+        <div class="prop-img">
+          <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80" alt="3 BHK Luxury Apartment" loading="lazy">
+          <span class="tag">Ready to Move • RERA</span>
         </div>
         <div class="prop-body">
           <div>
+            <h3>3 BHK Luxury Apartment</h3>
             <div class="price">₹68 Lakhs</div>
-            <div class="meta">1,550 sq.ft • Covered Parking • Lift & 24x7 Security</div>
+            <div class="specs">
+              <span>1,550 sq.ft</span>
+              <span>Covered Parking</span>
+              <span>24×7 Security</span>
+            </div>
           </div>
-          <a href="https://wa.me/91XXXXXXXXXX?text=Hi,%20mujhe%203%20BHK%20Luxury%20Apartment%20ki%20details%20chahiye" target="_blank" class="btn" style="text-align:center;">WhatsApp Details & Brochure</a>
+          <a href="https://wa.me/918400702268?text=Hi,%20mujhe%203%20BHK%20Luxury%20Apartment%20ki%20details%20aur%20brochure%20chahiye" target="_blank" class="btn" style="text-align:center;">WhatsApp Brochure &amp; Rate</a>
         </div>
       </div>
 
       <div class="prop-card">
-        <div class="prop-banner" style="background:linear-gradient(120deg,#1e3a8a,#3b82f6);">
+        <div class="prop-img">
+          <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80" alt="Gated Township Residential Plots" loading="lazy">
           <span class="tag">Gated Township • Registry Ready</span>
-          <h3>Residential Plots (100 - 200 Gaj)</h3>
         </div>
         <div class="prop-body">
           <div>
+            <h3>Residential Plots (100–200 Gaj)</h3>
             <div class="price">₹24 Lakhs onwards</div>
-            <div class="meta">Wide 40ft Roads • Park Facing • Bank Loan Available</div>
+            <div class="specs">
+              <span>40ft Wide Roads</span>
+              <span>Park Facing</span>
+              <span>Bank Loan</span>
+            </div>
           </div>
-          <a href="https://wa.me/91XXXXXXXXXX?text=Hi,%20mujhe%20Residential%20Plots%20ki%20site%20visit%20book%20karni%20hai" target="_blank" class="btn" style="text-align:center;">Book Free Site Visit</a>
+          <a href="https://wa.me/918400702268?text=Hi,%20mujhe%20Residential%20Plots%20ki%20site%20visit%20book%20karni%20hai" target="_blank" class="btn" style="text-align:center;">Book Free Site Visit</a>
         </div>
       </div>
 
       <div class="prop-card">
-        <div class="prop-banner" style="background:linear-gradient(120deg,#7c2d12,#ea580c);">
+        <div class="prop-img">
+          <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80" alt="Commercial Showroom and Office" loading="lazy">
           <span class="tag">High ROI • Main Road</span>
-          <h3>Commercial Showroom / Office</h3>
         </div>
         <div class="prop-body">
           <div>
+            <h3>Commercial Showroom / Office</h3>
             <div class="price">₹1.15 Crore</div>
-            <div class="meta">1,200 sq.ft Ground Floor • High Footfall Market Area</div>
+            <div class="specs">
+              <span>1,200 sq.ft</span>
+              <span>Ground Floor</span>
+              <span>High Footfall</span>
+            </div>
           </div>
-          <a href="https://wa.me/91XXXXXXXXXX?text=Hi,%20mujhe%20Commercial%20Showroom%20ke%20baare%20mein%20jaanna%20hai" target="_blank" class="btn" style="text-align:center;">Get Floor Plan</a>
+          <a href="https://wa.me/918400702268?text=Hi,%20mujhe%20Commercial%20Showroom%20ka%20floor%20plan%20chahiye" target="_blank" class="btn" style="text-align:center;">Get Floor Plan</a>
         </div>
       </div>
     </div>
@@ -99,13 +136,13 @@
   <section class="section" id="visit">
     <div class="cta-strip">
       <h2>Apni Pasand Ki Property Visit Karein</h2>
-      <p style="margin:10px 0 20px; color:#ccfbf1;">Free site visit aur SBI / HDFC home loan guidance ke liye seedha WhatsApp par baat karein.</p>
-      <a href="https://wa.me/91XXXXXXXXXX?text=Hi,%20mujhe%20property%20visit%20schedule%20karni%20hai" target="_blank" class="btn" style="background:#fff; color:#0f766e;">WhatsApp Par Contact Karein</a>
+      <p style="margin:10px 0 22px; color:#ccfbf1;">Free site visit aur home loan eligibility check ke liye seedha WhatsApp par connect karein.</p>
+      <a href="https://wa.me/918400702268?text=Hi,%20mujhe%20property%20site%20visit%20schedule%20karni%20hai" target="_blank" class="btn" style="background:var(--gold); color:var(--dark);">WhatsApp Par Contact Karein</a>
     </div>
   </section>
 
   <footer>
-    <p>© 2026 Prime Estate Infra (Demo Website). Designed by <a href="https://hexacomputer.in" style="color:#fbbf24;">Hexa Computronics, Kanpur</a></p>
+    <p>© 2026 Prime Estate Infra (Demo Website). Designed by <a href="https://www.hexacomputer.in" style="color:#fbbf24;">Hexa Computronics, Kanpur</a></p>
   </footer>
 </body>
 </html>
