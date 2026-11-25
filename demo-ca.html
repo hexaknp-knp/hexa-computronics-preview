@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verma & Associates — CA, GST & Tax Consultants | Demo by Hexa Computronics</title>
+  <meta name="description" content="Modern Chartered Accountant, GST Filing & Tax Consultant website template by Hexa Computronics, Kanpur.">
+  <style>
+    :root { --primary: #1e3a8a; --accent: #f59e0b; --dark: #0f172a; --muted: #64748b; --bg: #f8fafc; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    body { color: var(--dark); background: var(--bg); line-height: 1.6; }
+    .demo-bar { background: var(--dark); color: #e2e8f0; text-align: center; padding: 8px 16px; font-size: 13px; }
+    .demo-bar a { color: #38bdf8; font-weight: 600; text-decoration: none; }
+    header { background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 50; }
+    .nav { max-width: 1140px; margin: auto; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 21px; font-weight: 800; color: var(--primary); letter-spacing: -0.3px; }
+    .logo span { color: var(--accent); }
+    .btn { display: inline-block; background: var(--primary); color: #fff; padding: 11px 22px; border-radius: 10px; text-decoration: none; font-weight: 600; border: none; cursor: pointer; transition: all 0.25s ease; }
+    .btn:hover { background: #172554; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(30,58,138,0.25); }
+    .hero { position: relative; background: linear-gradient(135deg, rgba(15,23,42,0.88), rgba(30,58,138,0.82)), url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat; color: #fff; padding: 88px 20px 100px; text-align: center; }
+    .hero-badge { display: inline-block; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.25); padding: 6px 14px; border-radius: 50px; font-size: 13px; margin-bottom: 16px; backdrop-filter: blur(6px); }
+    .hero h1 { font-size: clamp(30px, 5vw, 48px); margin-bottom: 14px; line-height: 1.15; }
+    .hero p { max-width: 660px; margin: 0 auto 28px; color: #e2e8f0; font-size: 17px; }
+    .stats { max-width: 960px; margin: -44px auto 48px; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; position: relative; z-index: 10; }
+    .stat { background: #fff; padding: 22px; border-radius: 14px; text-align: center; box-shadow: 0 10px 30px rgba(15,23,42,0.08); border: 1px solid #e2e8f0; transition: transform 0.25s ease; }
+    .stat:hover { transform: translateY(-4px); }
+    .stat h3 { font-size: 26px; color: var(--primary); }
+    .stat p { font-size: 13px; color: var(--muted); }
+    .section { max-width: 1140px; margin: 56px auto; padding: 0 20px; }
+    .section h2 { text-align: center; font-size: 30px; margin-bottom: 10px; }
+    .section-sub { text-align: center; color: var(--muted); margin-bottom: 34px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+    .card { background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; transition: all 0.3s ease; display: flex; flex-direction: column; }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 18px 36px rgba(15,23,42,0.1); border-color: #bfdbfe; }
+    .card-img-wrap { height: 175px; overflow: hidden; position: relative; }
+    .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.45s ease; }
+    .card:hover .card-img-wrap img { transform: scale(1.08); }
+    .card-tag { position: absolute; top: 12px; left: 12px; background: rgba(15,23,42,0.8); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+    .card-body { padding: 22px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .card h3 { color: var(--primary); margin-bottom: 8px; font-size: 19px; }
+    .card p { font-size: 14px; color: #475569; margin-bottom: 16px; }
+    .price { font-weight: 800; color: var(--dark); font-size: 17px; padding-top: 12px; border-top: 1px dashed #e2e8f0; }
+    .form-box { background: #fff; max-width: 600px; margin: auto; padding: 32px; border-radius: 18px; border: 1px solid #e2e8f0; box-shadow: 0 14px 32px rgba(15,23,42,0.06); }
+    .form-box input, .form-box select { width: 100%; padding: 13px 14px; margin-bottom: 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 15px; outline: none; transition: border 0.2s; }
+    .form-box input:focus, .form-box select:focus { border-color: var(--primary); }
+    footer { background: var(--dark); color: #94a3b8; text-align: center; padding: 30px 20px; margin-top: 64px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="demo-bar">
+    Demo Template by <a href="index.html#website-samples">Hexa Computronics</a> — CA, Tax Consultant & Law Firms ke liye Modern Website
+  </div>
+
+  <header>
+    <div class="nav">
+      <div class="logo">Verma <span>&</span> Associates</div>
+      <a href="#consult" class="btn">Free Consultation</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-badge">ICAI Registered • 15+ Years Experience</div>
+    <h1>Trusted GST, Income Tax & Business Compliance</h1>
+    <p>Startups, Traders, Manufacturers aur Salaried Professionals ke liye timely ITR filing, GST returns aur company registration services.</p>
+    <a href="#consult" class="btn" style="background:var(--accent); color:var(--dark);">Expert Se Baat Karein</a>
+  </section>
+
+  <div class="stats">
+    <div class="stat"><h3>1,200+</h3><p>Active GST & ITR Clients</p></div>
+    <div class="stat"><h3>100%</h3><p>On-Time Return Filing</p></div>
+    <div class="stat"><h3>15+ Yrs</h3><p>Audit & Tax Experience</p></div>
+    <div class="stat"><h3>4.9★</h3><p>Client Trust Rating</p></div>
+  </div>
+
+  <section class="section" id="services">
+    <h2>Hamari Core Services</h2>
+    <p class="section-sub">Transparent fees, dedicated CA support aur 100% digital document process.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="card-img-wrap">
+          <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=700&q=80" alt="GST Registration and Filing" loading="lazy">
+          <span class="card-tag">Most Popular</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <h3>GST Registration & Filing</h3>
+            <p>New GST registration, monthly GSTR-1 / GSTR-3B filing, reconciliation aur GST notice reply.</p>
+          </div>
+          <div class="price">Starts ₹999 / month</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-img-wrap">
+          <img src="https://images.unsplash.com/photo-1586486855514-8c633cc6fd38?auto=format&fit=crop&w=700&q=80" alt="Income Tax Return Filing" loading="lazy">
+          <span class="card-tag">Tax Saving</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <h3>Income Tax Return (ITR)</h3>
+            <p>Salaried, Business aur Capital Gains ITR filing maximum legal tax saving ke saath.</p>
+          </div>
+          <div class="price">Starts ₹799</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-img-wrap">
+          <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=700&q=80" alt="Company and MSME Registration" loading="lazy">
+          <span class="card-tag">Startup Ready</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <h3>Company & MSME Registration</h3>
+            <p>Pvt Ltd, LLP, Partnership Firm, Udyam MSME aur Trademark registration complete support.</p>
+          </div>
+          <div class="price">Complete Package</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-img-wrap">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=700&q=80" alt="Tally Accounting and Audit" loading="lazy">
+          <span class="card-tag">Business Audit</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <h3>Tally Accounting & Audit</h3>
+            <p>Monthly bookkeeping, balance sheet finalization, project reports aur statutory audit.</p>
+          </div>
+          <div class="price">Custom Plans</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="consult">
+    <h2>Callback Schedule Karein</h2>
+    <p class="section-sub">Apni details bharein — hamare tax expert aapko 15 minute mein call karenge.</p>
+    <div class="form-box">
+      <form onsubmit="bookConsult(event)">
+        <input type="text" id="clientName" placeholder="Aapka Naam / Firm ka Naam" required>
+        <input type="tel" id="clientPhone" placeholder="Mobile / WhatsApp Number" required>
+        <select id="serviceType" required>
+          <option value="">Service Select Karein</option>
+          <option>GST Registration / Monthly Filing</option>
+          <option>Income Tax Return (ITR)</option>
+          <option>Company / MSME Registration</option>
+          <option>Accounting & Audit</option>
+        </select>
+        <button type="submit" class="btn" style="width:100%;">WhatsApp Par Enquiry Bhejein</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Verma & Associates (Demo Website). Designed by <a href="https://hexacomputer.in" style="color:#38bdf8;">Hexa Computronics, Kanpur</a></p>
+  </footer>
+
+  <script>
+    function bookConsult(e) {
+      e.preventDefault();
+      const name = document.getElementById('clientName').value;
+      const phone = document.getElementById('clientPhone').value;
+      const srv = document.getElementById('serviceType').value;
+      const msg = `Hello, mujhe ${srv} ke liye consultation chahiye. Name: ${name}, Phone: ${phone}`;
+      window.open(`https://wa.me/91XXXXXXXXXX?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+  </script>
+</body>
+</html>
