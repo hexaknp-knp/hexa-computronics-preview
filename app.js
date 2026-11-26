@@ -11,6 +11,7 @@ const SHIPPING_CONFIG = {
 
 const CACHE_KEY = 'hexa_products_cache_v1';
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const PRODUCTS_PER_PAGE = 8;     // Ek baar mein 8 products dikhenge ("Load More" se agle 8 khulenge)
 
 let products = [
   {id:1,name:'Lenovo IdeaPad Slim 3',cat:'Laptops',price:42999,shipping:0,freeShipping:true,spec:'Core i5 · 16GB RAM · 512GB SSD',tag:'Popular',img:'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=700&q=80'},
@@ -27,7 +28,7 @@ let products = [
   {id:12,name:'Refurbished Desktop PC',cat:'Refurbished',price:13999,shipping:200,freeShipping:false,spec:'Core i5 · 8GB RAM · SSD',tag:'Value choice',img:'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=700&q=80'}
 ];
 
-let activeCategory = 'All', cart = {};
+let activeCategory = 'All', cart = {}, visibleCount = PRODUCTS_PER_PAGE;
 const $ = s => document.querySelector(s);
 const money = n => '₹' + Math.round(Number(n || 0)).toLocaleString('en-IN');
 
@@ -48,6 +49,22 @@ function debounce(fn, delay = 150) {
     clearTimeout(timer);
     timer = setTimeout(() => fn(...args), delay);
   };
+}
+
+// Update Category Filter Buttons with Live Product Count
+function updateCategoryCounts() {
+  const filterButtons = document.querySelectorAll('#filterRow .filter');
+  if (!filterButtons.length) return;
+  filterButtons.forEach(btn => {
+    if (!btn.dataset.label) {
+      btn.dataset.label = btn.textContent.trim();
+    }
+    const cat = btn.dataset.filter;
+    const count = cat === 'All'
+      ? products.length
+      : products.filter(p => p.cat === cat).length;
+    btn.textContent = `${btn.dataset.label} (${count})`;
+  });
 }
 
 // SMART SHIPPING CALCULATOR (Weight/Item + Distance PIN + Free Threshold)
@@ -110,6 +127,8 @@ function calculateCartTotals() {
 }
 
 function renderProducts() {
+  updateCategoryCounts();
+
   const query = ($('#productSearch')?.value || '').trim().toLowerCase();
   let list = products.filter(p =>
     (activeCategory === 'All' || p.cat === activeCategory) &&
@@ -119,7 +138,11 @@ function renderProducts() {
   if (sort === 'low') list.sort((a, b) => a.price - b.price);
   if (sort === 'high') list.sort((a, b) => b.price - a.price);
 
-  $('#productGrid').innerHTML = list.map(p => {
+  const visibleList = list.slice(0, visibleCount);
+  const grid = $('#productGrid');
+  if (!grid) return;
+
+  grid.innerHTML = visibleList.map(p => {
     const shipBadge = p.freeShipping
       ? '<span style="display:inline-block;margin-top:4px;font-size:11px;font-weight:700;color:#15803d;background:#dcfce7;padding:2px 8px;border-radius:999px;">Free Shipping</span>'
       : '';
@@ -140,10 +163,38 @@ function renderProducts() {
       </div>
     </article>`;
   }).join('') || '<p class="no-results">No matching products. Try another search or category.</p>';
+
+  // Dynamic "Load More Products" button right below #productGrid
+  let loadMoreWrap = document.getElementById('loadMoreWrap');
+  if (!loadMoreWrap) {
+    loadMoreWrap = document.createElement('div');
+    loadMoreWrap.id = 'loadMoreWrap';
+    loadMoreWrap.style.cssText = 'text-align:center; margin: 26px 0 8px;';
+    grid.insertAdjacentElement('afterend', loadMoreWrap);
+  }
+
+  if (list.length > visibleCount) {
+    const remaining = list.length - visibleCount;
+    const nextBatch = Math.min(PRODUCTS_PER_PAGE, remaining);
+    loadMoreWrap.innerHTML = `
+      <button type="button" id="loadMoreBtn" class="button primary" style="padding: 12px 26px; font-size: 14px; border-radius: 999px; box-shadow: 0 6px 18px rgba(15, 23, 42, 0.16); cursor: pointer;">
+        Load More Products (+${nextBatch}) <span style="opacity:0.85; font-weight:500; margin-left:4px;">· Showing ${visibleList.length} of ${list.length}</span> ↓
+      </button>
+    `;
+    document.getElementById('loadMoreBtn')?.addEventListener('click', () => {
+      visibleCount += PRODUCTS_PER_PAGE;
+      renderProducts();
+    });
+  } else if (list.length > PRODUCTS_PER_PAGE) {
+    loadMoreWrap.innerHTML = `<small style="color:#64748b; font-weight:600;">Showing all ${list.length} products</small>`;
+  } else {
+    loadMoreWrap.innerHTML = '';
+  }
 }
 
 function setCategory(cat) {
   activeCategory = cat;
+  visibleCount = PRODUCTS_PER_PAGE;
   document.querySelectorAll('.filter').forEach(b => b.classList.toggle('active', b.dataset.filter === cat));
   renderProducts();
 }
@@ -198,8 +249,14 @@ function showToast(msg) { const t = $('#toast'); t.textContent = msg; t.classLis
 
 $('#filterRow')?.addEventListener('click', e => { const b = e.target.closest('[data-filter]'); if (b) setCategory(b.dataset.filter); });
 document.querySelectorAll('.category-card').forEach(a => a.addEventListener('click', () => setCategory(a.dataset.category)));
-$('#productSearch')?.addEventListener('input', debounce(renderProducts, 150));
-$('#sortProducts')?.addEventListener('change', renderProducts);
+$('#productSearch')?.addEventListener('input', debounce(() => {
+  visibleCount = PRODUCTS_PER_PAGE;
+  renderProducts();
+}, 150));
+$('#sortProducts')?.addEventListener('change', () => {
+  visibleCount = PRODUCTS_PER_PAGE;
+  renderProducts();
+});
 $('#searchJump')?.addEventListener('click', () => { $('#shop').scrollIntoView({ behavior: 'smooth' }); setTimeout(() => $('#productSearch').focus(), 450); });
 $('#cartOpen')?.addEventListener('click', openCart);
 $('#cartClose')?.addEventListener('click', closeCart);
