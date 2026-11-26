@@ -151,6 +151,39 @@ p, .modal-desc, .modal-features { font-size: 1.02rem; color: #1e293b; font-weigh
   object-fit: cover !important;
 }
 
+/* === HERO AUTO-SLIDER SHOWCASE === */
+.hero-visual { cursor: pointer; }
+.hero-visual .hero-product { transition: opacity 0.45s ease; }
+.hero-visual .floating-note { transition: opacity 0.35s ease; max-width: 270px; }
+.hero-dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 6;
+  background: rgba(15, 23, 42, 0.55);
+  padding: 5px 10px;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+.hero-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.hero-dot.active {
+  width: 20px;
+  border-radius: 999px;
+  background: #ffffff;
+}
+
 /* Business Section Action Buttons */
 .business-actions {
   display: flex;
@@ -651,6 +684,7 @@ p, .modal-desc, .modal-features { font-size: 1.02rem; color: #1e293b; font-weigh
   .hero-buttons { display: flex !important; flex-wrap: wrap !important; gap: 10px !important; }
   .hero-buttons .button { flex: 1 1 auto; justify-content: center; }
   .hero-visual .hero-product { max-height: 240px !important; }
+  .hero-dots { bottom: 68px; }
 
   .section-heading h2 { font-size: 1.85rem !important; }
   .promo-banner { flex-direction: column; max-width: 100%; text-align: center; padding: 16px; }
@@ -669,7 +703,8 @@ p, .modal-desc, .modal-features { font-size: 1.02rem; color: #1e293b; font-weigh
   .modal-price { font-size: 22px; }
   .cart-drawer { width: 100% !important; max-width: 100vw !important; }
 }
-  /* === FLOATING WHATSAPP BUTTON === */
+
+/* === FLOATING WHATSAPP BUTTON === */
 .wa-float {
   position: fixed;
   bottom: 22px;
@@ -762,11 +797,18 @@ p, .modal-desc, .modal-features { font-size: 1.02rem; color: #1e293b; font-weigh
     <div class="hero-buttons"><a class="button primary" href="#filterRow">Explore products <span>↗</span></a><a class="button secondary" href="#contact">Talk to an expert</a></div>
     <div class="hero-assurance"><span>✓ Secure All-India Delivery</span><span>✓ 100% Genuine IT Products</span><span>✓ <a href="#website-samples" style="color:#6d28d9; font-weight:700; text-decoration:none;">Business Website Creation ↗</a></span></div>
   </div>
-  <div class="hero-visual">
+  <div class="hero-visual" id="heroSlider" title="Click to explore">
     <div class="visual-glow"></div>
-    <img class="hero-product" src="refurbished-tech.webp" alt="Premium laptop on a clean desk" fetchpriority="high" decoding="async">
-    <div class="floating-note"><span class="note-icon">✦</span><div><b>Make every day</b><small>more productive</small></div></div>
-    <div class="visual-index">HEXA / 001</div>
+    <img class="hero-product" id="heroSlideImg" src="refurbished-tech.webp" alt="New and Refurbished Laptops &amp; Desktops" fetchpriority="high" decoding="async">
+    <div class="floating-note" id="heroSlideNote">
+      <span class="note-icon" id="heroSlideIcon">💻</span>
+      <div>
+        <b id="heroSlideTitle">New &amp; Refurbished Systems</b>
+        <small id="heroSlideSub">HP, Dell &amp; Lenovo · Laptops &amp; Desktops</small>
+      </div>
+    </div>
+    <div class="hero-dots" id="heroDots" aria-label="Showcase slides"></div>
+    <div class="visual-index" id="heroSlideIndex">HEXA / 001</div>
   </div>
 </section>
 
@@ -909,7 +951,7 @@ p, .modal-desc, .modal-features { font-size: 1.02rem; color: #1e293b; font-weigh
         </div>
       </div>
     </article>
-    <!-- Sample 5: Coaching / Academy (Image Fixed) -->
+    <!-- Sample 5: Coaching / Academy -->
     <article class="sample-card">
       <div class="sample-thumb" style="background-color: #1e3a8a; background-image: url('https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80');">
         <span class="sample-tag">DEMO TEMPLATE</span>
@@ -1025,6 +1067,9 @@ p, .modal-desc, .modal-features { font-size: 1.02rem; color: #1e293b; font-weigh
         <a class="price-btn" href="https://wa.me/918400702268?text=Hi%20Hexa%20Computronics,%20mujhe%20E-Commerce%20Store%20Website%20Package%20ki%20details%20chahiye." target="_blank" rel="noopener">Book on WhatsApp ↗</a>
       </article>
     </div>
+    <p style="text-align: center; font-size: 0.85rem !important; color: #64748b !important; margin-top: 18px;">
+      *Note: Domain &amp; Hosting charges are extra as per actuals (Free Cloud Hosting option also available — pay only for Domain ~₹1,000/yr, or choose Hostinger/GoDaddy with Business Email).
+    </p>
   </div>
 </section>
 
@@ -1308,6 +1353,127 @@ p, .modal-desc, .modal-features { font-size: 1.02rem; color: #1e293b; font-weigh
   })();
 </script>
 
+<!-- HERO AUTO-CHANGING SHOWCASE SLIDER -->
+<script>
+(function() {
+  const slides = [
+    {
+      img: 'refurbished-tech.webp',
+      icon: '💻',
+      title: 'New & Refurbished Systems',
+      sub: 'HP, Dell & Lenovo · Laptops & Desktops',
+      index: 'HEXA / 001',
+      action: () => { if (window.setCategory) setCategory('Refurbished'); location.hash = '#filterRow'; }
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=900&q=80',
+      icon: '🎥',
+      title: 'CCTV & Security Systems',
+      sub: 'HD & IP Cameras · Home, Shop & Office',
+      index: 'HEXA / 002',
+      action: () => { if (window.setCategory) setCategory('CCTV & Security'); location.hash = '#filterRow'; }
+    },
+    {
+      img: 'service_image.webp',
+      icon: '🌐',
+      title: 'Networking & Wi-Fi Setup',
+      sub: 'Office LAN, Routers, Switches & Firewalls',
+      index: 'HEXA / 003',
+      action: () => { if (window.setCategory) setCategory('Networking'); location.hash = '#filterRow'; }
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=900&q=80',
+      icon: '🛠️',
+      title: 'Computer Repair & AMC',
+      sub: 'Fast Chip-Level Repair & Office IT AMC',
+      index: 'HEXA / 004',
+      action: () => { location.hash = '#contact'; }
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&w=900&q=80',
+      icon: '🖨️',
+      title: 'Printers & Antivirus',
+      sub: 'Genuine Printers & Business Security',
+      index: 'HEXA / 005',
+      action: () => { if (window.setCategory) setCategory('Printers'); location.hash = '#filterRow'; }
+    },
+    {
+      img: 'ipepbx.webp',
+      icon: '☎️',
+      title: 'EPABX & Intercom Systems',
+      sub: 'Office Communication & IP Intercom',
+      index: 'HEXA / 006',
+      action: () => { location.hash = '#business'; }
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80',
+      icon: '🚀',
+      title: 'Business Website Creation',
+      sub: 'Starting ₹4,999 · SEO & WhatsApp Ready',
+      index: 'HEXA / 007',
+      action: () => { location.hash = '#website-samples'; }
+    }
+  ];
+
+  const slider = document.getElementById('heroSlider');
+  const imgEl = document.getElementById('heroSlideImg');
+  const noteEl = document.getElementById('heroSlideNote');
+  const iconEl = document.getElementById('heroSlideIcon');
+  const titleEl = document.getElementById('heroSlideTitle');
+  const subEl = document.getElementById('heroSlideSub');
+  const idxEl = document.getElementById('heroSlideIndex');
+  const dotsWrap = document.getElementById('heroDots');
+  if (!slider || !imgEl || !dotsWrap) return;
+
+  let current = 0;
+  let timer = null;
+
+  dotsWrap.innerHTML = slides.map((_, i) =>
+    `<button type="button" class="hero-dot ${i === 0 ? 'active' : ''}" aria-label="Slide ${i + 1}"></button>`
+  ).join('');
+  const dots = Array.from(dotsWrap.querySelectorAll('.hero-dot'));
+
+  function showSlide(i) {
+    current = (i + slides.length) % slides.length;
+    const s = slides[current];
+    imgEl.style.opacity = '0.25';
+    noteEl.style.opacity = '0.35';
+    setTimeout(() => {
+      imgEl.src = s.img;
+      imgEl.alt = s.title;
+      iconEl.textContent = s.icon;
+      titleEl.textContent = s.title;
+      subEl.textContent = s.sub;
+      idxEl.textContent = s.index;
+      dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
+      imgEl.style.opacity = '1';
+      noteEl.style.opacity = '1';
+    }, 180);
+  }
+
+  function startAuto() {
+    clearInterval(timer);
+    timer = setInterval(() => showSlide(current + 1), 3500);
+  }
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showSlide(i);
+      startAuto();
+    });
+  });
+
+  slider.addEventListener('click', () => {
+    if (slides[current] && slides[current].action) slides[current].action();
+  });
+  slider.addEventListener('mouseenter', () => clearInterval(timer));
+  slider.addEventListener('mouseleave', startAuto);
+
+  startAuto();
+})();
+</script>
+
 <div id="productModal" class="modal-overlay" aria-hidden="true" hidden>
   <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <button class="modal-close" id="closeModal" aria-label="Close details">&times;</button>
@@ -1341,5 +1507,12 @@ p, .modal-desc, .modal-features { font-size: 1.02rem; color: #1e293b; font-weigh
     </div>
   </div>
 </div>
+
+<!-- FLOATING WHATSAPP CHAT BUTTON -->
+<a class="wa-float" href="https://wa.me/918400702268?text=Hi%20Hexa%20Computronics,%20mujhe%20product%20ya%20website%20ke%20baare%20mein%20jaanna%20hai." target="_blank" rel="noopener" aria-label="Chat on WhatsApp" title="Chat on WhatsApp">
+  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="#ffffff">
+    <path d="M12.031 2c-5.516 0-9.969 4.453-9.969 9.969 0 1.766.469 3.484 1.344 5l-1.406 5.156 5.281-1.391c1.469.797 3.109 1.219 4.75 1.219 5.516 0 9.969-4.453 9.969-9.969S17.547 2 12.031 2zm5.828 14.125c-.25.703-1.438 1.344-2 1.422-.516.078-1.188.109-1.922-.125-.453-.141-1.031-.344-1.766-.656-3.109-1.344-5.141-4.5-5.297-4.703-.156-.203-1.266-1.688-1.266-3.219 0-1.531.797-2.281 1.078-2.594.281-.312.625-.391.828-.391.203 0 .422.016.609.016.188 0 .453-.078.703.531.25.609.859 2.094.938 2.25.078.156.125.344.031.547-.094.203-.156.344-.312.516-.156.172-.328.391-.469.531-.156.156-.312.328-.141.625.172.297.766 1.266 1.656 2.047 1.141 1.016 2.094 1.328 2.406 1.484.312.156.484.125.672-.078.188-.203.781-.906.984-1.219.203-.312.406-.266.688-.156.281.109 1.781.844 2.094 1 .312.156.516.234.594.359.078.125.078.734-.172 1.438z"/>
+  </svg>
+</a>
 </body>
 </html>
