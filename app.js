@@ -2,8 +2,8 @@
 // SHIPPING SETTINGS (Yahan se kabhi bhi change karein)
 // ==========================================
 const SHIPPING_CONFIG = {
-  FREE_SHIPPING_THRESHOLD: 2500, // ₹2,500 ya usse upar ki shopping par FREE shipping (band karna ho toh 0 karein)
-  DEFAULT_PRODUCT_SHIPPING: 80,  // Agar kisi product me admin se shipping 0 chhodi ho (aur Free tick na ho)
+  FREE_SHIPPING_THRESHOLD: 5000, // ₹5,000 ya usse upar ki shopping par FREE shipping (band karna ho toh 0 karein)
+  DEFAULT_PRODUCT_SHIPPING: 150,  // Agar kisi product me admin se shipping 0 chhodi ho (aur Free tick na ho)
   ZONE_UP_EXTRA: 0,              // UP / Kanpur (PIN 20-28) extra distance charge
   ZONE_NATIONAL_EXTRA: 40,       // Rest of India extra distance charge
   ZONE_REMOTE_EXTRA: 80          // J&K, North-East, Islands (PIN 18,19,74,78,79) extra charge
